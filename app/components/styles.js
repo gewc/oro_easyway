@@ -1,0 +1,354 @@
+import styled from "styled-components";
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import Constants from "expo-constants";
+
+const StatusBarHeight = Constants.statusBarHeight;
+
+// colors themes
+// colors themes
+export const Colors ={
+  primary: "#ffffff",
+  secondary: "#e5e7eb",
+  tertiary: "#1f2937",
+  darkLight: "#9ca3af",
+  brand: "#1434A4",
+  green: "#10b981",
+  red: "#ef4444",
+};
+
+
+const { primary, secondary, tertiary, darkLight, brand, green, red } = Colors;
+
+export const StyledContainer = styled.View`
+  flex: 1;
+  padding: 25px;
+  padding-top: ${StatusBarHeight + 30}px;
+  ${(props) => props.dashbaord && `
+    padding: 0px;
+  `}
+`
+
+export const InnerContainer = styled.View`
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  top: 20px;
+`
+
+export const DashboardContainer = styled(InnerContainer)`
+  padding: 25px;
+  padding-top: 10px;
+  justify-content: center;
+`
+
+export const ProductContainer = styled(InnerContainer)`
+  padding: 0px;
+  padding-top: 10px;
+`
+
+export const PageLogo = styled.Image`
+  border-radius: 10px;
+`
+
+export const Avatar = styled.Image`
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  border-radius: 50px;
+  border-width: 2px;
+  border-color: ${secondary};
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: absolute;
+  right: 15px;
+  top: ${StatusBarHeight}px;
+`
+
+export const WelcomeImage = styled.Image`
+  height: 50%;
+  min-width: 100%;
+`
+
+export const PageTitle = styled.Text`
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: ${brand};
+  padding: 10px;
+  margin-top: 10px;
+
+  ${(props) => props.dashbaord && `
+    font-size: 35px;
+    color: ${primary};
+  `}
+`
+
+export const SubTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  color: ${tertiary};
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+
+  ${(props) => props.dashbaord && `
+    margin-top: 5px;
+    font-weight: normal;
+  `}
+  ${(props) => props.storeDetails && `
+    font-size: 24px;
+    margin-top: 5px;
+    font-weight: 700;
+    color: ${primary};
+
+  `}
+`
+
+export const StyledFormArea = styled.View`
+  width: 90%;
+
+  ${(props) => props.product && `
+    width: 100%;
+  `}
+
+`
+
+export const StyledTextInput = styled.TextInput`
+  background-color: ${secondary};
+  padding: 15px;
+  padding-left: 55px;
+  padding-right: 55px;
+  border-radius: 5px;
+  font-size: 16px;
+  height: 60px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: ${tertiary};
+
+  ${(props) => props.searchMaterial && `
+    border-radius: 30px;
+    font-size: 22px;
+    
+  `}
+
+  ${(props) => props.product && `
+    border-radius: 30px;
+    font-size: 22px;
+    margin-top: 0px;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    padding-left: 55px;
+    font-size: 14px;
+    border: 1px solid ${brand}
+  `}
+
+  ${(props) => props.store && `
+    background-color: transparent;
+    border-bottom-color: ${primary};
+    border-bottom-width: 1px;
+    color: ${primary};
+    font-size: 22px;
+    text-align: center;
+    border-radius: 1px;
+  `}
+
+  ${(props) => props.storeDetails && `
+    background-color: transparent;
+    font-size: 16px;
+    color: ${primary};
+    border-bottom-color: ${primary};
+    border-bottom-width: 1px;
+    border-radius: 1px;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 45px;
+    margin-top: 5px;
+  `}
+
+  ${(props) => props.storeProfile && `
+    background-color: transparent;
+    border-bottom-color: ${brand};
+    border-bottom-width: 1px;
+    color: ${tertiary};
+    font-size: 18px;
+    text-align: left;
+    border-radius: 1px;
+    height: 45px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+  `}
+`
+
+export const StyledInputLabel = styled.Text`
+  color:${tertiary};
+  font-size: 13px;
+  text-align: left;
+
+  ${(props) => props.store && `
+    font-size: 16px;
+    text-align: center;
+    color: ${primary};
+    margin-bottom: 15px;
+  `}
+  ${(props) => props.location && `
+    font-size: 16px;
+    text-align: center;
+    color: ${primary};
+    margin-bottom: 5px;
+  `}
+
+  ${(props) => props.storeDetails && `
+    font-size: 16px;
+    color: ${primary};
+  `}
+
+  ${(props) => props.storeProfile && `
+    top: 10px
+  `}
+
+`
+
+export const LeftIcon = styled.View`
+  left: 15px;
+  top: 30px;
+  position: absolute;
+  z-index: 1;
+
+  ${(props) => props.product && `
+    top: 8px;
+  `}
+
+`
+
+export const RightIcon = styled.TouchableOpacity`
+  right: 15px;
+  top: 30px;
+  position: absolute;
+  z-index: 1;
+`
+
+export const StyledButton = styled.TouchableOpacity`
+  padding: 15px;
+  background-color: ${brand};
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  height: 60px;
+  border-radius: 30px;
+
+  ${(props) => props.google == true && `
+    background-color: ${green};
+    flex-direction: row;
+    justify-content: center;
+  `}
+
+  ${(props) => props.findMaterial == true && `
+    background-color: transparent;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 10px;
+    border: 3px solid #fff;
+    height: 70px;
+  `}
+
+  ${(props) => props.btnSearch && `
+    background-color: ${brand};
+    flex-direction: row;
+    justify-content: center;
+  `}
+
+  ${(props) => props.store && `
+    background-color: transparent;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 30px;
+    border: 3px solid #fff;
+    height: 60px;
+  `}
+
+  ${(props) => props.product && `
+    flex-direction: row;
+    height: 50px;
+    margin-top: 0px;
+    border-radius: 10px;
+  `}
+
+`
+
+export const ButtonText = styled.Text`
+  color: ${primary};
+  font-size: 18px;
+
+  ${(props) => props.google == true && `
+    padding-left: 15px;
+  `}
+
+  ${(props) => props.findMaterial == true && `
+    font-size: 25px;
+  `}
+`
+
+export const MsgBox = styled.Text`
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: ${props => props.type == "SUCCESS" ? green : red};
+
+  ${(props) => props.product == true && `
+    font-size: 20px;
+    margin-top: 15px;
+    color: ${props => props.type == "SUCCESS" ? green : darkLight};
+  `}
+`
+
+export const Line = styled.View`
+  height: 1px;
+  width: 100%;
+  background-color: ${darkLight};
+  margin-top: 15px;
+`
+
+export const ExtraView = styled.View`
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+`
+
+export const ExtraText = styled.Text`
+  justify-content: center;
+  align-content: center;
+  color: ${tertiary};
+  font-size: 16px;
+`
+
+export const TextLink = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+`
+
+export const TextLinkContent = styled.Text`
+  color: ${brand};
+  font-size: 16px;
+  ${(props) => props.store && `
+    color: #87ceeb;
+  `}
+`
+
+export const OuterdModalView = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.5);
+`
+
+export const InnerModalView = styled.View`
+  width: 90%;
+  height: 495px;
+  border-radius: 10px;
+  background: ${primary};
+  padding: 15px;
+`
+
