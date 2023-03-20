@@ -22,7 +22,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.rnoroeasyway.oroeasyway"
+      "package": "com.rnoroeasyway.oroeasyway",
+      "preview": {"buildType": "apk"},
+      "config": {
+              "googleMaps": {"apiKey": "AIzaSyB7VScxuTakPNNSOx3fKlZlbdTV8DpjO3s"}
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
