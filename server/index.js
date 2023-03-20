@@ -26,7 +26,7 @@ app.use('/api/v1/registers', registerRouter);
 const startServer = async () => {
     try {
         connectDB(process.env.MONGODB_URL);
-        app.listen(8080, () => console.log("Server starte on port http://localhost:8080"))
+        app.listen(8080, () => console.log("Server starte on port https://oro-easyway.onrender.com"))
     } catch (error) {
         console.log(error)
     }

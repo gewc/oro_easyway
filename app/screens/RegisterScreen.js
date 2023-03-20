@@ -28,7 +28,7 @@ const RegisterScreen = ({navigation}) => {
 
     const handleAddUser = async (data, setSubmitting, resetForm) =>{
         handleMessage(null)
-        const url = 'http://192.168.65.147:8080/api/v1/users/';
+        const url = 'https://oro-easyway.onrender.com/api/v1/users/';
         await axios.post(url,data)
             .then((response) => {
                 const result = response.data;
