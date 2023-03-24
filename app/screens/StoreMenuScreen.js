@@ -31,6 +31,7 @@ const StoreMenuScreen = ({navigation, route}) => {
         getObjectData('@storeProfile',setStoreProfile);
         console.log('Store Menu Screen',storeProfile);
         storeProfile !== null && setUstoreName(storeProfile.name)
+        console.log('uData', uData)
     }, [ustoreName])
 
   return (
@@ -54,10 +55,10 @@ const StoreMenuScreen = ({navigation, route}) => {
                     />
                     <PageTitle dashbaord={true}>{ ustoreName.toUpperCase() }</PageTitle>
                     <StyledFormArea>
-                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProfileScreen', {ustoreName, uData})}}>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProfileScreen', {ustoreName, data: uData})}}>
                             <ButtonText findMaterial={true}>Store Profile</ButtonText>
                         </StyledButton>
-                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProductListScreen',  {ustoreName, uData})}}>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProductListScreen',  {ustoreName, data: uData})}}>
                             <ButtonText findMaterial={true}>Product's List</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

@@ -24,8 +24,9 @@ const StoreProfileScreen = ({navigation, route}) => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const {data} = route.params
+    console.log("Store Profile", data)
     const location = JSON.parse(data.location)
-    // console.log("Store Profile", location)
+    
     const [mapRegion, setMapRegion] = useState({
         latitude: location.latitude,
         longitude: location.longitude,

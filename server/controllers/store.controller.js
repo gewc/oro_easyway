@@ -94,7 +94,7 @@ const updateStore = async (req,res) => {
         const oldStore = await Store.findOne({ _id: id }); // get first the old store details
 
         // Update Register store name
-        await Register.findByIdAndUpdate({ store_name: oldStore.name}, {
+        await Register.findOneAndUpdate({ store_name: oldStore.name}, {
             store_name: name, 
             updated_at: dateNow
         })
