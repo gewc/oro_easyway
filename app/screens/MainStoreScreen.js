@@ -184,6 +184,7 @@ const MainStoreScreen = ({navigation, route}) => {
                             console.log(values);
                             if(values.storeName !== ""){
                                 const result = {...values, deviceId}
+                                console.log('Registry Values', result)
                                 if(!isChecking){
                                     handleRegisterStore(result, setSubmitting, setIsChecking);
                                 }else{
