@@ -186,7 +186,8 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '30%',
       bottom: 10,
-      top: 1
+      top: 1,
+      
     },
   });
 

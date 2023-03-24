@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
 import * as Device from 'expo-device';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions } from '@react-navigation/native';
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea, MsgBox, StyledButton, ButtonText, PageLogo, DashboardContainer, Avatar, StyledTextInput, StyledInputLabel } from '../components/styles'
@@ -114,7 +115,11 @@ const MainStoreScreen = ({navigation, route}) => {
                         }else{ //store is already had details
                             console.log('Store Menu.')
                             storeOjectData('@storeProfile', data.store)
-                            navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: data.store})
+
+                            navigation.dispatch(
+                                StackActions.replace('StoreMenuScreen', {storeName: data.register.store_name, data: data.store})
+                              );
+                            // navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: data.store})
                         }
                     }else{ // if store is still pending
                         handleMessage(`Your store registration is still ${data.register.status.toLowerCase()}.`)
@@ -189,7 +194,7 @@ const MainStoreScreen = ({navigation, route}) => {
             <StatusBar style='dark' />
             {/* <Avatar resizeMode="contain" source={require('./../assets/logo.png')}/> */}
             <InnerContainer>
-                <DashboardContainer>
+                { !isCheckingDevice && <DashboardContainer>
                     <PageLogo 
                         resizeMode="contain" 
                         overflow={1} 
@@ -250,7 +255,10 @@ const MainStoreScreen = ({navigation, route}) => {
                         }
                         
                     </Formik>
-                </DashboardContainer>
+                </DashboardContainer>}
+                { isCheckingDevice && <DashboardContainer>
+                        <ActivityIndicator size="large" color={primary}/> 
+                    </DashboardContainer>}
             </InnerContainer>
         </ImageBackground>
     </StyledContainer>
