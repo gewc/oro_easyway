@@ -54,7 +54,7 @@ const StoreProfileScreen = ({navigation, route}) => {
             </MapView>
             
             <Formik
-                initialValues={ data || {name: '', location: '', website: '', address: '', contact: '', email: ''}}
+                initialValues={ data || {name: '', location: JSON.stringify(mlocation) || data.location, website: '', address: '', contact: '', email: ''}}
                 enableReinitialize
                 onSubmit={(values,{setSubmitting, resetForm}) => {
                     console.log(values);

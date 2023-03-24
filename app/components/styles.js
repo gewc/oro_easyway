@@ -238,6 +238,18 @@ export const StyledButton = styled.TouchableOpacity`
   height: 60px;
   border-radius: 30px;
 
+  ${(props) => props.map == true && `
+    position: absolute;
+    bottom: 10px;
+    align-self: center;
+    background-color: ${brand};
+    justify-content: center;
+    width: 90%;
+    margin-bottom: 15px;
+    shadow-color: ${brand};
+    elevation: 7;
+  `}
+
   ${(props) => props.google == true && `
     background-color: ${green};
     flex-direction: row;
@@ -280,6 +292,7 @@ export const StyledButton = styled.TouchableOpacity`
 export const ButtonText = styled.Text`
   color: ${primary};
   font-size: 18px;
+  
 
   ${(props) => props.google == true && `
     padding-left: 15px;
@@ -287,6 +300,11 @@ export const ButtonText = styled.Text`
 
   ${(props) => props.findMaterial == true && `
     font-size: 25px;
+  `}
+
+  ${(props) => props.map == true && `
+    font-size: 20px;
+    font-weight: 700;
   `}
 `
 

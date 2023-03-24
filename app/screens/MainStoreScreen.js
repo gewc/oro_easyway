@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ImageBackground, View, ActivityIndicator } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
+import * as Device from 'expo-device';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { 
@@ -15,6 +16,7 @@ const { primary, brand, darkLight } = Colors;
 const MainStoreScreen = ({navigation, route}) => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
+    const [deviceId, setDeviceId] = useState(null);
     const [storeRequest, setStoreRequest] = useState(null);
     const [storeProfile, setStoreProfile] = useState(null);
     const [isChecking, setIsChecking] = useState(false);
@@ -73,6 +75,7 @@ const MainStoreScreen = ({navigation, route}) => {
                             navigation.navigate('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
                         }else{ //store is already had details
                             console.log('Store Menu.')
+                            navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: storeProfile})
                         }
                     }else{ // if store is still pending
                         handleMessage(`Your store registration is still ${data.register.status.toLowerCase()}.`)
@@ -97,6 +100,10 @@ const MainStoreScreen = ({navigation, route}) => {
         getObjectData('@storeProfile',setStoreProfile);
         console.log('Store Name',storeRequest)
         console.log('Store Profile:', storeProfile)
+        console.log('Device Id', Device.osInternalBuildId)
+
+        setDeviceId(Device.osInternalBuildId) // Device ID
+
         if(storeRequest !== null && storeRequest?.status == undefined){
             setIsChecking(true)
         } else if (storeRequest !== null && storeRequest?.status == 'Store Details') {
@@ -176,11 +183,11 @@ const MainStoreScreen = ({navigation, route}) => {
                         onSubmit={(values,{setSubmitting, resetForm}) => {
                             console.log(values);
                             if(values.storeName !== ""){
-                                // navigation.navigate('AddStoreDetailsScreen', values)
+                                const result = {...values, deviceId}
                                 if(!isChecking){
-                                    handleRegisterStore(values, setSubmitting, setIsChecking);
+                                    handleRegisterStore(result, setSubmitting, setIsChecking);
                                 }else{
-                                    handleCheckStore(values, setSubmitting, navigation);
+                                    handleCheckStore(result, setSubmitting, navigation);
                                 }
                             }else{
                                 handleMessage("Please type your Store Name!")

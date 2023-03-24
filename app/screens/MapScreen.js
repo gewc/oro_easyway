@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 
-import { StyledButton, ButtonText } from '../components/styles'
+import { StyledButton, ButtonText, ExtraText, StyledContainer, DashboardContainer } from '../components/styles'
 
 export default function MapScreen({navigation, route}) {
     const {storeName, location} = route.params
@@ -13,7 +13,8 @@ export default function MapScreen({navigation, route}) {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
-    const [mlocation, setLocation] = useState();
+    const [mlocation, setLocation] = useState(null);
+    const [isLocationChecking, setIsLocationChecking] = useState(true);
     const [address, setAddress] = useState();
 
     const userLocation = async () => {
@@ -29,6 +30,7 @@ export default function MapScreen({navigation, route}) {
             longitudeDelta: 0.012,
         });
         setLocation(mylocation);
+        setIsLocationChecking(false);
     }
 
     const getAddress = async (loc) => {
@@ -46,7 +48,12 @@ export default function MapScreen({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={mapRegion}> 
+
+      { !isLocationChecking && <MapView 
+        style={styles.map} 
+        region={mapRegion}
+        provider={PROVIDER_GOOGLE}
+      > 
         <Marker 
             draggable 
             coordinate={mapRegion} 
@@ -61,13 +68,22 @@ export default function MapScreen({navigation, route}) {
                 setLocation(coordinate);
             }}
         />
-      </MapView>
-      <StyledButton onPress={() => {
-        const locDet = `Latitude: ${mlocation.coords.latitude}  -  Longitude: ${mlocation.coords.longitude}`
-        const loc = {latitude: mlocation.coords.latitude, longitude: mlocation.coords.longitude}
-        navigation.navigate('AddStoreDetailsScreen', {storeName,locDetails: locDet, location: loc})
+      </MapView>}
+
+      { isLocationChecking && <StyledContainer>
+        <DashboardContainer>
+          <ActivityIndicator size="large" color="#000"/>
+        </DashboardContainer>
+      </StyledContainer>}
+
+      <StyledButton map={true} onPress={() => {
+        if(mlocation !== null){
+          const locDet = `Latitude: ${mlocation.coords.latitude}  -  Longitude: ${mlocation.coords.longitude}`
+          const loc = {latitude: mlocation.coords.latitude, longitude: mlocation.coords.longitude}
+          navigation.navigate('AddStoreDetailsScreen', {storeName,locDetails: locDet, location: loc})
+        }
       }}>
-        <ButtonText>Set Address</ButtonText>
+        <ButtonText map={true}>SET STORE LOCATION</ButtonText>
       </StyledButton>
     </View>
   );
@@ -79,6 +95,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '90%',
+    height: '100%',
   },
 });
