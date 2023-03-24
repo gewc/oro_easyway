@@ -15,7 +15,7 @@ const getAllRegisters = async (req,res) => {};
 
 const createRegister = async (req,res) => {
     try {
-        const { storeName } = req.body;
+        const { storeName, deviceId } = req.body;
 
         const data = await Register.findOne({store_name: storeName});
         if(data) throw new Error("Sorry the store name is already exist!");
@@ -23,6 +23,7 @@ const createRegister = async (req,res) => {
         const newData = await Register.create({
             store_name: storeName, 
             status: 'Pending', 
+            device_id: deviceId,
             created_at: dateNow, 
         });
 
