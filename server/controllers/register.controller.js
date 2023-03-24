@@ -61,8 +61,32 @@ const getRegisterByStoreName = async (req,res) => {
     }
 };
 
+const getRegisterByDevice = async (req,res) => {
+    try {
+        const {deviceId} = req.params;
+        const isExist = await Register.findOne({ device_id: deviceId });
+        console.log(deviceId)
+
+        if(isExist) {
+            const isStoreExist = await Store.findOne({ name: isExist.store_name });
+            if(isStoreExist){ 
+                res.status(200).json({ message: "Store Exist!", status: 'SUCCESS', data: { register: isExist, store: isStoreExist } });
+            }else{
+                res.status(200).json({ message: "Store doesn't have a details yet.", status: 'SUCCESS', data: { register: isExist, store: null } });
+            }
+            
+        }else{
+            res.status(200).json({ message: "Store not found!", status: 'FAILED', data: {} });
+        }
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
+
+
 const updateRegister = async (req,res) => {};
 
 const deactivateRegister = async (req,res) => {};
 
-export { getAllRegisters, createRegister, getRegisterByID, getRegisterByStoreName, updateRegister, deactivateRegister };
+export { getAllRegisters, createRegister, getRegisterByID, getRegisterByStoreName, getRegisterByDevice, updateRegister, deactivateRegister };

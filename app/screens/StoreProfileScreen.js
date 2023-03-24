@@ -11,13 +11,13 @@ const StatusBarHeight = Constants.statusBarHeight;
 import {Octicons } from '@expo/vector-icons' 
 
 import { 
-    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, DashboardContainer,  StyledInputLabel, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
-
-
+    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  StyledInputLabel, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
 
 const { primary, brand, darkLight } = Colors;
 
 const StoreProfileScreen = ({navigation, route}) => {
+    const [message, setMessage] = useState();
+    const [messageType, setMessageType] = useState();
     const {data} = route.params
     const location = JSON.parse(data.location)
     console.log("Store Profile", location)
@@ -29,6 +29,35 @@ const StoreProfileScreen = ({navigation, route}) => {
     });
 
     const [mlocation, setLocation] = useState();
+
+    const handleStoreUpdate = async (data, setSubmitting) => {
+        await axios.patch('/stores/'+data._id,data)
+            .then((response) => {
+                const result = response.data;
+                const { message, status, data } = result;
+                const {name} = data;
+
+                if(status !== "SUCCESS"){
+                    handleMessage(message, status)
+                } else {
+                    handleMessage(message, status)
+                    mergeOjectData('@store',{status: 'Main Menu'})
+                    storeOjectData('@storeProfile', data)
+                    navigation.navigate('StoreMenuScreen', {storeName: name, data: data})
+                }
+                setSubmitting(false)
+            })
+            .catch( error => {
+                console.log(error.message)
+                setSubmitting(false)
+                handleMessage("An error occured. Check your network and try again!")
+            });
+    }
+
+    const handleMessage = (message, type = 'FAILED') => {
+        setMessage(message);
+        setMessageType(type);
+    }
 
   return (
     <StyledContainer dashbaord={true}>
@@ -54,11 +83,18 @@ const StoreProfileScreen = ({navigation, route}) => {
             </MapView>
             
             <Formik
-                initialValues={ data || {name: '', location: JSON.stringify(mlocation) || data.location, website: '', address: '', contact: '', email: ''}}
+                initialValues={ data || {name: '', location: '', website: '', address: '', contact: '', email: ''}}
                 enableReinitialize
-                onSubmit={(values,{setSubmitting, resetForm}) => {
-                    console.log(values);
-                    
+                onSubmit={(values,{setSubmitting}) => {
+                    if(values.address == '' || values.contact == '' || values.email == '' || values.website == '' || values.storeName == '' || values.location == ''){
+                        handleMessage(`Please don't leave a blank!`)
+                        setSubmitting(false)
+                    }else if(Object.keys(location).length < 2){
+                        handleMessage(`Please select you store location!`)
+                        setSubmitting(false)
+                    }else{
+                        handleStoreUpdate(data, setSubmitting)
+                    }
                 }}
             >
                 {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) =>
@@ -95,7 +131,8 @@ const StoreProfileScreen = ({navigation, route}) => {
                         value={values.website}
                     />
 
-                    
+                    <MsgBox type={messageType}>{message}</MsgBox>
+
                     { !isSubmitting && <StyledButton  onPress={handleSubmit}>
                         <ButtonText findMaterial={true}>Update</ButtonText>
                     </StyledButton>}

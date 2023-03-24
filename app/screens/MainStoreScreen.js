@@ -94,6 +94,40 @@ const MainStoreScreen = ({navigation, route}) => {
 
     }
 
+    const checkDeviceId = async (data, navigation) =>{
+        await axios.get(`/registers/device/${data.deviceId}`)
+            .then((response) => {
+                const result = response.data;
+                const { message, status, data } = result;
+                console.log("Check Device Result", result)
+
+                if(status == "SUCCESS"){
+                    if(data.register.status == "Approved"){ // if store is approved
+                        // handleMessage(`Your store status is approved.`, status)
+                        mergeOjectData('@store', {status: "Store Details"})
+                        mergeOjectData('@store', {storeName: data.register.store_name})
+
+                        if(data.store == null){ //store has no details yet
+                            navigation.navigate('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
+                        }else{ //store is already had details
+                            console.log('Store Menu.')
+                            navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: data.store})
+                        }
+                    }else{ // if store is still pending
+                        handleMessage(`Your store registration is still ${data.register.status.toLowerCase()}.`)
+                    }
+                } else {
+                    
+                    handleMessage(message)
+                }
+            })
+            .catch( error => {
+                console.log(error.message)
+                handleMessage("An error occured. Check your network and try again!")
+            });
+
+    }
+
 
     useEffect(() => {
         getObjectData('@store',setStoreRequest);
@@ -103,17 +137,18 @@ const MainStoreScreen = ({navigation, route}) => {
         console.log('Device Id', Device.osInternalBuildId)
 
         setDeviceId(Device.osInternalBuildId) // Device ID
-
-        if(storeRequest !== null && storeRequest?.status == undefined){
-            setIsChecking(true)
-        } else if (storeRequest !== null && storeRequest?.status == 'Store Details') {
-            setIsChecking(true)
-            navigation.navigate('AddStoreDetailsScreen', {storeName: storeRequest?.storeName, locDetails: '', location: {}})
-        } else if (storeRequest !== null && storeRequest?.status == 'Main Menu') {
-            setIsChecking(true)
-            navigation.navigate('StoreMenuScreen', {storeName: storeRequest?.storeName, data: storeProfile})
-            console.log('Main Menu Screen')
-        }
+        let data = { deviceId }
+        checkDeviceId(data, navigation);
+        // if(storeRequest !== null && storeRequest?.status == undefined){
+        //     setIsChecking(true)
+        // } else if (storeRequest !== null && storeRequest?.status == 'Store Details') {
+        //     setIsChecking(true)
+        //     navigation.navigate('AddStoreDetailsScreen', {storeName: storeRequest?.storeName, locDetails: '', location: {}})
+        // } else if (storeRequest !== null && storeRequest?.status == 'Main Menu') {
+        //     setIsChecking(true)
+        //     navigation.navigate('StoreMenuScreen', {storeName: storeRequest?.storeName, data: storeProfile})
+        //     console.log('Main Menu Screen')
+        // }
     }, [])
 
     const handleMessage = (message, type = 'FAILED') => {
