@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Store from '../mongodb/models/store.js'
+import Register from '../mongodb/models/register'
 import User from '../mongodb/models/user.js'
 
 let d = new Date();
@@ -90,6 +91,15 @@ const updateStore = async (req,res) => {
         const {id} = req.params;
         const { name, address, contact, email, website, location } = req.body;
 
+        const oldStore = await Store.findOne({ _id: id }); // get first the old store details
+
+        // Update Register store name
+        await Register.findByIdAndUpdate({ store_name: oldStore.name}, {
+            store_name: name, 
+            updated_at: dateNow
+        })
+
+        // Update Store details
         await Store.findByIdAndUpdate({ _id: id}, {
             name, 
             address, 

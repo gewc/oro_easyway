@@ -95,6 +95,7 @@ const MainStoreScreen = ({navigation, route}) => {
     }
 
     const checkDeviceId = async (data, navigation) =>{
+        console.log(data)
         await axios.get(`/registers/device/${data.deviceId}`)
             .then((response) => {
                 const result = response.data;
@@ -136,19 +137,11 @@ const MainStoreScreen = ({navigation, route}) => {
         console.log('Store Profile:', storeProfile)
         console.log('Device Id', Device.osInternalBuildId)
 
-        setDeviceId(Device.osInternalBuildId) // Device ID
-        let data = { deviceId }
+        const did = Device.osInternalBuildId
+        setDeviceId(did) // Device ID
+        let data = { deviceId: did }
         checkDeviceId(data, navigation);
-        // if(storeRequest !== null && storeRequest?.status == undefined){
-        //     setIsChecking(true)
-        // } else if (storeRequest !== null && storeRequest?.status == 'Store Details') {
-        //     setIsChecking(true)
-        //     navigation.navigate('AddStoreDetailsScreen', {storeName: storeRequest?.storeName, locDetails: '', location: {}})
-        // } else if (storeRequest !== null && storeRequest?.status == 'Main Menu') {
-        //     setIsChecking(true)
-        //     navigation.navigate('StoreMenuScreen', {storeName: storeRequest?.storeName, data: storeProfile})
-        //     console.log('Main Menu Screen')
-        // }
+        
     }, [])
 
     const handleMessage = (message, type = 'FAILED') => {

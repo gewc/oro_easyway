@@ -3,6 +3,7 @@ import { StyleSheet, View, ActivityIndicator } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import MapView, { Marker } from 'react-native-maps';
 import { Formik } from 'formik'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Constants from "expo-constants";
 
@@ -13,14 +14,18 @@ import {Octicons } from '@expo/vector-icons'
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  StyledInputLabel, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
 
+import axios from 'axios'
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+
 const { primary, brand, darkLight } = Colors;
+
 
 const StoreProfileScreen = ({navigation, route}) => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const {data} = route.params
     const location = JSON.parse(data.location)
-    console.log("Store Profile", location)
+    // console.log("Store Profile", location)
     const [mapRegion, setMapRegion] = useState({
         latitude: location.latitude,
         longitude: location.longitude,
@@ -31,19 +36,18 @@ const StoreProfileScreen = ({navigation, route}) => {
     const [mlocation, setLocation] = useState();
 
     const handleStoreUpdate = async (data, setSubmitting) => {
+        
         await axios.patch('/stores/'+data._id,data)
             .then((response) => {
                 const result = response.data;
-                const { message, status, data } = result;
-                const {name} = data;
+                const { message, status } = result;
+                
 
                 if(status !== "SUCCESS"){
                     handleMessage(message, status)
                 } else {
                     handleMessage(message, status)
-                    mergeOjectData('@store',{status: 'Main Menu'})
-                    storeOjectData('@storeProfile', data)
-                    navigation.navigate('StoreMenuScreen', {storeName: name, data: data})
+                    mergeOjectData('@storeProfile', data)
                 }
                 setSubmitting(false)
             })
@@ -57,6 +61,15 @@ const StoreProfileScreen = ({navigation, route}) => {
     const handleMessage = (message, type = 'FAILED') => {
         setMessage(message);
         setMessageType(type);
+    }
+
+    const mergeOjectData = async (key, value) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.mergeItem(key, jsonValue)
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
   return (
@@ -93,7 +106,7 @@ const StoreProfileScreen = ({navigation, route}) => {
                         handleMessage(`Please select you store location!`)
                         setSubmitting(false)
                     }else{
-                        handleStoreUpdate(data, setSubmitting)
+                        handleStoreUpdate(values, setSubmitting)
                     }
                 }}
             >

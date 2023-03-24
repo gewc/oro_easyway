@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ImageBackground, View } from "react-native"
 import { StatusBar } from 'expo-status-bar'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Octicons } from '@expo/vector-icons'
 
@@ -13,7 +14,23 @@ const { primary, brand, darkLight } = Colors;
 
 const StoreMenuScreen = ({navigation, route}) => {
     const { storeName, data } = route.params;
-    console.log(route.params)
+    const [storeProfile, setStoreProfile] = useState(null);
+    const [ustoreName, setUstoreName] = useState(storeName);
+
+    const getObjectData = async (key, setData) => {
+        try {
+          const jsonValue = await AsyncStorage.getItem(key);
+          jsonValue != null ? setData(JSON.parse(jsonValue)) : null;
+        } catch(e) {
+            console.log(e.message)
+        }
+    }
+
+    useEffect(() => {
+        getObjectData('@storeProfile',setStoreProfile);
+        console.log('Store Menu',storeProfile);
+        setUstoreName(storeProfile.name)
+    }, [])
 
   return (
     <StyledContainer dashbaord={true}>
@@ -34,7 +51,7 @@ const StoreMenuScreen = ({navigation, route}) => {
                             borderRadius: 50
                         }}
                     />
-                    <PageTitle dashbaord={true}>{ storeName.toUpperCase() }</PageTitle>
+                    <PageTitle dashbaord={true}>{ ustoreName.toUpperCase() }</PageTitle>
                     <StyledFormArea>
                         <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProfileScreen', {storeName, data})}}>
                             <ButtonText findMaterial={true}>Store Profile</ButtonText>
