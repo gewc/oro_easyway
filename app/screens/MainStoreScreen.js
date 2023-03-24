@@ -20,6 +20,7 @@ const MainStoreScreen = ({navigation, route}) => {
     const [storeRequest, setStoreRequest] = useState(null);
     const [storeProfile, setStoreProfile] = useState(null);
     const [isChecking, setIsChecking] = useState(false);
+    const [isCheckingDevice, setIsCheckingDevice] = useState(true);
 
     const acctTypes = [
         { label: 'Admin', value: 'Admin' },
@@ -95,7 +96,6 @@ const MainStoreScreen = ({navigation, route}) => {
     }
 
     const checkDeviceId = async (data, navigation) =>{
-        console.log(data)
         await axios.get(`/registers/device/${data.deviceId}`)
             .then((response) => {
                 const result = response.data;
@@ -103,6 +103,7 @@ const MainStoreScreen = ({navigation, route}) => {
                 console.log("Check Device Result", result)
 
                 if(status == "SUCCESS"){
+                    setIsCheckingDevice(false)
                     if(data.register.status == "Approved"){ // if store is approved
                         // handleMessage(`Your store status is approved.`, status)
                         mergeOjectData('@store', {status: "Store Details"})
@@ -112,6 +113,7 @@ const MainStoreScreen = ({navigation, route}) => {
                             navigation.navigate('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
                         }else{ //store is already had details
                             console.log('Store Menu.')
+                            storeOjectData('@storeProfile', data.store)
                             navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: data.store})
                         }
                     }else{ // if store is still pending
@@ -131,10 +133,6 @@ const MainStoreScreen = ({navigation, route}) => {
 
 
     useEffect(() => {
-        getObjectData('@store',setStoreRequest);
-        getObjectData('@storeProfile',setStoreProfile);
-        console.log('Store Name',storeRequest)
-        console.log('Store Profile:', storeProfile)
         console.log('Device Id', Device.osInternalBuildId)
 
         const did = Device.osInternalBuildId

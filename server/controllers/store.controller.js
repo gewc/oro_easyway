@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Store from '../mongodb/models/store.js'
-import Register from '../mongodb/models/register'
+import Register from '../mongodb/models/register.js'
 import User from '../mongodb/models/user.js'
 
 let d = new Date();

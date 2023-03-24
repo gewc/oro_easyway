@@ -16,6 +16,7 @@ const StoreMenuScreen = ({navigation, route}) => {
     const { storeName, data } = route.params;
     const [storeProfile, setStoreProfile] = useState(null);
     const [ustoreName, setUstoreName] = useState(storeName);
+    const [uData, setUData] = useState(data);
 
     const getObjectData = async (key, setData) => {
         try {
@@ -28,9 +29,9 @@ const StoreMenuScreen = ({navigation, route}) => {
 
     useEffect(() => {
         getObjectData('@storeProfile',setStoreProfile);
-        console.log('Store Menu',storeProfile);
-        setUstoreName(storeProfile.name)
-    }, [])
+        console.log('Store Menu Screen',storeProfile);
+        storeProfile !== null && setUstoreName(storeProfile.name)
+    }, [ustoreName])
 
   return (
     <StyledContainer dashbaord={true}>
@@ -53,10 +54,10 @@ const StoreMenuScreen = ({navigation, route}) => {
                     />
                     <PageTitle dashbaord={true}>{ ustoreName.toUpperCase() }</PageTitle>
                     <StyledFormArea>
-                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProfileScreen', {storeName, data})}}>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProfileScreen', {ustoreName, uData})}}>
                             <ButtonText findMaterial={true}>Store Profile</ButtonText>
                         </StyledButton>
-                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProductListScreen',  {storeName, data})}}>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProductListScreen',  {ustoreName, uData})}}>
                             <ButtonText findMaterial={true}>Product's List</ButtonText>
                         </StyledButton>
                     </StyledFormArea>
