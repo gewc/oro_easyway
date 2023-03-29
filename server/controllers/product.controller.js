@@ -37,7 +37,7 @@ const createProduct = async (req,res) => {
         const data = await Store.findOne({_id});
         if(!data) throw new Error("Store does not exist!");
 
-        const proddata = await Product.findOne({name});
+        const proddata = await Product.find({name, store: _id});
         if(proddata) throw new Error("Product is already exist!");
 
         const newData = await Product.create({

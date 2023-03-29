@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Modal, ActivityIndicator, Text } from "react-native"
+import { View, FlatList, Modal, ActivityIndicator, Text, ImageBackground } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
 
@@ -12,7 +12,7 @@ import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 
 
-const { primary, brand, darkLight } = Colors;
+const { primary, brand, darkLight, green } = Colors;
 
 const StoreProductListScreen = ({navigation, route}) => {
     const {storeName, data} = route.params
@@ -22,10 +22,12 @@ const StoreProductListScreen = ({navigation, route}) => {
     const [messageModal, setMessageModal] = useState('');
     const [messageTypeModal, setMessageTypeModal] = useState();
     const [visible, setVisible] = useState(false);
+    const [oldProductData, setOldProductData] = useState([]);
     const [productData, setProductData] = useState([]);
     const [ind, setInd] = useState(0)
 
     const getStoreProducts = async () => {
+        handleMessage("Loading...", "Default")
         await axios.get(`/products/store/${data._id}`)
             .then((response) => {
                 const result = response.data;
@@ -38,9 +40,12 @@ const StoreProductListScreen = ({navigation, route}) => {
                 } else {
                     if(data.length < 1){
                         setProductData(data)
+                        setOldProductData(data)
                         handleMessage("There is no product's yet.")
                     }else{
                         setProductData(data)
+                        setOldProductData(data)
+                        handleMessage("")
                     }
                     
                 }
@@ -75,6 +80,20 @@ const StoreProductListScreen = ({navigation, route}) => {
             });
     }
 
+    const searchProduct = (text) => {
+        if(text == ''){
+            setProductData(oldProductData);
+        }else{
+            let tempList = productData.filter((item) => {
+                return item.name.toLowerCase().indexOf(text.toLowerCase()) > -1
+            })
+    
+            setProductData(tempList);
+        }
+        
+        
+    }
+
     useEffect(() => {
         getStoreProducts();
     }, [])
@@ -102,6 +121,7 @@ const StoreProductListScreen = ({navigation, route}) => {
                         product={true}
                         icon="search"
                         setVisible={setVisible}
+                        onChangeText={text => searchProduct(text)}
                     />
                     <MsgBox type={messageType} product={true}>{message}</MsgBox>
 
@@ -202,32 +222,37 @@ const Item = ({item, index, data}) => (
     <View
         style={{
             width: '95%',
-            borderRadius: 10,
+            borderRadius: 5,
             borderWidth: 0.5,
+            borderWidth: 3,
+            borderColor: 'black',
+            backgroundColor: brand,
             alignSelf: 'center',
             marginTop: 15,
             marginBottom: index == data.length - 1 ? 30 : 0,
             alignItems: 'center',
             flexDirection: 'row',
+            elevation: 2
         }}
     >
-        <Octicons name='tools' size={60}  color={brand}  
+        
+        <Octicons name='tools' size={60}  color={primary}  
             style={{
                 width: 60,
                 height: 60,
-                marginLeft:10
+                marginLeft:15
             }} />
         <View style={{ width: '80%'}}>
-            <Text style={{fontSize: 25,fontWeight: '600', marginLeft: 10, marginTop: 10}}>{item.name.toUpperCase()}</Text>
-            <Text style={{fontSize: 16,margin: 10}}>{item.description.substring(0, 50)}</Text>
+            <Text style={{fontSize: 25,fontWeight: '800', marginLeft: 10, marginTop: 10, color:primary  }}>{item.name.toUpperCase()}</Text>
+            <Text style={{fontSize: 16,margin: 10, color:primary }}>{item.description.substring(0, 50)}</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
-                <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 10}}>Price: </Text>
-                <Text style={{fontSize: 20, fontWeight: '600',}}>₱{item.price.$numberDecimal}</Text>
+                <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
+                <Text style={{fontSize: 20, fontWeight: '600', color: 'yellow' }}>₱{item.price.$numberDecimal}</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 20}}>Quantity:</Text>
-                    <Text style={{fontSize: 20, fontWeight: '600',}}>{item.quantity.$numberDecimal}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 20, color: green }}>Quantity: </Text>
+                    <Text style={{fontSize: 20, fontWeight: '600', color: green }}>{item.quantity.$numberDecimal}</Text>
                 </View>
             </View>
 

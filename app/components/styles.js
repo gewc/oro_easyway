@@ -317,7 +317,7 @@ export const MsgBox = styled.Text`
   ${(props) => props.product == true && `
     font-size: 20px;
     margin-top: 15px;
-    color: ${props => props.type == "SUCCESS" ? green : darkLight};
+    color: ${tertiary};
   `}
 `
 
