@@ -33,13 +33,29 @@ const getProductsByStore = async (req,res) => {
 const getProductsAndStore = async (req,res) => {
     try {
         const {search} = req.params
-        const data = await Product.find({name: new RegExp('.*' + search + '.*')}).aggregate([
+        const data = await Product.aggregate([
             {
                 $lookup: {
                     from: "store",
                     localField: "store",
                     foreignField: "_id",
-                    as: "store_details"
+                    as: "store_details",
+                    "pipeline": [{
+                        "$search": {
+                          "compound": {
+                            "must": [{
+                              "queryString": {
+                                "defaultPath": "name",
+                                "query": `name: ${search}`
+                              }
+                            }],
+                          }
+                        }
+                      },{
+                        "$project": {
+                          "_id": 0
+                        }
+                      }]
                 }
             }
         ]);

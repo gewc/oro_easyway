@@ -20,7 +20,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         longitudeDelta: 0.0421,
     });
     const [mlocation, setLocation] = useState(null);
-    const [isLocationChecking, setIsLocationChecking] = useState(false);
+    const [isLocationChecking, setIsLocationChecking] = useState(true);
 
     const userLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -35,7 +35,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             longitudeDelta: 0.012,
         });
         setLocation(mylocation);
-        setIsLocationChecking(false);
+        getHardwareStore();
     }
 
     const getHardwareStore = async () => {
@@ -43,7 +43,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         .then((response) => {
             const result = response.data;
             const { message, status, data } = result;
-            console.log(data)
+            console.log('Material Search Data',data)
 
             if(status !== "SUCCESS"){
                 // handleMessage(message, status)
@@ -62,7 +62,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
 
     useEffect(() => {
         userLocation();
-        getHardwareStore();
+        
     }, [])
 
   return (
