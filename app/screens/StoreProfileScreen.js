@@ -88,8 +88,8 @@ const StoreProfileScreen = ({navigation, route}) => {
                         let coordinate = {coords: e.nativeEvent.coordinate};
                         
                         setMapRegion({
-                            latitude: coordinate.latitude,
-                            longitude: coordinate.longitude,
+                            latitude: coordinate.coords.latitude,
+                            longitude: coordinate.coords.longitude,
                         });
                         setLocation(coordinate);
                     }}
