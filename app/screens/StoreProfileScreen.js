@@ -37,7 +37,7 @@ const StoreProfileScreen = ({navigation, route}) => {
     const [mlocation, setLocation] = useState();
 
     const handleStoreUpdate = async (data, setSubmitting) => {
-        
+        data.location = JSON.stringify(mapRegion)
         await axios.patch('/stores/'+data._id,data)
             .then((response) => {
                 const result = response.data;
@@ -86,10 +86,11 @@ const StoreProfileScreen = ({navigation, route}) => {
                     title="My Address" 
                     onDragEnd={(e) => {
                         let coordinate = {coords: e.nativeEvent.coordinate};
-                        
                         setMapRegion({
                             latitude: coordinate.coords.latitude,
                             longitude: coordinate.coords.longitude,
+                            latitudeDelta: 0.012,
+                            longitudeDelta: 0.012,
                         });
                         setLocation(coordinate);
                     }}

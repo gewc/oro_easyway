@@ -10,6 +10,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import MainStoreScreen from '../screens/MainStoreScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
+import MaterialSearchMapScreen from '../screens/MaterialSearchMapScreen';
 import StoreSearch from '../screens/StoreSearch';
 import AddStoreDetailsScreen from '../screens/AddStoreDetailsScreen';
 import MapScreen from '../screens/MapScreen';
@@ -44,17 +45,18 @@ const RootStack = () =>{
                 {/* <Stack.Screen name="Register" component={RegisterScreen} /> */}
                 
                 {/* For Store App */}
-                <Stack.Screen name="MainStoreScreen" component={MainStoreScreen} />
+                {/* <Stack.Screen name="MainStoreScreen" component={MainStoreScreen} />
                 <Stack.Screen name="AddStoreDetailsScreen" component={AddStoreDetailsScreen} />
                 <Stack.Screen name="MapScreen" component={MapScreen} options={{ headerTintColor: primary}} />
                 <Stack.Screen name="StoreMenuScreen" component={StoreMenuScreen} options={{headerBackVisible: false}}/>
                 <Stack.Screen name="StoreProfileScreen" component={StoreProfileScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="StoreProductListScreen" component={StoreProductListScreen} options={{ headerTintColor: tertiary}} />
-                
+                 */}
                 {/* For Customer App */}
-                {/* <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 <Stack.Screen name="MaterialSearch" component={MaterialSearch} options={{ headerTintColor: primary}} />
-                <Stack.Screen name="StoreSearch" component={StoreSearch} options={{ headerTintColor: primary}} /> */}
+                <Stack.Screen name="MaterialSearchMapScreen" component={MaterialSearchMapScreen} options={{ headerTintColor: tertiary}} />
+                <Stack.Screen name="StoreSearch" component={StoreSearch} options={{ headerTintColor: primary}} />
 
             </Stack.Navigator>
         </NavigationContainer>

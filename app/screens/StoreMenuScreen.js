@@ -34,6 +34,7 @@ const StoreMenuScreen = ({navigation, route}) => {
             getObjectData('@storeProfile',setStoreProfile);
             console.log('Store Menu Screen',storeProfile);
             storeProfile !== null && setUstoreName(storeProfile.name)
+            storeProfile !== null && setUData(storeProfile)
             console.log('uData', uData)
         }
     }, [ustoreName, isFocused])

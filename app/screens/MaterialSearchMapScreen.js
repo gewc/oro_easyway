@@ -3,10 +3,16 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 
-import { StyledButton, ButtonText, ExtraText, StyledContainer, DashboardContainer } from '../components/styles'
+import { Colors, ButtonText, ExtraText, StyledContainer, DashboardContainer } from '../components/styles'
+import {MaterialIcons} from '@expo/vector-icons' 
+
+import axios from 'axios'
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+
+const { primary, brand, darkLight } = Colors;
 
 export default function MaterialSearchMapScreen({navigation, route}) {
-    const {storeName, location} = route.params
+    const {searchText} = route.params
     const [mapRegion, setMapRegion] = useState({
         latitude: 8.477217,
         longitude: 124.645920,
@@ -14,8 +20,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         longitudeDelta: 0.0421,
     });
     const [mlocation, setLocation] = useState(null);
-    const [isLocationChecking, setIsLocationChecking] = useState(true);
-    const [address, setAddress] = useState();
+    const [isLocationChecking, setIsLocationChecking] = useState(false);
 
     const userLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -33,17 +38,31 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         setIsLocationChecking(false);
     }
 
-    const getAddress = async (loc) => {
-        const myAddress = await Location.reverseGeocodeAsync({
-            latitude: loc.coords?.latitude,
-            longitude: loc.coords?.longitude,
+    const getHardwareStore = async () => {
+      await axios.get('/products/materialsearch/'+searchText)
+        .then((response) => {
+            const result = response.data;
+            const { message, status, data } = result;
+            console.log(data)
+
+            if(status !== "SUCCESS"){
+                // handleMessage(message, status)
+            } else {
+                // handleMessage(message, status)
+            }
+            setIsLocationChecking(false);
         })
-        setAddress(myAddress);
+        .catch( error => {
+            console.log(error.message)
+            setIsLocationChecking(false);
+            // handleMessage("An error occured. Check your network and try again!")
+        });
     }
 
 
     useEffect(() => {
         userLocation();
+        getHardwareStore();
     }, [])
 
   return (
@@ -55,36 +74,20 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         provider={PROVIDER_GOOGLE}
       > 
         <Marker 
-            draggable 
             coordinate={mapRegion} 
-            title="My Address" 
-            onDrag={(e) => {
-                let coordinate = {coords: e.nativeEvent.coordinate};
-                
-                setMapRegion({
-                    latitude: coordinate.latitude,
-                    longitude: coordinate.longitude,
-                });
-                setLocation(coordinate);
-            }}
-        />
+            title="You're Here" 
+        >
+          <MaterialIcons name='location-history' size={45}  color={brand} />
+        </Marker>
       </MapView>}
 
       { isLocationChecking && <StyledContainer>
         <DashboardContainer>
           <ActivityIndicator size="large" color="#000"/>
+          <ButtonText mapLoading={true}>Fetching your location...</ButtonText>
         </DashboardContainer>
       </StyledContainer>}
 
-      <StyledButton map={true} onPress={() => {
-        if(mlocation !== null){
-          const locDet = `Latitude: ${mlocation.coords.latitude}  -  Longitude: ${mlocation.coords.longitude}`
-          const loc = {latitude: mlocation.coords.latitude, longitude: mlocation.coords.longitude}
-          navigation.navigate('AddStoreDetailsScreen', {storeName,locDetails: locDet, location: loc})
-        }
-      }}>
-        <ButtonText map={true}>SET STORE LOCATION</ButtonText>
-      </StyledButton>
     </View>
   );
 }

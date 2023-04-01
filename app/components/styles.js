@@ -307,6 +307,10 @@ export const ButtonText = styled.Text`
     font-size: 20px;
     font-weight: 700;
   `}
+
+  ${(props) => props.mapLoading == true && `
+    color: ${tertiary};
+  `}
 `
 
 export const MsgBox = styled.Text`

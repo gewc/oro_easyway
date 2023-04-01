@@ -39,7 +39,7 @@ const MaterialSearch = ({navigation}) => {
                             placeholder="Search"
                             onChangeText={text => setSearchText(text)}
                         />
-                        <StyledButton btnSearch={true} onPress={() => {}}>
+                        <StyledButton btnSearch={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText})}}>
                             <ButtonText>Search</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

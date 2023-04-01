@@ -64,6 +64,8 @@ export default function MapScreen({navigation, route}) {
                 setMapRegion({
                     latitude: coordinate.coords.latitude,
                     longitude: coordinate.coords.longitude,
+                    latitudeDelta: 0.012,
+                    longitudeDelta: 0.012,
                 });
                 setLocation(coordinate);
             }}

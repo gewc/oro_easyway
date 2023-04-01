@@ -23,7 +23,27 @@ const getAllProducts = async (req,res) => {
 const getProductsByStore = async (req,res) => {
     try {
         const {id} = req.params
-        const data = await Product.find({store: id}).limit(req.query._end);
+        const data = await Product.find({store: id}).sort({created_at: -1});
+        res.status(200).json({ message: "", status: 'SUCCESS', data: data });
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
+
+const getProductsAndStore = async (req,res) => {
+    try {
+        const {search} = req.params
+        const data = await Product.find({name: new RegExp('.*' + search + '.*')}).aggregate([
+            {
+                $lookup: {
+                    from: "store",
+                    localField: "store",
+                    foreignField: "_id",
+                    as: "store_details"
+                }
+            }
+        ]);
+        console.log(data)
         res.status(200).json({ message: "", status: 'SUCCESS', data: data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -66,4 +86,12 @@ const updateProduct = async (req,res) => {};
 
 const deactivateProduct = async (req,res) => {};
 
-export { getAllProducts, getProductsByStore, createProduct, getProductByID, updateProduct, deactivateProduct };
+export { 
+    getAllProducts, 
+    getProductsByStore, 
+    createProduct, 
+    getProductByID, 
+    updateProduct, 
+    deactivateProduct, 
+    getProductsAndStore 
+};
