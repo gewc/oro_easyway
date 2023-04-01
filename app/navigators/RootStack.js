@@ -52,9 +52,9 @@ const RootStack = () =>{
                 <Stack.Screen name="StoreProductListScreen" component={StoreProductListScreen} options={{ headerTintColor: tertiary}} />
                 
                 {/* For Customer App */}
-                <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                {/* <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 <Stack.Screen name="MaterialSearch" component={MaterialSearch} options={{ headerTintColor: primary}} />
-                <Stack.Screen name="StoreSearch" component={StoreSearch} options={{ headerTintColor: primary}} />
+                <Stack.Screen name="StoreSearch" component={StoreSearch} options={{ headerTintColor: primary}} /> */}
 
             </Stack.Navigator>
         </NavigationContainer>

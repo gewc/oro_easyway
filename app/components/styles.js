@@ -269,6 +269,7 @@ export const StyledButton = styled.TouchableOpacity`
     background-color: ${brand};
     flex-direction: row;
     justify-content: center;
+    elevation: 2;
   `}
 
   ${(props) => props.store && `

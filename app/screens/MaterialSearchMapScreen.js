@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 
 import { StyledButton, ButtonText, ExtraText, StyledContainer, DashboardContainer } from '../components/styles'
 
-export default function MapScreen({navigation, route}) {
+export default function MaterialSearchMapScreen({navigation, route}) {
     const {storeName, location} = route.params
     const [mapRegion, setMapRegion] = useState({
         latitude: 8.477217,
@@ -58,7 +58,7 @@ export default function MapScreen({navigation, route}) {
             draggable 
             coordinate={mapRegion} 
             title="My Address" 
-            onDragEnd={(e) => {
+            onDrag={(e) => {
                 let coordinate = {coords: e.nativeEvent.coordinate};
                 
                 setMapRegion({
@@ -73,7 +73,6 @@ export default function MapScreen({navigation, route}) {
       { isLocationChecking && <StyledContainer>
         <DashboardContainer>
           <ActivityIndicator size="large" color="#000"/>
-          <ButtonText>Fetching your location... </ButtonText>
         </DashboardContainer>
       </StyledContainer>}
 

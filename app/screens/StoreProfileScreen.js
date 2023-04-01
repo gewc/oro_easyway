@@ -84,7 +84,7 @@ const StoreProfileScreen = ({navigation, route}) => {
                     draggable 
                     coordinate={mapRegion} 
                     title="My Address" 
-                    onDrag={(e) => {
+                    onDragEnd={(e) => {
                         let coordinate = {coords: e.nativeEvent.coordinate};
                         
                         setMapRegion({

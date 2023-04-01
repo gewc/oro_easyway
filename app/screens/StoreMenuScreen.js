@@ -7,6 +7,7 @@ import { Octicons } from '@expo/vector-icons'
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, DashboardContainer,  PageLogo, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
+import { useIsFocused } from '@react-navigation/native';
 
 
 
@@ -27,12 +28,15 @@ const StoreMenuScreen = ({navigation, route}) => {
         }
     }
 
+    const isFocused = useIsFocused();
     useEffect(() => {
-        getObjectData('@storeProfile',setStoreProfile);
-        console.log('Store Menu Screen',storeProfile);
-        storeProfile !== null && setUstoreName(storeProfile.name)
-        console.log('uData', uData)
-    }, [ustoreName])
+        if(isFocused){
+            getObjectData('@storeProfile',setStoreProfile);
+            console.log('Store Menu Screen',storeProfile);
+            storeProfile !== null && setUstoreName(storeProfile.name)
+            console.log('uData', uData)
+        }
+    }, [ustoreName, isFocused])
 
   return (
     <StyledContainer dashbaord={true}>

@@ -77,7 +77,10 @@ const MainStoreScreen = ({navigation, route}) => {
                             navigation.navigate('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
                         }else{ //store is already had details
                             console.log('Store Menu.')
-                            navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: storeProfile})
+                            navigation.dispatch(
+                                StackActions.replace('StoreMenuScreen', {storeName: data.register.store_name, data: storeProfile})
+                              );
+                            // navigation.navigate('StoreMenuScreen', {storeName: data.register.store_name, data: storeProfile})
                         }
                     }else{ // if store is still pending
                         handleMessage(`Your store registration is still ${data.register.status.toLowerCase()}.`)
@@ -102,9 +105,9 @@ const MainStoreScreen = ({navigation, route}) => {
                 const result = response.data;
                 const { message, status, data } = result;
                 console.log("Check Device Result", result)
-
+                
                 if(status == "SUCCESS"){
-                    setIsCheckingDevice(false)
+                    
                     if(data.register.status == "Approved"){ // if store is approved
                         // handleMessage(`Your store status is approved.`, status)
                         mergeOjectData('@store', {status: "Store Details"})
@@ -128,8 +131,11 @@ const MainStoreScreen = ({navigation, route}) => {
                     
                     handleMessage(message)
                 }
+
+                setIsCheckingDevice(false)
             })
             .catch( error => {
+                setIsCheckingDevice(false)
                 console.log(error.message)
                 handleMessage("An error occured. Check your network and try again!")
             });
@@ -258,6 +264,7 @@ const MainStoreScreen = ({navigation, route}) => {
                 </DashboardContainer>}
                 { isCheckingDevice && <DashboardContainer>
                         <ActivityIndicator size="large" color={primary}/> 
+                        <ButtonText>Please wait while we check your device.</ButtonText>
                     </DashboardContainer>}
             </InnerContainer>
         </ImageBackground>

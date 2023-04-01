@@ -4,14 +4,14 @@ import { StatusBar } from 'expo-status-bar'
 
 import { Octicons } from '@expo/vector-icons'
 
-import { 
-    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, DashboardContainer,  PageLogo, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
+import { Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, DashboardContainer,  PageLogo, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
 
 import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
 
 const { primary, brand, darkLight } = Colors;
 
 const MaterialSearch = ({navigation}) => {
+    const [searchText, setSearchText] = useState('')
 
   return (
     <StyledContainer dashbaord={true}>
@@ -37,9 +37,9 @@ const MaterialSearch = ({navigation}) => {
                             searchMaterial={true}
                             icon="search" 
                             placeholder="Search"
-
+                            onChangeText={text => setSearchText(text)}
                         />
-                        <StyledButton btnSearch={true}>
+                        <StyledButton btnSearch={true} onPress={() => {}}>
                             <ButtonText>Search</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

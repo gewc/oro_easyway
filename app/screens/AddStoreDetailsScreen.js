@@ -3,6 +3,7 @@ import { ImageBackground, View, ActivityIndicator } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions } from '@react-navigation/native';
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea, MsgBox, StyledButton, ButtonText, PageLogo, DashboardContainer, SubTitle, StyledTextInput, StyledInputLabel, ExtraView, TextLink, TextLinkContent, ExtraText } from '../components/styles'
@@ -39,7 +40,10 @@ const AddStoreDetailsScreen = ({navigation, route}) => {
                     handleMessage(message, status)
                     mergeOjectData('@store',{status: 'Main Menu'})
                     storeOjectData('@storeProfile', data)
-                    navigation.navigate('StoreMenuScreen', {storeName: name, data: data})
+                    navigation.dispatch(
+                        StackActions.replace('StoreMenuScreen', {storeName: name, data: data})
+                      );
+                    // navigation.navigate('StoreMenuScreen', {storeName: name, data: data})
                 }
                 setSubmitting(false)
             })
