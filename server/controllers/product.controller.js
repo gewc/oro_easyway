@@ -36,7 +36,7 @@ const getProductsAndStore = async (req,res) => {
         const data = await Product.aggregate([
             {
                 $lookup: {
-                    from: "store",
+                    from: "stores",
                     localField: "store",
                     foreignField: "_id",
                     as: "store_details",
