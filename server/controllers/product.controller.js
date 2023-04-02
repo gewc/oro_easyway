@@ -34,11 +34,27 @@ const getProductsAndStore = async (req,res) => {
     try {
         const {search} = req.params
         const searchText = search.toLowerCase()
+        const storeIds = []
+        console.log('Search', searchText)
+        
+        const data = await Product.find({name: new RegExp(searchText, 'i')});
+        data.map((v, k) => {
+            if(!storeIds.includes(v.store)){
+                storeIds.push(v.store)
+            }
+        })
 
-        const data = await Product.find({name: new RegExp('/' + searchText + '/') });
+        const storeData = Store.find({ _id: {$in: storeIds}})
+            .then(data => {
+                // console.log('storeData',data)
+                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: data });
+            })
+            .catch(error => {
+                console.log(error.message);
+                res.status(200).json({ message: error.message, status: 'Failed', data: {} });
+            })
 
-        console.log('product &  store',data)
-        res.status(200).json({ message: "", status: 'SUCCESS', data: data });
+        
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
     }
