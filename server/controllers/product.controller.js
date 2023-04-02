@@ -33,33 +33,11 @@ const getProductsByStore = async (req,res) => {
 const getProductsAndStore = async (req,res) => {
     try {
         const {search} = req.params
-        const data = await Product.aggregate([
-            {
-                $lookup: {
-                    from: "stores",
-                    localField: "store",
-                    foreignField: "_id",
-                    as: "store_details",
-                    "pipeline": [{
-                        "$search": {
-                          "compound": {
-                            "must": [{
-                              "queryString": {
-                                "defaultPath": "name",
-                                "query": `name: ${search}`
-                              }
-                            }],
-                          }
-                        }
-                      },{
-                        "$project": {
-                          "_id": 0
-                        }
-                      }]
-                }
-            }
-        ]);
-        console.log(data)
+        const searchText = search.toLowerCase()
+
+        const data = await Product.find({name: new RegExp('/' + searchText + '/') });
+
+        console.log('product &  store',data)
         res.status(200).json({ message: "", status: 'SUCCESS', data: data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -69,6 +47,7 @@ const getProductsAndStore = async (req,res) => {
 const createProduct = async (req,res) => {
     try {
         const { name, description, price, quantity, _id } = req.body;
+        const nname = name.toLowerCase()
 
         const data = await Store.findOne({_id});
         if(!data) throw new Error("Store does not exist!");
@@ -78,7 +57,7 @@ const createProduct = async (req,res) => {
         if(proddata.length > 0) throw new Error("Product is already exist!");
 
         const newData = await Product.create({
-            name, 
+            name: nname, 
             description, 
             price, 
             quantity, 

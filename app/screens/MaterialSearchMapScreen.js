@@ -7,7 +7,8 @@ import { Colors, ButtonText, ExtraText, StyledContainer, DashboardContainer } fr
 import {MaterialIcons} from '@expo/vector-icons' 
 
 import axios from 'axios'
-axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+// axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+axios.defaults.baseURL = 'http://192.168.134.148:8080/api/v1';
 
 const { primary, brand, darkLight } = Colors;
 
@@ -20,7 +21,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         longitudeDelta: 0.0421,
     });
     const [mlocation, setLocation] = useState(null);
-    const [isLocationChecking, setIsLocationChecking] = useState(true);
+    const [isLocationChecking, setIsLocationChecking] = useState(false);
 
     const userLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -43,7 +44,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         .then((response) => {
             const result = response.data;
             const { message, status, data } = result;
-            console.log('Material Search Data',data)
+            console.log('Material Search Data',result)
 
             if(status !== "SUCCESS"){
                 // handleMessage(message, status)
