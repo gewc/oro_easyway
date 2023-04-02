@@ -25,14 +25,15 @@ const getAllStores = async (req,res) => {
 const createStore = async (req,res) => {
     try {
         const { storeName, address, contact, email, website, location } = req.body;
+        const name = storeName.toLowerCase()
         // const session = await mongoose.startSession();
         // session.startTransaction();
 
-        const store = await Store.findOne({name: storeName});
+        const store = await Store.findOne({name: name});
         if(store) throw new Error("Store is already exist!");
 
         const newData = await Store.create({
-            name: storeName, 
+            name: name, 
             address, 
             contact, 
             email, 
