@@ -14,8 +14,8 @@ import { Colors, ButtonText, ExtraText, StyledContainer, DashboardContainer, Lef
 import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons' 
 
 import axios from 'axios'
-// axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
-axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+// axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
 
 const { primary, brand, darkLight, red } = Colors;
 

@@ -9,8 +9,8 @@ import {
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  ProductContainer, StyledTextInput, StyledButton, ButtonText, OuterdModalView, InnerModalView, StyledInputLabel } from '../components/styles'
 
 import axios from 'axios'
-// axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
-axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+// axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
 
 
 const { primary, brand, darkLight, green } = Colors;
