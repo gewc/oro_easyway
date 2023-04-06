@@ -14,13 +14,13 @@ import { Colors, ButtonText, ExtraText, StyledContainer, DashboardContainer, Lef
 import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons' 
 
 import axios from 'axios'
-axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
-// axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
+// axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
 
 const { primary, brand, darkLight, red } = Colors;
 
 export default function MaterialSearchMapScreen({navigation, route}) {
-    const {searchText, mapRegion} = route.params
+    const {searchText, mapRegion, type} = route.params
     
     const [isLocationChecking, setIsLocationChecking] = useState(true);
     const [storeData, setStoreData] = useState(null);
@@ -28,7 +28,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
     const [coordsPolyline, setCoordsPolyline] = useState([]);
     const [polylineVisible, setPolylineVisible] = useState(false);
 
-    const getHardwareStore = async () => {
+    const getHardwareStoreByMaterial = async () => {
       await axios.get('/products/materialsearch/'+searchText)
         .then((response) => {
             const result = response.data;
@@ -37,6 +37,31 @@ export default function MaterialSearchMapScreen({navigation, route}) {
 
             if(status !== "SUCCESS"){ // IF ERROR FROM SERVER
                 // handleMessage(message, status)
+                console.log(status, message)
+            } else {
+                // handleMessage(message, status)
+                setStoreData(data)
+                console.log('storeData', storeData)
+            }
+            setIsLocationChecking(false);
+        })
+        .catch( error => {
+            console.log(error.message)
+            setIsLocationChecking(false);
+            // handleMessage("An error occured. Check your network and try again!")
+        });
+    }
+
+    const getHardwareStore = async () => {
+      await axios.get('/stores/search/'+searchText)
+        .then((response) => {
+            const result = response.data;
+            const { message, status, data } = result;
+            console.log('Store Search Data',result)
+
+            if(status !== "SUCCESS"){ // IF ERROR FROM SERVER
+                // handleMessage(message, status)
+                console.log(status, message)
             } else {
                 // handleMessage(message, status)
                 setStoreData(data)
@@ -78,7 +103,12 @@ export default function MaterialSearchMapScreen({navigation, route}) {
     }
 
     useEffect(() => {
+      if(type == 'material'){
+        getHardwareStoreByMaterial();
+      }else{
         getHardwareStore();
+      }
+        
     }, [])
 
   return (

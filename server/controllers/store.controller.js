@@ -87,6 +87,26 @@ const getStoreByName = async (req,res) => {
     }
 };
 
+const getStoreBySearch = async (req,res) => {
+    try {
+        const {name} = req.params
+        const searchText = name.toLowerCase()
+        const storeIds = []
+        console.log('Search Store', searchText)
+        
+        const isExist = await Store.find({name: new RegExp(searchText, 'i')});
+
+        if(isExist) {
+            res.status(200).json({ message: "Store Exist!", status: 'SUCCESS', data: isExist });
+        }else{
+            res.status(200).json({ message: "Store not found!", status: 'FAILED', data: {} });
+        }
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
+
 const updateStore = async (req,res) => {
     try {
         const {id} = req.params;
@@ -132,4 +152,4 @@ const deactivateStore = async (req,res) => {
     }
 };
 
-export { getAllStores, createStore, getStoreByID, getStoreByName, updateStore, deactivateStore };
+export { getAllStores, createStore, getStoreByID, getStoreByName, getStoreBySearch, updateStore, deactivateStore };

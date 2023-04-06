@@ -82,7 +82,7 @@ const DashboardScreen = ({navigation}) => {
                         <StyledButton findMaterial={true} onPress={() => {navigation.navigate('MaterialSearch', {mapRegion})}}>
                             <ButtonText findMaterial={true}>Materials</ButtonText>
                         </StyledButton>
-                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreSearch')}}>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreSearch', {mapRegion})}}>
                             <ButtonText findMaterial={true}>Hardware Stores</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

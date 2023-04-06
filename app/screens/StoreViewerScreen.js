@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Modal, ActivityIndicator, Text, ImageBackground } from "react-native"
+import { View, FlatList, Text,  } from "react-native"
 import { StatusBar } from 'expo-status-bar'
-import { Formik } from 'formik'
 
 import { Octicons } from '@expo/vector-icons'
 

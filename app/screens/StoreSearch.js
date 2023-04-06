@@ -10,7 +10,10 @@ import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
 
 const { primary, brand, darkLight } = Colors;
 
-const StoreSearch = () => {
+const StoreSearch = ({navigation, route}) => {
+    const { mapRegion } = route.params
+    const [searchText, setSearchText] = useState('')
+
   return (
     <StyledContainer dashbaord={true}>
         <ImageBackground source={require('./../assets/bg.png')} resizeMode="cover" style={{ flex:1, justifyContent:'center'}}>
@@ -35,9 +38,10 @@ const StoreSearch = () => {
                             searchMaterial={true}
                             icon="search" 
                             placeholder="Search"
+                            onChangeText={text => setSearchText(text)}
 
                         />
-                        <StyledButton btnSearch={true}>
+                        <StyledButton btnSearch={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText, mapRegion, type: 'store'})}}>
                             <ButtonText>Search</ButtonText>
                         </StyledButton>
                     </StyledFormArea>
