@@ -12,6 +12,7 @@ import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
 import MaterialSearchMapScreen from '../screens/MaterialSearchMapScreen';
 import StoreSearch from '../screens/StoreSearch';
+import StoreViewerScreen from '../screens/StoreViewerScreen';
 import AddStoreDetailsScreen from '../screens/AddStoreDetailsScreen';
 import MapScreen from '../screens/MapScreen';
 import StoreMenuScreen from '../screens/StoreMenuScreen';
@@ -57,6 +58,7 @@ const RootStack = () =>{
                 <Stack.Screen name="MaterialSearch" component={MaterialSearch} options={{ headerTintColor: primary}} />
                 <Stack.Screen name="MaterialSearchMapScreen" component={MaterialSearchMapScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="StoreSearch" component={StoreSearch} options={{ headerTintColor: primary}} />
+                <Stack.Screen name="StoreViewerScreen" component={StoreViewerScreen} options={{ headerTintColor: tertiary}} />
 
             </Stack.Navigator>
         </NavigationContainer>

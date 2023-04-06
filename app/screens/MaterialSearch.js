@@ -10,7 +10,8 @@ import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
 
 const { primary, brand, darkLight } = Colors;
 
-const MaterialSearch = ({navigation}) => {
+const MaterialSearch = ({navigation, route}) => {
+    const { mapRegion } = route.params
     const [searchText, setSearchText] = useState('')
 
   return (
@@ -39,7 +40,7 @@ const MaterialSearch = ({navigation}) => {
                             placeholder="Search"
                             onChangeText={text => setSearchText(text)}
                         />
-                        <StyledButton btnSearch={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText})}}>
+                        <StyledButton btnSearch={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText, mapRegion})}}>
                             <ButtonText>Search</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

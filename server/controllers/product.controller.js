@@ -22,7 +22,9 @@ const getAllProducts = async (req,res) => {
 
 const getProductsByStore = async (req,res) => {
     try {
+        
         const {id} = req.params
+        console.log(id)
         const data = await Product.find({store: id}).sort({created_at: -1});
         res.status(200).json({ message: "", status: 'SUCCESS', data: data });
     } catch (error) {

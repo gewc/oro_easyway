@@ -366,6 +366,7 @@ export const ExtraText = styled.Text`
     font-size: 16px;
     font-weight: 500;
     color: ${brand};
+    margin-left: 20px;
   `}
   ${(props) => props.distance && `
     margin-left: 30px;

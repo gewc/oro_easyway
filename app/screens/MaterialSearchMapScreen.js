@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { StatusBar } from 'expo-status-bar'
-import * as Location from 'expo-location';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import Hyperlink from 'react-native-hyperlink'
+
 import { Direction_API } from '../config';
 
 import Constants from "expo-constants";
@@ -14,41 +14,19 @@ import { Colors, ButtonText, ExtraText, StyledContainer, DashboardContainer, Lef
 import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons' 
 
 import axios from 'axios'
-axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
-// axios.defaults.baseURL = 'http://192.168.134.148:8080/api/v1';
+// axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
 
 const { primary, brand, darkLight, red } = Colors;
 
 export default function MaterialSearchMapScreen({navigation, route}) {
-    const {searchText} = route.params
-    const [mapRegion, setMapRegion] = useState({
-        latitude: 8.477217,
-        longitude: 124.645920,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    });
-    const [mlocation, setLocation] = useState(null);
+    const {searchText, mapRegion} = route.params
+    
     const [isLocationChecking, setIsLocationChecking] = useState(true);
     const [storeData, setStoreData] = useState(null);
     const [storeDetails, setStoreDetails] = useState(null);
     const [coordsPolyline, setCoordsPolyline] = useState([]);
     const [polylineVisible, setPolylineVisible] = useState(false);
-
-    const userLocation = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if(status !== 'granted'){
-            setErrorMsg('Permission to access location was denied.');
-        }
-        let mylocation = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
-        setMapRegion({
-            latitude: mylocation.coords.latitude,
-            longitude: mylocation.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        });
-        setLocation(mylocation);
-        
-    }
 
     const getHardwareStore = async () => {
       await axios.get('/products/materialsearch/'+searchText)
@@ -99,9 +77,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
       setStoreDetails({...value, distance, duration})
     }
 
-
     useEffect(() => {
-        userLocation();
         getHardwareStore();
     }, [])
 
@@ -113,13 +89,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         region={mapRegion}
         provider={PROVIDER_GOOGLE}
       > 
-        <Marker 
-            coordinate={mapRegion} 
-            key='-1'
-            title= "You're Here"
-        >
-          <MaterialIcons name='location-history' size={35}  color={brand} />
-        </Marker>
+       
 
         {storeData.map((v, k) =>{
           return (
@@ -136,6 +106,14 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         })
         }
 
+        <Marker 
+            coordinate={mapRegion} 
+            key='-1'
+            title= "You're Here"
+        >
+          <MaterialIcons name='location-history' size={35}  color={brand} />
+        </Marker>
+
         { polylineVisible && <Polyline coordinates={coordsPolyline} strokeColor='red' strokeWidth={3}/>}
 
       </MapView>
@@ -144,17 +122,20 @@ export default function MaterialSearchMapScreen({navigation, route}) {
       { isLocationChecking && <StyledContainer>
         <DashboardContainer>
           <ActivityIndicator size="large" color="#000"/>
-          <ButtonText mapLoading={true}>Fetching your location.</ButtonText>
+          <ButtonText mapLoading={true}>Finding hardware store's.</ButtonText>
         </DashboardContainer>
       </StyledContainer>}
 
       { (!isLocationChecking && storeDetails !== null) && 
         <MyStoreDetails 
+          id={storeDetails._id}
           name={storeDetails.name} 
           address={storeDetails.address} 
           contact={storeDetails.contact}
+          website={storeDetails.website}
           distance={storeDetails?.distance?.text}
           duration={storeDetails?.duration?.text}
+          navigation={navigation}
         /> }
 
     </View>
@@ -164,17 +145,46 @@ export default function MaterialSearchMapScreen({navigation, route}) {
 const MyMarker = ({ name, ...props}) =>{
   return(
       <View >
-          <Entypo  tisto name='shop' size={25}  color='#276221' />
+          <Entypo  tisto name='shop' size={25}  color={red} elevation={1} />
       </View>
   )
 }
 
-const MyStoreDetails = ({ name, address, contact, distance, duration,  ...props}) =>{
+const MyStoreDetails = ({ id, name, address, contact, website, distance, duration, navigation, ...props}) =>{
   return(
       <View style={styles.storeDetails}>
           <View style={{width: '75%'}}>
             <ExtraText storeName={true} adjustsFontSizeToFit={true} numberOfLines={1}>{name.toUpperCase()}</ExtraText>
-            <ExtraText storeAddress={true} adjustsFontSizeToFit={true} numberOfLines={1}>{address}</ExtraText>
+            
+            <View style={{
+              flexDirection: 'row',
+            }}>
+              <LeftIcon distance={true} >
+                <Ionicons name='home' size={16}  color={brand} />
+              </LeftIcon>
+              <ExtraText storeAddress={true} adjustsFontSizeToFit={true} numberOfLines={1}>{address}</ExtraText>
+            </View>
+            <View style={{
+              flexDirection: 'row',
+            }}>
+              <LeftIcon distance={true} >
+                <Entypo name='phone' size={16}  color={brand} />
+              </LeftIcon>
+              <ExtraText storeAddress={true} adjustsFontSizeToFit={true} numberOfLines={1}>{contact}</ExtraText>
+            </View>
+            <View style={{
+              flexDirection: 'row',
+            }}>
+              <LeftIcon distance={true} >
+                <Ionicons name='globe' size={16}  color={brand} />
+              </LeftIcon>
+              <Hyperlink linkDefault={true}>
+                <ExtraText storeAddress={true} adjustsFontSizeToFit={true} numberOfLines={1}>{website}</ExtraText>
+              </Hyperlink>
+              
+            </View>
+            
+            
             <View style={styles.distance}>
 
               <View style={{
@@ -196,7 +206,7 @@ const MyStoreDetails = ({ name, address, contact, distance, duration,  ...props}
             </View>
           </View>
           <View>
-            <StyledButton viewStore={true}>
+            <StyledButton viewStore={true} onPress={() => {navigation.navigate('StoreViewerScreen', {_id: id, storeName: name})}}>
               <ButtonText>View</ButtonText>
             </StyledButton>
           </View>
@@ -216,12 +226,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     width: '90%',
-    height: 100,
+    height: 140,
     position:'absolute',
     top: StatusBarHeight + 50,
     backgroundColor: '#fff',
     elevation: 5,
-    borderRadius: 5,
+    borderRadius: 10,
+    borderColor: "#515460",
+    borderWidth: 1,
     padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
