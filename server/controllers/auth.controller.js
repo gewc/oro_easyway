@@ -8,7 +8,7 @@ const login = async (req, res) => {
         console.log(email, password)
         const existingUser = await User.findOne({email});
         console.log(existingUser)
-        if(!existingUser.length) return res.status(200).json({message: "User doesn't exist.", status: 'FAILED'});
+        if(!existingUser) return res.status(200).json({message: "User doesn't exist.", status: 'FAILED'});
 
         const isPasswordCorrect = await bcrypt.compare(password,existingUser.password);
         if(!isPasswordCorrect) return res.status(200).json({message: "Email or Password doesn't found.", status: 'FAILED'} );
