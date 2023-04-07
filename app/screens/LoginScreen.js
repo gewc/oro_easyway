@@ -22,7 +22,7 @@ const LoginScreen = ({navigation}) => {
 
     const handleLogin = async (credentials, setSubmitting) => {
         handleMessage(null)
-        await axios.post('/users/login/', credentials)
+        await axios.post('/users/login', credentials)
             .then((response) => {
                 const result = response.data;
                 console.log(result)
@@ -38,7 +38,7 @@ const LoginScreen = ({navigation}) => {
                 setSubmitting(false)
             })
             .catch( error => {
-                console.log(error.message)
+                console.log('Login Error: ',error.message)
                 setSubmitting(false)
                 handleMessage("An error occured. Check your network and try again!")
             });
@@ -90,7 +90,7 @@ const LoginScreen = ({navigation}) => {
                                 label="Email Address"
                                 icon="person-fill" 
                                 iconLeft="15px"
-                                placeholder="Username"
+                                placeholder="Email"
                                 placeholderTextColor={darkLight}
                                 onChangeText={handleChange('email')}
                                 value={values.email}
