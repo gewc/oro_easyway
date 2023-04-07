@@ -10,7 +10,9 @@ import {
     Colors, StyledContainer, InnerContainer, PageLogo, PageTitle, StyledFormArea, LeftIcon, StyledInputLabel, StyledTextInput, RightIcon, StyledButton, ButtonText, MsgBox, Line, ExtraView, ExtraText, TextLink, TextLinkContent } from '../components/styles'
 
 import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
+
 import axios from 'axios'
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 
 const { primary, brand, darkLight } = Colors;
 
@@ -28,8 +30,7 @@ const RegisterScreen = ({navigation}) => {
 
     const handleAddUser = async (data, setSubmitting, resetForm) =>{
         handleMessage(null)
-        const url = 'https://oro-easyway.onrender.com/api/v1/users/';
-        await axios.post(url,data)
+        await axios.post('/users/',data)
             .then((response) => {
                 const result = response.data;
                 
@@ -73,11 +74,17 @@ const RegisterScreen = ({navigation}) => {
                 <PageTitle>Add Account</PageTitle>
                 
                 <Formik
-                    initialValues={{email:'', password: '', name:'', address: '', acctType: 'Admin'}}
+                    initialValues={{email:'', password: '', name:'', address: '', confirm_pass: '', acctType: 'Admin'}}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         console.log(values);
                         if(values){
-                            handleAddUser(values, setSubmitting, resetForm);
+                            if(values.password == values.confirm_pass){
+                                handleAddUser(values, setSubmitting, resetForm);
+                            }else{
+                                handleMessage("Password and Confirm Password did not match!")
+                                setSubmitting(false)
+                            }
+                            
                         }else{
                             setSubmitting(false)
                         }
@@ -128,6 +135,21 @@ const RegisterScreen = ({navigation}) => {
                                 onChangeText={handleChange('password')}
                                 onBlur={handleBlur('password')}
                                 value={values.password}
+                                secureTextEntry={hidePassword}
+                                isPassword={true}
+                                hidePassword={hidePassword}
+                                setHidePassword={setHidePassword}
+
+                            />
+
+                            <MyTextInput 
+                                label="Confirm Password"
+                                icon="locked" 
+                                placeholder="Confirm Password"
+                                placeholderTextColor={darkLight}
+                                onChangeText={handleChange('confirm_pass')}
+                                onBlur={handleBlur('confirm_pass')}
+                                value={values.confirm_pass}
                                 secureTextEntry={hidePassword}
                                 isPassword={true}
                                 hidePassword={hidePassword}

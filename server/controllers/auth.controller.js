@@ -9,7 +9,7 @@ const login = async (req, res) => {
         if(!existingUser.length) return res.status(404).json({message: "User doesn't exist."});
 
         const isPasswordCorrect = await bcrypt.compare(password,existingUser.password);
-        if(!isPasswordCorrect) return res.status(400).json({message: "Email or Password is invalid."});
+        if(!isPasswordCorrect) return res.status(400).json({message: "Email or Password doesn't found."});
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'oroew', {expiresIn: "3h"});
 

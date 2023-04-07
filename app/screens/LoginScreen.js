@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
-import { View } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 
@@ -10,12 +10,44 @@ import {
 
 import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
 
+import axios from 'axios'
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+
 const { primary, brand, darkLight } = Colors;
 
 const LoginScreen = ({navigation}) => {
     const [hidePassword, setHidePassword] = useState(true);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [message, setMessage] = useState();
+    const [messageType, setMessageType] = useState();
+
+    const handleLogin = async (credentials, setSubmitting) => {
+        handleMessage(null)
+        await axios.post('/users/login/', credentials)
+            .then((response) => {
+                const result = response.data;
+                
+                const { message, status, data } = result;
+
+                if(status !== "SUCCESS"){
+                    handleMessage(message, status)
+                } else {
+                    navigation.dispatch(
+                        StackActions.replace('AdminDashboardScreen', {...data[0]})
+                      );
+                }
+                setSubmitting(false)
+            })
+            .catch( error => {
+                console.log(error.message)
+                setSubmitting(false)
+                handleMessage("An error occured. Check your network and try again!")
+            });
+    }
+
+    const handleMessage = (message, type = 'FAILED') => {
+        setMessage(message);
+        setMessageType(type);
+    }
 
   return (
     <KeyboardingAvoidWrapper>
@@ -29,27 +61,30 @@ const LoginScreen = ({navigation}) => {
                     style={{
                         width: 150,
                         height: 150,
+                        borderWidth: 2,
+                        borderColor: 'gray',
+                        marginBottom: 30,
                     }}
                 />
-                <PageTitle>Account Login</PageTitle>
+                <PageTitle>Admin Login</PageTitle>
 
                 <Formik
                     initialValues={{email:'', password: ''}}
-                    onSubmit={(values) => {
+                    onSubmit={(values, {setSubmitting}) => {
                         console.log(values);
                         if(values.email === "" || values.password ===""){
-                            setError(true)
-                            setErrorMessage("Please don't leave a blank!")
+                            handleMessage("All field are required.")
                             return false;
+                        }else{
+                            handleLogin(values,setSubmitting)
                         }
                         
-                        navigation.navigate("Dashboard")
                     }}
                 >
-                    {({handleChange, handleBlur, handleSubmit, values}) =>
+                    {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) =>
                         <StyledFormArea>
 
-                            <MsgBox >{errorMessage}</MsgBox>
+                            <MsgBox type={messageType} >{message}</MsgBox>
 
                             <MyTextInput 
                                 label="Email Address"
@@ -75,9 +110,14 @@ const LoginScreen = ({navigation}) => {
                                 setHidePassword={setHidePassword}
 
                             />
-                            <StyledButton onPress={handleSubmit}>
+
+                            { !isSubmitting && <StyledButton onPress={handleSubmit}>
                                 <ButtonText>Login</ButtonText>
-                            </StyledButton>
+                            </StyledButton>}
+                            { !isSubmitting && <StyledButton>
+                                <ActivityIndicator size="large" color={primary} />
+                            </StyledButton>}
+
                             {/* <Line />
                             <StyledButton google={true} onPress={handleSubmit}>
                                 <Fontisto name="google" color={primary} size={25}/>

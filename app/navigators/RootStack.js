@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import AdminDashboardScreen from '../screens/AdminDashboardScreen';
 import MainStoreScreen from '../screens/MainStoreScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
@@ -43,8 +44,9 @@ const RootStack = () =>{
             >
 
                 {/* For ADMIN App */}
-                {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-                {/* <Stack.Screen name="Register" component={RegisterScreen} /> */}
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Register" component={RegisterScreen} options={{ headerTintColor: tertiary}}/>
+                <Stack.Screen name="AdminDashboardScreen" component={AdminDashboardScreen} options={{ headerTintColor: tertiary}}/>
                 
                 {/* For Store App */}
                 {/* <Stack.Screen name="MainStoreScreen" component={MainStoreScreen} />
@@ -55,12 +57,12 @@ const RootStack = () =>{
                 <Stack.Screen name="StoreProductListScreen" component={StoreProductListScreen} options={{ headerTintColor: tertiary}} />
                  */}
                 {/* For Customer App */}
-                <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                {/* <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 <Stack.Screen name="MaterialSearch" component={MaterialSearch} options={{ headerTintColor: primary}} />
                 <Stack.Screen name="MaterialSearchMapScreen" component={MaterialSearchMapScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="StoreSearch" component={StoreSearch} options={{ headerTintColor: primary}} />
                 <Stack.Screen name="StoreSearchProfileScreen" component={StoreSearchProfileScreen} options={{ headerTintColor: primary}} />
-                <Stack.Screen name="StoreViewerScreen" component={StoreViewerScreen} options={{ headerTintColor: tertiary}} />
+                <Stack.Screen name="StoreViewerScreen" component={StoreViewerScreen} options={{ headerTintColor: tertiary}} /> */}
 
             </Stack.Navigator>
         </NavigationContainer>
