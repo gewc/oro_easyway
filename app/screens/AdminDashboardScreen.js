@@ -1,19 +1,37 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, ActivityIndicator } from "react-native"
+import { ImageBackground, ActivityIndicator, BackHandler, Alert } from "react-native"
 import { StatusBar } from 'expo-status-bar'
+import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons' 
 
 import { 
-    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  StyledButton, ButtonText, PageLogo, DashboardContainer, Avatar, BottomNav } from '../components/styles'
+    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  StyledButton, ButtonText, PageLogo, DashboardContainer, Avatar, LeftIcon } from '../components/styles'
 
-import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
 
 const { primary, brand, darkLight } = Colors;
 
 const AdminDashboardScreen = ({navigation}) => {
-    
 
     useEffect(() => {
-        
+        const backAction = () => {
+            Alert.alert("Log out!", "Are you sure want to exit the app?", [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: () => BackHandler.exitApp(),
+                },
+            ])
+        }
+
+        const backButton = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        )
+
+        return () => backButton.remove()
     }, [])
 
 
@@ -24,7 +42,34 @@ const AdminDashboardScreen = ({navigation}) => {
             {/* <Avatar resizeMode="contain" source={require('./../assets/logo.png')}/> */}
            <InnerContainer>
                 <DashboardContainer>
-                <BottomNav />
+                    <PageLogo 
+                        resizeMode="contain" 
+                        overflow={1} 
+                        source={require('./../assets/logo.png')}
+                        style={{
+                            width: 100,
+                            height: 100,
+                            borderWidth: 2,
+                            borderColor: "white",
+                        }}
+                    />
+                    <PageTitle dashbaord={true}>Admin Dashboard</PageTitle>
+                    <StyledFormArea>
+                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('')}}>
+                            <MaterialIcons name="app-registration" size={25}  color={primary} /> 
+                            <ButtonText adminDash={true}> 
+                                Registrations
+                            </ButtonText>
+                        </StyledButton>
+                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('')}}>
+                            <MaterialIcons name="hardware" size={25}  color={primary} /> 
+                            <ButtonText adminDash={true}>Hardware Stores</ButtonText>
+                        </StyledButton>
+                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('')}}>
+                            <MaterialIcons name="person" size={25}  color={primary} /> 
+                            <ButtonText adminDash={true}>My Profile</ButtonText>
+                        </StyledButton>
+                    </StyledFormArea>
                 </DashboardContainer>
             </InnerContainer>
         </ImageBackground>

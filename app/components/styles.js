@@ -269,6 +269,15 @@ export const StyledButton = styled.TouchableOpacity`
     height: 70px;
   `}
 
+  ${(props) => props.adminDash == true && `
+    background-color: transparent;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 15px;
+    border: 3px solid #fff;
+    height: 80px;
+  `}
+
   ${(props) => props.btnSearch && `
     background-color: ${brand};
     flex-direction: row;
@@ -312,6 +321,12 @@ export const ButtonText = styled.Text`
 
   ${(props) => props.findMaterial == true && `
     font-size: 25px;
+  `}
+
+  ${(props) => props.adminDash == true && `
+    font-size: 28px;
+    font-weight: 700;
+    padding-left: 10px;
   `}
 
   ${(props) => props.map == true && `
@@ -409,7 +424,7 @@ export const InnerModalView = styled.View`
 export const BottomNav = styled.View`
   position: absolute;
   width: 100%;
-  height: 100px;
+  height: 8%;
   bottom: 0px;
-  background-color: ${primary};
+  background-color: ${brand};
 `
