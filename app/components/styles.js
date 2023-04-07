@@ -406,3 +406,10 @@ export const InnerModalView = styled.View`
   padding: 15px;
 `
 
+export const BottomNav = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  bottom: 0px;
+  background-color: ${primary};
+`

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
 import { View, ActivityIndicator } from 'react-native'
+import { StackActions } from '@react-navigation/native';
 
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 
@@ -12,6 +13,7 @@ import KeyboardingAvoidWrapper from '../components/KeyboardingAvoidWrapper'
 
 import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+// axios.defaults.baseURL = 'http://192.168.254.148:8080/api/v1';
 
 const { primary, brand, darkLight } = Colors;
 
