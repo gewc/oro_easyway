@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { isPointWithinRadius } from 'geolib';
-import Hyperlink from 'react-native-hyperlink'
+import Hyperlink from 'react-native-hyperlink';
 
-import { Direction_API } from '../config';
 
 import Constants from "expo-constants";
 import { decode } from "@googlemaps/polyline-codec";
@@ -28,6 +27,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
     const [storeDetails, setStoreDetails] = useState(null);
     const [coordsPolyline, setCoordsPolyline] = useState([]);
     const [polylineVisible, setPolylineVisible] = useState(false);
+    
 
     const getHardwareStoreByMaterial = async () => {
       await axios.get('/products/materialsearch/'+searchText)
@@ -83,6 +83,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
       let startLoc = `${mapRegion.latitude},${mapRegion.longitude}`
       let storeLoc = JSON.parse(value.location)
       let endLoc = `${storeLoc.latitude},${storeLoc.longitude}`
+      const Direction_API = "AIzaSyA_3q3QEmAQg5i4wuM1jrBiKm0S1_FKASE"
 
       let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${endLoc}&mode=WALKING&key=${Direction_API}`)
 
