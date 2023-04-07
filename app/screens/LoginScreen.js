@@ -25,7 +25,7 @@ const LoginScreen = ({navigation}) => {
         await axios.post('/users/login/', credentials)
             .then((response) => {
                 const result = response.data;
-                
+                console.log(result)
                 const { message, status, data } = result;
 
                 if(status !== "SUCCESS"){
@@ -74,7 +74,7 @@ const LoginScreen = ({navigation}) => {
                         console.log(values);
                         if(values.email === "" || values.password ===""){
                             handleMessage("All field are required.")
-                            return false;
+                            setSubmitting(false)
                         }else{
                             handleLogin(values,setSubmitting)
                         }
@@ -114,7 +114,7 @@ const LoginScreen = ({navigation}) => {
                             { !isSubmitting && <StyledButton onPress={handleSubmit}>
                                 <ButtonText>Login</ButtonText>
                             </StyledButton>}
-                            { !isSubmitting && <StyledButton>
+                            { isSubmitting && <StyledButton>
                                 <ActivityIndicator size="large" color={primary} />
                             </StyledButton>}
 
