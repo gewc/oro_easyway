@@ -15,7 +15,7 @@ axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 
 const { primary, brand, darkLight, green, red, tertiary } = Colors;
 
-const RegistrationListScreen = ({navigation, route}) => {
+const AdminStoreListScreen = ({navigation, route}) => {
     // const { data } = route.params
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
@@ -26,9 +26,9 @@ const RegistrationListScreen = ({navigation, route}) => {
     const [productData, setProductData] = useState([]);
     const [ind, setInd] = useState(0)
 
-    const getRegisters = async () => {
+    const getStores = async () => {
         handleMessage("Loading...", "Default")
-        await axios.get(`/registers`)
+        await axios.get(`/stores`)
             .then((response) => {
                 const result = response.data;
                 const { message, status, data } = result;
@@ -53,27 +53,6 @@ const RegistrationListScreen = ({navigation, route}) => {
             .catch( error => {
                 console.log('Get All Register Error: ',error.message)
                 handleMessage("An error occured. Check your network and try again!")
-            });
-    }
-
-    const handleRegAction = async (_id, action) => {
-        console.log(action)
-        await axios.patch(`/registers/${_id}`, {status: action})
-            .then((response) => {
-                const result = response.data;
-                const { message, status, data } = result;
-                console.log("Update Registration Result", data)
-
-                if(status !== "SUCCESS"){
-                    handleMessage(message, status)
-                } else {
-                    handleMessage(message, status)
-                    getRegisters()
-                }
-            })
-            .catch( error => {
-                console.log('Register Action Error: ',error.message)
-                handleMessageModal("An error occured. Check your network and try again!")
             });
     }
 
@@ -109,7 +88,7 @@ const RegistrationListScreen = ({navigation, route}) => {
 
 
     useEffect(() => {
-        getRegisters();
+        getStores();
     }, [])
 
 
@@ -120,12 +99,12 @@ const RegistrationListScreen = ({navigation, route}) => {
         {/* <Avatar resizeMode="contain" source={require('./../assets/logo.png')}/> */}
         <InnerContainer>
             <ProductContainer>
-                <PageTitle >Store Registration's List</PageTitle>
+                <PageTitle >Hardware Store's</PageTitle>
                 <StyledFormArea>
                     <MyTextInputSearch 
                         product={true}
                         icon="search"
-                        setVisible={setVisible}
+                        navigation={navigation}
                         onChangeText={text => searchProduct(text)}
                     />
                     <MsgBox type={messageType} product={true}>{message}</MsgBox>
@@ -142,7 +121,6 @@ const RegistrationListScreen = ({navigation, route}) => {
                             index={index} 
                             data={productData} 
                             convertDateToString={convertDateToString}
-                            handleRegAction={handleRegAction}
                         />}
                     keyExtractor={item => item._id}
                     contentContainerStyle={{ paddingBottom: 50 }}
@@ -156,74 +134,46 @@ const RegistrationListScreen = ({navigation, route}) => {
   )
 }
 
-const Item = ({item, index, data, convertDateToString, handleRegAction}) => (
-    <View
+const Item = ({item, index, data}) => (
+    <ImageBackground
+        source={require('./../assets/bg.png')} 
+        resizeMode="cover"
         style={{
-            width: '95%',
+            width: '100%',
             borderRadius: 5,
             borderWidth: 0.5,
             borderWidth: 3,
             borderColor: darkLight,
-            backgroundColor: item.status == 'Approved' ? green : item.status == 'Pending' ? 'gray' : red,
             alignSelf: 'center',
             marginTop: 15,
             marginBottom: index == data.length - 1 ? 30 : 0,
             alignItems: 'center',
             flexDirection: 'row',
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-            padding: 5,
+            paddingTop: 10,
+            paddingBottom: 10,
         }}
     >
         
-        <Entypo name='shopping-cart' size={40}  color={primary}  
+        <Entypo name='tools' size={40}  color={primary}  
             style={{
                 width: 40,
                 height: 40,
                 marginLeft:10
             }} />
         <View style={{ width: '60%'}}>
-            <Text style={{fontSize: 18,fontWeight: '800', marginLeft: 10, marginTop: 10, color:primary  }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.store_name.toUpperCase()}</Text>
-            <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>Device ID: {item.device_id.substring(0, 50)}</Text>
-            <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>Date: {convertDateToString(item.created_at)}</Text>
-            <Text style={{fontSize: 14,marginLeft: 10, marginBottom: 10, color: primary }}>Status: {item.status.substring(0, 50)}</Text>
+            <Text style={{fontSize: 18,fontWeight: '800', marginLeft: 10, color:primary  }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.name.toUpperCase()}</Text>
+            <Text style={{fontSize: 14,marginLeft: 10, color:primary }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.address.substring(0, 50)}</Text>
+            <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>{item.email.substring(0, 50)}</Text>
         </View>
-        { item.status == 'Pending' && <View style={{ width: '20%'}}>
-            <StyledButton approved={true} onPress={() => {handleRegAction(item._id,'Approved')}}>
-                <ButtonText> <Entypo name='check' size={20}  color={primary} /> </ButtonText>
+        <View style={{ width: '20%'}}>
+            <StyledButton view={true} onPress={() => {}}>
+                <ButtonText> <Entypo name='eye' size={20}  color={primary} /> </ButtonText>
             </StyledButton>
-            <StyledButton reject={true} onPress={() => {handleRegAction(item._id,'Reject')}}>
-                <ButtonText> <Entypo name='cross' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-        </View>}
-
-        { item.status == 'Approved' && <View style={{ width: '20%'}}>
-            <StyledButton pending={true} onPress={() => {handleRegAction(item._id,'Pending')}}>
-                <ButtonText> <MaterialIcons name='pending-actions' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-            <StyledButton reject={true} onPress={() => {handleRegAction(item._id,'Reject')}}>
-                <ButtonText> <Entypo name='cross' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-        </View>}
-
-        { item.status == 'Reject' && <View style={{ width: '20%'}}>
-            <StyledButton approved={true} onPress={() => {handleRegAction(item._id,'Approved')}}>
-                <ButtonText> <Entypo name='check' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-            <StyledButton pending={true} onPress={() => {handleRegAction(item._id,'Pending')}}>
-                <ButtonText> <MaterialIcons name='pending-actions' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-        </View>}
+        </View>
 
         
 
-    </View>    
+    </ImageBackground>    
 );
 
 const MyTextInput = ({ label, ...props}) =>{
@@ -235,7 +185,7 @@ const MyTextInput = ({ label, ...props}) =>{
     )
 }
 
-const MyTextInputSearch = ({ label, icon, setVisible,  ...props}) =>{
+const MyTextInputSearch = ({ label, icon, navigation,  ...props}) =>{
     return(
         <View style={{
             flexDirection: 'row',
@@ -243,7 +193,7 @@ const MyTextInputSearch = ({ label, icon, setVisible,  ...props}) =>{
             justifyContent: 'space-between'
         }}>
             <View style={{
-                width: '100%',
+                width: '85%',
                 height: 50,
                 flexDirection: 'row',
             }}>
@@ -252,10 +202,13 @@ const MyTextInputSearch = ({ label, icon, setVisible,  ...props}) =>{
                 </LeftIcon>
                 <StyledTextInput {...props} />
             </View>
+            <StyledButton product={true} onPress={() => {}}>
+                <ButtonText><Octicons name="plus" size={22}  color={primary} /></ButtonText>
+            </StyledButton>
         </View>
     )
 }
 
 
 
-export default RegistrationListScreen
+export default AdminStoreListScreen

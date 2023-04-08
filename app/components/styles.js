@@ -270,11 +270,14 @@ export const StyledButton = styled.TouchableOpacity`
   `}
 
   ${(props) => props.adminDash == true && `
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.30);
     flex-direction: row;
     justify-content: center;
-    border-radius: 15px;
-    border: 3px solid #fff;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 90px;
+    border-bottom-left-radius: 90px;
+    border-bottom-right-radius: 0px;
+    border: 3px solid ${primary};
     height: 80px;
   `}
 
@@ -340,6 +343,18 @@ export const StyledButton = styled.TouchableOpacity`
     padding: 5px;
     height: 35px;
     border: 2px solid #555D50;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  `}
+
+  ${(props) => props.view && `
+    background-color: #0E86D4;
+    flex-direction: row;
+    margin-top: 0px;
+    border-radius: 60px;
+    padding: 5px;
+    height: 35px;
+    border: 2px solid #003060;
     margin-top: 5px;
     margin-bottom: 5px;
   `}

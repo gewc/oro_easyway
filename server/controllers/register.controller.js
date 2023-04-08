@@ -23,7 +23,7 @@ const getAllRegisters = async (req,res) => {
 const createRegister = async (req,res) => {
     try {
         const { storeName, deviceId } = req.body;
-        console.log(deviceId)
+        // console.log(deviceId)
 
         const data = await Register.findOne({store_name: storeName});
         if(data) throw new Error("Sorry the store name is already exist!");
@@ -72,7 +72,7 @@ const getRegisterByDevice = async (req,res) => {
     try {
         const {deviceId} = req.params;
         const isExist = await Register.findOne({ device_id: deviceId });
-        console.log(deviceId)
+        // console.log(deviceId)
 
         if(isExist) {
             const isStoreExist = await Store.findOne({ name: isExist.store_name });
@@ -94,10 +94,9 @@ const getRegisterByDevice = async (req,res) => {
 
 const updateRegister = async (req,res) => {
     try {
-        console.log(req.body)
+        
         const {id} = req.params;
         const { status } = req.body;
-
         // Update Register store name
         const data = await Register.findByIdAndUpdate({ _id: id }, {
             status, 

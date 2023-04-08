@@ -9,6 +9,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import AdminDashboardScreen from '../screens/AdminDashboardScreen';
 import RegistrationListScreen from '../screens/RegistrationListScreen';
+import AdminStoreListScreen from '../screens/AdminStoreListScreen';
 import MainStoreScreen from '../screens/MainStoreScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
@@ -45,10 +46,11 @@ const RootStack = () =>{
             >
 
                 {/* For ADMIN App */}
-                <Stack.Screen name="RegistrationListScreen" component={RegistrationListScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Register" component={RegisterScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="AdminDashboardScreen" component={AdminDashboardScreen} options={{ headerTintColor: tertiary}}/>
+                <Stack.Screen name="RegistrationListScreen" component={RegistrationListScreen} options={{ headerTintColor: tertiary}}/>
+                <Stack.Screen name="AdminStoreListScreen" component={AdminStoreListScreen} options={{ headerTintColor: tertiary}}/>
                 
                 
                 {/* For Store App */}

@@ -63,7 +63,7 @@ const AdminDashboardScreen = ({navigation, route}) => {
                                 Registrations
                             </ButtonText>
                         </StyledButton>
-                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('')}}>
+                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('AdminStoreListScreen')}}>
                             <MaterialIcons name="hardware" size={25}  color={primary} /> 
                             <ButtonText adminDash={true}>Hardware Stores</ButtonText>
                         </StyledButton>
