@@ -11,7 +11,14 @@ let ss = d.getSeconds();
 
 const dateNow = `${yyyy}-${mm}-${dd}  ${hh}:${minutes}:${ss}`;
 
-const getAllRegisters = async (req,res) => {};
+const getAllRegisters = async (req,res) => {
+    try {
+        const data = await Register.find({}).sort({created_at: -1}).limit(req.query._end);
+        res.status(200).json({ message: "", status: 'SUCCESS', data });
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
 
 const createRegister = async (req,res) => {
     try {
@@ -85,7 +92,24 @@ const getRegisterByDevice = async (req,res) => {
 };
 
 
-const updateRegister = async (req,res) => {};
+const updateRegister = async (req,res) => {
+    try {
+        console.log(req.body)
+        const {id} = req.params;
+        const { status } = req.body;
+
+        // Update Register store name
+        const data = await Register.findByIdAndUpdate({ _id: id }, {
+            status, 
+            updated_at: dateNow
+        })
+
+        res.status(200).json({ message: "Register updated successfully", status: 'SUCCESS', data });
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
 
 const deactivateRegister = async (req,res) => {};
 

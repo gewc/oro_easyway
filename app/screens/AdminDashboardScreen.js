@@ -9,7 +9,9 @@ import {
 
 const { primary, brand, darkLight } = Colors;
 
-const AdminDashboardScreen = ({navigation}) => {
+const AdminDashboardScreen = ({navigation, route}) => {
+    const {data} = route.params;
+    console.log(data);
 
     useEffect(() => {
         const backAction = () => {
@@ -55,7 +57,7 @@ const AdminDashboardScreen = ({navigation}) => {
                     />
                     <PageTitle dashbaord={true}>Admin Dashboard</PageTitle>
                     <StyledFormArea>
-                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('')}}>
+                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('RegistrationListScreen', {data})}}>
                             <MaterialIcons name="app-registration" size={25}  color={primary} /> 
                             <ButtonText adminDash={true}> 
                                 Registrations

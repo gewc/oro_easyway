@@ -308,6 +308,42 @@ export const StyledButton = styled.TouchableOpacity`
     border-radius: 10px;
   `}
 
+  ${(props) => props.approved && `
+    background-color: #116530;
+    flex-direction: row;
+    margin-top: 0px;
+    border-radius: 60px;
+    padding: 5px;
+    height: 35px;
+    border: 2px solid #2F5233;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  `}
+
+  ${(props) => props.reject && `
+    background-color: #E32227;
+    flex-direction: row;
+    margin-top: 0px;
+    border-radius: 60px;
+    padding: 5px;
+    height: 35px;
+    border: 2px solid #6D0E10;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  `}
+
+  ${(props) => props.pending && `
+    background-color: #828E7B;
+    flex-direction: row;
+    margin-top: 0px;
+    border-radius: 60px;
+    padding: 5px;
+    height: 35px;
+    border: 2px solid #555D50;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  `}
+
 `
 
 export const ButtonText = styled.Text`

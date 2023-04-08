@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}) => {
                     handleMessage(message, status)
                 } else {
                     navigation.dispatch(
-                        StackActions.replace('AdminDashboardScreen', {...data[0]})
+                        StackActions.replace('AdminDashboardScreen', {data: data})
                       );
                 }
                 setSubmitting(false)

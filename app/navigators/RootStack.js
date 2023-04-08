@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import AdminDashboardScreen from '../screens/AdminDashboardScreen';
+import RegistrationListScreen from '../screens/RegistrationListScreen';
 import MainStoreScreen from '../screens/MainStoreScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
@@ -40,13 +41,15 @@ const RootStack = () =>{
                         paddingLeft: 20
                     }
                 }}
-                initialRouteName="Login"
+                // initialRouteName="Login"
             >
 
                 {/* For ADMIN App */}
+                <Stack.Screen name="RegistrationListScreen" component={RegistrationListScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Register" component={RegisterScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="AdminDashboardScreen" component={AdminDashboardScreen} options={{ headerTintColor: tertiary}}/>
+                
                 
                 {/* For Store App */}
                 {/* <Stack.Screen name="MainStoreScreen" component={MainStoreScreen} />
