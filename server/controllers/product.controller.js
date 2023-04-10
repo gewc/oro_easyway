@@ -95,7 +95,25 @@ const createProduct = async (req,res) => {
 
 const getProductByID = async (req,res) => {};
 
-const updateProduct = async (req,res) => {};
+const updateProduct = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const { name, description, price, quantity } = req.body;
+
+        // Update Store details
+        await Product.findByIdAndUpdate({ _id: id}, {
+            name, 
+            description, 
+            price, 
+            quantity,
+            updated_at: dateNow
+        })
+        res.status(200).json({ message: "Product updated successfully", status: 'SUCCESS', data: {} });
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
 
 const deactivateProduct = async (req,res) => {};
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ImageBackground, ActivityIndicator, BackHandler, Alert } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons' 
+import { useRoute } from '@react-navigation/native';
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  StyledButton, ButtonText, PageLogo, DashboardContainer, Avatar, LeftIcon } from '../components/styles'
@@ -13,19 +14,24 @@ const AdminDashboardScreen = ({navigation, route}) => {
     const {data} = route.params;
     console.log(data);
 
+    const screen = useRoute();
     useEffect(() => {
         const backAction = () => {
-            Alert.alert("Log out!", "Are you sure want to exit the app?", [
-                {
-                    text: "Cancel",
-                    onPress: () => null,
-                    style: "cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: () => BackHandler.exitApp(),
-                },
-            ])
+            
+            if(navigation.isFocused()){
+                Alert.alert("Log out!", "Are you sure want to exit the app?", [
+                    {
+                        text: "Cancel",
+                        onPress: () => null,
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => BackHandler.exitApp(),
+                    },
+                ])
+                return true;
+            }
         }
 
         const backButton = BackHandler.addEventListener(
@@ -36,6 +42,7 @@ const AdminDashboardScreen = ({navigation, route}) => {
         return () => backButton.remove()
     }, [])
 
+    
 
   return (
     <StyledContainer dashbaord={true}>
@@ -63,7 +70,7 @@ const AdminDashboardScreen = ({navigation, route}) => {
                                 Registrations
                             </ButtonText>
                         </StyledButton>
-                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('AdminStoreListScreen')}}>
+                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('AdminStoreListScreen', {data})}}>
                             <MaterialIcons name="hardware" size={25}  color={primary} /> 
                             <ButtonText adminDash={true}>Hardware Stores</ButtonText>
                         </StyledButton>

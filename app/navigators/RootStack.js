@@ -10,6 +10,10 @@ import RegisterScreen from '../screens/RegisterScreen';
 import AdminDashboardScreen from '../screens/AdminDashboardScreen';
 import RegistrationListScreen from '../screens/RegistrationListScreen';
 import AdminStoreListScreen from '../screens/AdminStoreListScreen';
+import AdminAddStoreDetailsScreen from '../screens/AdminAddStoreDetailsScreen';
+import AdminStoreProfileScreen from '../screens/AdminStoreProfileScreen';
+import AdminStoreProductListScreen from '../screens/AdminStoreProductListScreen';
+import AdminMapScreen from '../screens/AdminMapScreen';
 import MainStoreScreen from '../screens/MainStoreScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
@@ -51,6 +55,10 @@ const RootStack = () =>{
                 <Stack.Screen name="AdminDashboardScreen" component={AdminDashboardScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="RegistrationListScreen" component={RegistrationListScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="AdminStoreListScreen" component={AdminStoreListScreen} options={{ headerTintColor: tertiary}}/>
+                <Stack.Screen name="AdminAddStoreDetailsScreen" component={AdminAddStoreDetailsScreen} options={{ headerTintColor: primary}}/>
+                <Stack.Screen name="AdminMapScreen" component={AdminMapScreen} options={{ headerTintColor: tertiary}} />
+                <Stack.Screen name="AdminStoreProfileScreen" component={AdminStoreProfileScreen} options={{ headerTintColor: tertiary}} />
+                <Stack.Screen name="AdminStoreProductListScreen" component={AdminStoreProductListScreen} options={{ headerTintColor: tertiary}} />
                 
                 
                 {/* For Store App */}

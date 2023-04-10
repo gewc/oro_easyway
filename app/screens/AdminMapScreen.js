@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 
 import { StyledButton, ButtonText, ExtraText, StyledContainer, DashboardContainer } from '../components/styles'
 
-export default function MapScreen({navigation, route}) {
+export default function AdminMapScreen({navigation, route}) {
     const {storeName, location} = route.params
     const [mapRegion, setMapRegion] = useState({
         latitude: 8.477217,
@@ -83,7 +83,7 @@ export default function MapScreen({navigation, route}) {
         if(mlocation !== null){
           const locDet = `Latitude: ${mlocation.coords.latitude}  -  Longitude: ${mlocation.coords.longitude}`
           const loc = {latitude: mlocation.coords.latitude, longitude: mlocation.coords.longitude}
-          navigation.navigate('AddStoreDetailsScreen', {storeName,locDetails: locDet, location: loc})
+          navigation.navigate('AdminAddStoreDetailsScreen', {storeName,locDetails: locDet, location: loc})
         }
       }}>
         <ButtonText map={true}>SET STORE LOCATION</ButtonText>

@@ -269,6 +269,17 @@ export const StyledButton = styled.TouchableOpacity`
     height: 70px;
   `}
 
+  ${(props) => props.adminStoreProfile == true && `
+    background-color: ${brand};
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 10px;
+    border: 3px solid ${tertiary};
+    height: 50px;
+    padding: 10px;
+    width: 150px;
+  `}
+
   ${(props) => props.adminDash == true && `
     background-color: rgba(0,0,0,0.30);
     flex-direction: row;
@@ -359,6 +370,18 @@ export const StyledButton = styled.TouchableOpacity`
     margin-bottom: 5px;
   `}
 
+  ${(props) => props.edit && `
+    background-color: #DDDA20;
+    flex-direction: row;
+    margin-top: 0px;
+    border-radius: 60px;
+    padding: 5px;
+    height: 35px;
+    border: 2px solid #8D8B15;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  `}
+
 `
 
 export const ButtonText = styled.Text`
@@ -378,6 +401,11 @@ export const ButtonText = styled.Text`
     font-size: 28px;
     font-weight: 700;
     padding-left: 10px;
+  `}
+
+  ${(props) => props.adminStoreProfile == true && `
+    font-size: 18px;
+    font-weight: 700;
   `}
 
   ${(props) => props.map == true && `

@@ -15,7 +15,7 @@ const dateNow = `${yyyy}-${mm}-${dd}  ${hh}:${minutes}:${ss}`;
 
 const getAllStores = async (req,res) => {
     try {
-        const stores = await Store.find({}).limit(req.query._end);
+        const stores = await Store.find({}).sort({created_at: -1}).limit(req.query._end);
         res.status(200).json({ message: "", status: 'SUCCESS', data: stores });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });

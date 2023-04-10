@@ -16,7 +16,7 @@ axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 const { primary, brand, darkLight, green, red, tertiary } = Colors;
 
 const AdminStoreListScreen = ({navigation, route}) => {
-    // const { data } = route.params
+    const { data } = route.params
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const [messageModal, setMessageModal] = useState('');
@@ -106,6 +106,7 @@ const AdminStoreListScreen = ({navigation, route}) => {
                         icon="search"
                         navigation={navigation}
                         onChangeText={text => searchProduct(text)}
+                        data={data}
                     />
                     <MsgBox type={messageType} product={true}>{message}</MsgBox>
 
@@ -121,6 +122,7 @@ const AdminStoreListScreen = ({navigation, route}) => {
                             index={index} 
                             data={productData} 
                             convertDateToString={convertDateToString}
+                            navigation={navigation}
                         />}
                     keyExtractor={item => item._id}
                     contentContainerStyle={{ paddingBottom: 50 }}
@@ -134,7 +136,7 @@ const AdminStoreListScreen = ({navigation, route}) => {
   )
 }
 
-const Item = ({item, index, data}) => (
+const Item = ({item, index, data, navigation}) => (
     <ImageBackground
         source={require('./../assets/bg.png')} 
         resizeMode="cover"
@@ -166,7 +168,7 @@ const Item = ({item, index, data}) => (
             <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>{item.email.substring(0, 50)}</Text>
         </View>
         <View style={{ width: '20%'}}>
-            <StyledButton view={true} onPress={() => {}}>
+            <StyledButton view={true} onPress={() => {navigation.navigate('AdminStoreProfileScreen', {storeData: item})}}>
                 <ButtonText> <Entypo name='eye' size={20}  color={primary} /> </ButtonText>
             </StyledButton>
         </View>
@@ -185,7 +187,7 @@ const MyTextInput = ({ label, ...props}) =>{
     )
 }
 
-const MyTextInputSearch = ({ label, icon, navigation,  ...props}) =>{
+const MyTextInputSearch = ({ label, icon, navigation, data,  ...props}) =>{
     return(
         <View style={{
             flexDirection: 'row',
@@ -202,7 +204,7 @@ const MyTextInputSearch = ({ label, icon, navigation,  ...props}) =>{
                 </LeftIcon>
                 <StyledTextInput {...props} />
             </View>
-            <StyledButton product={true} onPress={() => {}}>
+            <StyledButton product={true} onPress={() => {navigation.navigate('AdminAddStoreDetailsScreen',{data,locDetails: null, location: null})}}>
                 <ButtonText><Octicons name="plus" size={22}  color={primary} /></ButtonText>
             </StyledButton>
         </View>
