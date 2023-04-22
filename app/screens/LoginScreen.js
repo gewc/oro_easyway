@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, Alert, BackHandler } from 'react-native'
 import { StackActions } from '@react-navigation/native';
+import * as Network from 'expo-network';
 
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 
@@ -21,6 +22,7 @@ const LoginScreen = ({navigation}) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
+    const [isConnectedToNet, setIsConnectedToNet] = useState(null);
 
     const handleLogin = async (credentials, setSubmitting) => {
         handleMessage(null)
@@ -50,6 +52,29 @@ const LoginScreen = ({navigation}) => {
         setMessage(message);
         setMessageType(type);
     }
+
+    const checkInternet = async () => {
+       let net =  await Network.getNetworkStateAsync();
+
+       if(isConnectedToNet == null){
+            if(!net.isInternetReachable){ //if there is no internet
+                Alert.alert("No Internet!", "Please check your internet connection", [
+                    {
+                        text: "Ok",
+                        onPress: () => BackHandler.exitApp(),
+                    },
+                ])
+                return true;
+
+            }
+        }
+       setIsConnectedToNet(net.isInternetReachable)
+    }
+
+    useEffect(() => {
+        checkInternet()
+        
+    })
 
   return (
     <KeyboardingAvoidWrapper>

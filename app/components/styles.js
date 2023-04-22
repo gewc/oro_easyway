@@ -32,7 +32,10 @@ export const InnerContainer = styled.View`
   flex: 1;
   width: 100%;
   align-items: center;
-  top: 20px;
+  
+  ${(props) => props.profile && `
+    top: ${StatusBarHeight + 20 }px;
+  `}
 `
 
 export const DashboardContainer = styled(InnerContainer)`
@@ -51,17 +54,16 @@ export const PageLogo = styled.Image`
 `
 
 export const Avatar = styled.Image`
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   margin: auto;
   border-radius: 50px;
   border-width: 2px;
-  border-color: ${secondary};
+  border-color: ${darkLight};
   margin-bottom: 10px;
   margin-top: 10px;
-  position: absolute;
-  right: 15px;
-  top: ${StatusBarHeight}px;
+
+
 `
 
 export const WelcomeImage = styled.Image`
@@ -327,8 +329,8 @@ export const StyledButton = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 0px;
     border-radius: 60px;
-    padding: 5px;
-    height: 35px;
+    padding: 2px;
+    height: 28px;
     border: 2px solid #2F5233;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -339,8 +341,8 @@ export const StyledButton = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 0px;
     border-radius: 60px;
-    padding: 5px;
-    height: 35px;
+    padding: 2px;
+    height: 28px;
     border: 2px solid #6D0E10;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -351,8 +353,8 @@ export const StyledButton = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 0px;
     border-radius: 60px;
-    padding: 5px;
-    height: 35px;
+    padding: 2px;
+    height: 28px;
     border: 2px solid #555D50;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -363,8 +365,8 @@ export const StyledButton = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 0px;
     border-radius: 60px;
-    padding: 5px;
-    height: 35px;
+    padding: 2px;
+    height: 28px;
     border: 2px solid #003060;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -416,6 +418,7 @@ export const ButtonText = styled.Text`
   ${(props) => props.mapLoading == true && `
     color: ${tertiary};
   `}
+
 `
 
 export const MsgBox = styled.Text`
@@ -506,4 +509,33 @@ export const BottomNav = styled.View`
   height: 8%;
   bottom: 0px;
   background-color: ${brand};
+`
+
+export const NotifiText = styled.Text`
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  top: 0px;
+  right: 0px;
+  background-color: ${red};
+  color: ${primary};
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px;
+  padding-left: 6px;
+
+`
+
+export const UserText = styled.Text`
+  position: absolute;
+  width: 150px;
+  height: 30px;
+  bottom: 10px;
+  left: 15px;
+  background-color: transparent;
+  color: ${primary};
+  font-size: 14px;
+  font-weight: 700;
+  font-style: italic;
 `

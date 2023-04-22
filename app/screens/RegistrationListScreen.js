@@ -182,42 +182,45 @@ const Item = ({item, index, data, convertDateToString, handleRegAction}) => (
         }}
     >
         
-        <Entypo name='shopping-cart' size={40}  color={primary}  
+        <MaterialIcons name="app-registration"  size={40}  color={primary}  
             style={{
                 width: 40,
                 height: 40,
                 marginLeft:10
             }} />
-        <View style={{ width: '60%'}}>
+        <View style={{ width: '60%',flexDirection: 'column', justifyContent:'space-evenly'}}>
             <Text style={{fontSize: 18,fontWeight: '800', marginLeft: 10, marginTop: 10, color:primary  }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.store_name.toUpperCase()}</Text>
             <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>Device ID: {item.device_id.substring(0, 50)}</Text>
             <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>Date: {convertDateToString(item.created_at)}</Text>
             <Text style={{fontSize: 14,marginLeft: 10, marginBottom: 10, color: primary }}>Status: {item.status.substring(0, 50)}</Text>
         </View>
-        { item.status == 'Pending' && <View style={{ width: '20%'}}>
+        { item.status == 'Pending' && <View style={{ width: '20%',flexDirection: 'column', justifyContent:'space-evenly'}}>
             <StyledButton approved={true} onPress={() => {handleRegAction(item._id,'Approved')}}>
-                <ButtonText> <Entypo name='check' size={20}  color={primary} /> </ButtonText>
+                <ButtonText> <Entypo name='check' size={18}  color={primary} /> </ButtonText>
             </StyledButton>
             <StyledButton reject={true} onPress={() => {handleRegAction(item._id,'Reject')}}>
-                <ButtonText> <Entypo name='cross' size={20}  color={primary} /> </ButtonText>
+                <ButtonText> <Entypo name='cross' size={18}  color={primary} /> </ButtonText>
+            </StyledButton>
+            {/* <StyledButton view={true} onPress={() => {}}>
+                <ButtonText register={true}> <Entypo name='eye' size={18}  color={primary} /> </ButtonText>
+            </StyledButton> */}
+        </View>}
+
+        { item.status == 'Approved' && <View style={{ width: '20%',flexDirection: 'column', justifyContent:'space-evenly'}}>
+            <StyledButton pending={true} onPress={() => {handleRegAction(item._id,'Pending')}}>
+                <ButtonText> <MaterialIcons name='pending-actions' size={18}  color={primary} /> </ButtonText>
+            </StyledButton>
+            <StyledButton reject={true} onPress={() => {handleRegAction(item._id,'Reject')}}>
+                <ButtonText> <Entypo name='cross' size={18}  color={primary} /> </ButtonText>
             </StyledButton>
         </View>}
 
-        { item.status == 'Approved' && <View style={{ width: '20%'}}>
-            <StyledButton pending={true} onPress={() => {handleRegAction(item._id,'Pending')}}>
-                <ButtonText> <MaterialIcons name='pending-actions' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-            <StyledButton reject={true} onPress={() => {handleRegAction(item._id,'Reject')}}>
-                <ButtonText> <Entypo name='cross' size={20}  color={primary} /> </ButtonText>
-            </StyledButton>
-        </View>}
-
-        { item.status == 'Reject' && <View style={{ width: '20%'}}>
+        { item.status == 'Reject' && <View style={{ width: '20%',flexDirection: 'column', justifyContent:'space-evenly'}}>
             <StyledButton approved={true} onPress={() => {handleRegAction(item._id,'Approved')}}>
-                <ButtonText> <Entypo name='check' size={20}  color={primary} /> </ButtonText>
+                <ButtonText> <Entypo name='check' size={18}  color={primary} /> </ButtonText>
             </StyledButton>
             <StyledButton pending={true} onPress={() => {handleRegAction(item._id,'Pending')}}>
-                <ButtonText> <MaterialIcons name='pending-actions' size={20}  color={primary} /> </ButtonText>
+                <ButtonText> <MaterialIcons name='pending-actions' size={18}  color={primary} /> </ButtonText>
             </StyledButton>
         </View>}
 

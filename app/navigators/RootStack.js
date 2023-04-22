@@ -14,6 +14,7 @@ import AdminAddStoreDetailsScreen from '../screens/AdminAddStoreDetailsScreen';
 import AdminStoreProfileScreen from '../screens/AdminStoreProfileScreen';
 import AdminStoreProductListScreen from '../screens/AdminStoreProductListScreen';
 import AdminMapScreen from '../screens/AdminMapScreen';
+import AdminProfileScreen from '../screens/AdminProfileScreen';
 import MainStoreScreen from '../screens/MainStoreScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MaterialSearch from '../screens/MaterialSearch';
@@ -59,6 +60,7 @@ const RootStack = () =>{
                 <Stack.Screen name="AdminMapScreen" component={AdminMapScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="AdminStoreProfileScreen" component={AdminStoreProfileScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="AdminStoreProductListScreen" component={AdminStoreProductListScreen} options={{ headerTintColor: tertiary}} />
+                <Stack.Screen name="AdminProfileScreen" component={AdminProfileScreen} options={{ headerTintColor: tertiary}} />
                 
                 
                 {/* For Store App */}

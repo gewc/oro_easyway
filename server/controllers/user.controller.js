@@ -45,8 +45,43 @@ const createUser = async (req,res) => {
 
 const getUserByID = async (req,res) => {};
 
-const updateUser = async (req,res) => {};
+const updateUser = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const { name, address, email } = req.body;
+
+        // Update Store details
+        await User.findByIdAndUpdate({ _id: id}, {
+            name,  
+            email, 
+            address, 
+            updated_at: dateNow
+        })
+        res.status(200).json({ message: "Store updated successfully", status: 'SUCCESS', data: {} });
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
+
+const updatePassword = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const { password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        // Update Store details
+        await User.findByIdAndUpdate({ _id: id}, {
+            password: hashedPassword,  
+            updated_at: dateNow
+        })
+        res.status(200).json({ message: "Store updated successfully", status: 'SUCCESS', data: {} });
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
 
 const deactivateUser = async (req,res) => {};
 
-export { getAllUsers, createUser, getUserByID, updateUser, deactivateUser };
+export { getAllUsers, createUser, getUserByID, updateUser, updatePassword, deactivateUser };
