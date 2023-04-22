@@ -21,7 +21,9 @@ const login = async (req, res) => {
     }
 };
 
-const logout = async (req, res) => {};
+const logout = async (req, res) => {
+    
+};
 
 
 export { login, logout };
