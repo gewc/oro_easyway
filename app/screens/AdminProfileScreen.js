@@ -24,13 +24,15 @@ const AdminProfileScreen = ({navigation, route}) => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const [visibleUpdate, setVisibleUpdate] = useState(false);
+    const [messageModal, setMessageModal] = useState('');
+    const [messageTypeModal, setMessageTypeModal] = useState();
     const {userData} = route.params
     const data = userData.result
     console.log("userData", route.params)
 
-    const handleUpdate = async (data, setSubmitting) => {
+    const handleUpdate = async (values, setSubmitting) => {
 
-        await axios.patch('/users/'+data._id,data)
+        await axios.patch('/users/'+data._id,values)
             .then((response) => {
                 const result = response.data;
                 const { message, status } = result;
@@ -50,9 +52,9 @@ const AdminProfileScreen = ({navigation, route}) => {
             });
     }
 
-    const handleChangePass = async (data, setSubmitting) => {
-
-        await axios.patch('/users/changepass/'+data._id,data)
+    const handleChangePass = async (values, setSubmitting) => {
+        console.log(data._id)
+        await axios.patch('/users/changepass/'+data._id,values)
             .then((response) => {
                 const result = response.data;
                 const { message, status } = result;
@@ -64,6 +66,7 @@ const AdminProfileScreen = ({navigation, route}) => {
                     handleMessage(message, status)
                 }
                 setSubmitting(false)
+                setVisibleUpdate(!visibleUpdate)
             })
             .catch( error => {
                 console.log(error.message)
@@ -75,6 +78,11 @@ const AdminProfileScreen = ({navigation, route}) => {
     const handleMessage = (message, type = 'FAILED') => {
         setMessage(message);
         setMessageType(type);
+    }
+
+    const handleMessageModal = (message, type = 'FAILED') => {
+        setMessageModal(message);
+        setMessageTypeModal(type);
     }
 
   return (
@@ -135,7 +143,7 @@ const AdminProfileScreen = ({navigation, route}) => {
                         </StyledButton> }
 
                         <StyledButton adminStoreProfile={true} onPress={() => {setVisibleUpdate(true)}}>
-                            <ButtonText adminStoreProfile={true}>Change Password</ButtonText>
+                            <ButtonText adminStoreProfile={true} adjustsFontSizeToFit={true} numberOfLines={1}>Change Password</ButtonText>
                         </StyledButton>
                     </View>
 
@@ -151,6 +159,7 @@ const AdminProfileScreen = ({navigation, route}) => {
                     visible={visibleUpdate}
                     onRequestClose={() => {
                         setVisibleUpdate(!visibleUpdate)
+                        handleMessageModal('')
                     }}
                 >
                     <OuterdModalView>
@@ -177,9 +186,9 @@ const AdminProfileScreen = ({navigation, route}) => {
                                     <MyTextInput 
                                         storeProfile={true}
                                         label="New Password"
-                                        onChangeText={handleChange('newpass')}
-                                        onBlur={handleBlur('newpass')}
-                                        value={values.newpass}
+                                        onChangeText={handleChange('password')}
+                                        onBlur={handleBlur('password')}
+                                        value={values.password}
                                         secureTextEntry={hidePassword}
                                         isPassword={true}
                                         hidePassword={hidePassword}
@@ -190,15 +199,17 @@ const AdminProfileScreen = ({navigation, route}) => {
                                     <MyTextInput 
                                         storeProfile={true}
                                         label="Confirm Password"
-                                        onChangeText={handleChange('confirm_pass')}
-                                        onBlur={handleBlur('confirm_pass')}
-                                        value={values.confirm_pass}
+                                        onChangeText={handleChange('confirmPass')}
+                                        onBlur={handleBlur('confirmPass')}
+                                        value={values.confirmPass}
                                         secureTextEntry={hidePassword}
                                         isPassword={true}
                                         hidePassword={hidePassword}
                                         setHidePassword={setHidePassword}
 
                                     />
+
+                                    <MsgBox type={messageTypeModal} productModal={true}>{messageModal}</MsgBox>
 
                                     { !isSubmitting && <StyledButton onPress={handleSubmit}>
                                         <ButtonText>Submit</ButtonText>

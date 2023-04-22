@@ -75,7 +75,7 @@ const updatePassword = async (req,res) => {
             password: hashedPassword,  
             updated_at: dateNow
         })
-        res.status(200).json({ message: "Store updated successfully", status: 'SUCCESS', data: {} });
+        res.status(200).json({ message: "Updated successfully", status: 'SUCCESS', data: {} });
 
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
