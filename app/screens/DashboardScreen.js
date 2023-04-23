@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, ActivityIndicator } from "react-native"
+import { ImageBackground, ActivityIndicator, Alert, BackHandler } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import * as Location from 'expo-location';
 
@@ -17,7 +17,7 @@ const DashboardScreen = ({navigation}) => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
-    const [isLocationChecking, setIsLocationChecking] = useState(true);
+    const [isLocationChecking, setIsLocationChecking] = useState(false);
 
     const userLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -37,6 +37,29 @@ const DashboardScreen = ({navigation}) => {
 
     useEffect(() => {
         userLocation();
+        const backAction = () => {
+            
+            if(navigation.isFocused()){
+                Alert.alert("Log out!", "Are you sure want to exit the app?", [
+                    {
+                        text: "Cancel",
+                        onPress: () => null,
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => BackHandler.exitApp(),
+                    },
+                ])
+                return true;
+            }
+        }
+        const backButton = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        )
+
+        return () => backButton.remove()
     }, [])
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Image } from 'react-native';
 import { isPointWithinRadius } from 'geolib';
 import Hyperlink from 'react-native-hyperlink';
 
@@ -41,8 +41,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
                 console.log(status, message)
             } else {
                 // handleMessage(message, status)
-                // setStoreData(data)
-                dijkstra(data)
+                setStoreData(data)
                 console.log('storeData', storeData)
             }
             setIsLocationChecking(false);
@@ -66,8 +65,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
                 console.log(status, message)
             } else {
                 // handleMessage(message, status)
-                // setStoreData(data)
-                dijkstra(data)
+                setStoreData(data)
                 console.log('storeData', storeData)
             }
             setIsLocationChecking(false);
@@ -83,9 +81,9 @@ export default function MaterialSearchMapScreen({navigation, route}) {
       let startLoc = `${mapRegion.latitude},${mapRegion.longitude}`
       let storeLoc = JSON.parse(value.location)
       let endLoc = `${storeLoc.latitude},${storeLoc.longitude}`
-      const Direction_API = "AIzaSyA_3q3QEmAQg5i4wuM1jrBiKm0S1_FKASE"
+      const dpi = "AIzaSyA_3q3QEmAQg5i4wuM1jrBiKm0S1_FKASE"
 
-      let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${endLoc}&mode=WALKING&key=${Direction_API}`)
+      let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${endLoc}&mode=WALKING&key=${dpi}`)
 
       let respJson = await resp.json();
       let distance = respJson.routes[0].legs[0].distance;
@@ -133,7 +131,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             if(tempData.length == 0){ // if no store found on that range
               i++;
             }else{ // if store found, end loop
-              i += 1; 
+              i += 1; // set increment index to end the loop
             }
             
           }
@@ -168,7 +166,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             <Marker 
             coordinate={JSON.parse(v.location)}
             key={k}
-            title={v.name}
+            title={v.name.toUpperCase()}
             onPress={() => handleStorePress(v, mapRegion)}
 
             >
@@ -183,10 +181,11 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             key='-1'
             title= "You're Here"
         >
-          <MaterialIcons name='location-history' size={35}  color={brand} />
+          {/* <MaterialIcons name='location-history' size={35}  color={brand} /> */}
+          <Image source={require('./../assets/loc.png')} style={{height: 35, width:35}} />
         </Marker>
 
-        { polylineVisible && <Polyline coordinates={coordsPolyline} strokeColor='red' strokeWidth={3}/>}
+        { polylineVisible && <Polyline coordinates={coordsPolyline} strokeColor='red' strokeWidth={4}/>}
 
       </MapView>
       }
@@ -217,7 +216,8 @@ export default function MaterialSearchMapScreen({navigation, route}) {
 const MyMarker = ({ name, ...props}) =>{
   return(
       <View >
-          <Entypo  tisto name='shop' size={25}  color={red} elevation={1} />
+          {/* <Entypo  tisto name='shop' size={25}  color={red} elevation={1} /> */}
+          <Image source={require('./../assets/storeLoc.png')} style={{height: 35, width:35}} />
       </View>
   )
 }

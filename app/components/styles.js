@@ -396,7 +396,8 @@ export const ButtonText = styled.Text`
   `}
 
   ${(props) => props.findMaterial == true && `
-    font-size: 25px;
+    font-size: 28px;
+    font-weight: 700;
   `}
 
   ${(props) => props.adminDash == true && `
@@ -454,7 +455,7 @@ export const ExtraText = styled.Text`
   color: ${tertiary};
   font-size: 16px;
   ${(props) => props.storeName == true && `
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 800;
     color: ${brand};
     text-decoration: underline;

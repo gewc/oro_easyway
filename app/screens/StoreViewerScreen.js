@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Text,  } from "react-native"
+import { View, FlatList, Text, ImageBackground  } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 
-import { Octicons } from '@expo/vector-icons'
+import { Octicons, Entypo } from '@expo/vector-icons'
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  ProductContainer, StyledTextInput, StyledButton, ButtonText, OuterdModalView, InnerModalView, StyledInputLabel } from '../components/styles'
@@ -12,7 +12,7 @@ axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 // axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
 
 
-const { primary, brand, darkLight, green } = Colors;
+const { primary, brand, darkLight, green, tertiary } = Colors;
 
 const StoreViewerScreen = ({navigation, route}) => {
     const {storeName, _id} = route.params
@@ -112,6 +112,7 @@ const StoreViewerScreen = ({navigation, route}) => {
                     renderItem={({item, index}) => <Item item={item} index={index} data={productData}/>}
                     keyExtractor={item => item._id}
                     contentContainerStyle={{ paddingBottom: 50 }}
+                    style={{width: '90%'}}
                 />
 
             </ProductContainer>
@@ -121,34 +122,36 @@ const StoreViewerScreen = ({navigation, route}) => {
 }
 
 const Item = ({item, index, data}) => (
-    <View
+    <ImageBackground
+        source={require('./../assets/list_background.jpg')} 
+        resizeMode="cover"
         style={{
-            width: '95%',
+            width: '100%',
             borderRadius: 5,
             borderWidth: 0.5,
             borderWidth: 3,
-            borderColor: 'black',
-            backgroundColor: brand,
+            borderColor: tertiary,
             alignSelf: 'center',
-            marginTop: 15,
+            marginTop: 10,
             marginBottom: index == data.length - 1 ? 30 : 0,
             alignItems: 'center',
             flexDirection: 'row',
-            elevation: 2
+            paddingTop: 10,
+            paddingBottom: 10,
         }}
     >
         
-        <Octicons name='tools' size={60}  color={primary}  
+        <Entypo name='tools' size={40}  color={primary}  
             style={{
-                width: 60,
-                height: 60,
-                marginLeft:15
+                width: 45,
+                height: 45,
+                marginLeft:10
             }} />
         <View style={{ width: '80%'}}>
-            <Text style={{fontSize: 25,fontWeight: '800', marginLeft: 10, marginTop: 10, color:primary  }}>{item.name.toUpperCase()}</Text>
-            <Text style={{fontSize: 16,margin: 10, color:primary }}>{item.description.substring(0, 50)}</Text>
+            <Text style={{fontSize: 25,fontWeight: '800', marginLeft: 10, color:primary  }}>{item.name.toUpperCase()}</Text>
+            <Text style={{fontSize: 16, marginLeft: 10, color:primary }}>{item.description.substring(0, 50)}</Text>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
                 <Text style={{fontSize: 20, fontWeight: '600', color: 'yellow' }}>₱{item.price.$numberDecimal}</Text>
 
@@ -161,7 +164,7 @@ const Item = ({item, index, data}) => (
         </View>
         
 
-    </View>    
+    </ImageBackground>    
 );
 
 const MyTextInput = ({ label, ...props}) =>{
