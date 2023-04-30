@@ -185,7 +185,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
           <Image source={require('./../assets/loc.png')} style={{height: 35, width:35}} />
         </Marker>
 
-        { polylineVisible && <Polyline coordinates={coordsPolyline} strokeColor='red' strokeWidth={4}/>}
+        { polylineVisible && <Polyline coordinates={coordsPolyline} strokeColor='red' strokeWidth={2}/>}
 
       </MapView>
       }

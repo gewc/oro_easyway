@@ -46,7 +46,7 @@ export const DashboardContainer = styled(InnerContainer)`
 
 export const ProductContainer = styled(InnerContainer)`
   padding: 0px;
-  padding-top: 10px;
+  padding-top: 30px;
 `
 
 export const PageLogo = styled.Image`

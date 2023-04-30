@@ -17,7 +17,7 @@ const DashboardScreen = ({navigation}) => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
-    const [isLocationChecking, setIsLocationChecking] = useState(false);
+    const [isLocationChecking, setIsLocationChecking] = useState(true);
 
     const userLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();

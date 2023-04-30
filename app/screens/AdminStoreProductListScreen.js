@@ -170,6 +170,7 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
                     contentContainerStyle={{ paddingBottom: 50 }}
                 />
 
+                {/* Add New Product */}
                 <Modal
                     animationType='slide'
                     transparent={true}
@@ -242,6 +243,7 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
                     </OuterdModalView>
                 </Modal>
                 
+                {/* Update Product Modal */}
                 <Modal
                     animationType='slide'
                     transparent={true}

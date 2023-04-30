@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, View } from "react-native"
+import { ImageBackground, View, Alert, BackHandler } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -37,6 +37,31 @@ const StoreMenuScreen = ({navigation, route}) => {
             storeProfile !== null && setUData(storeProfile)
             console.log('uData', uData)
         }
+
+        const backAction = () => {
+            
+            if(navigation.isFocused()){
+                Alert.alert("Log out!", "Are you sure want to exit the app?", [
+                    {
+                        text: "Cancel",
+                        onPress: () => null,
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => BackHandler.exitApp(),
+                    },
+                ])
+                return true;
+            }
+        }
+        const backButton = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        )
+
+        return () => backButton.remove()
+
     }, [ustoreName, isFocused])
 
   return (
