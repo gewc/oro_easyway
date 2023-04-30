@@ -35,7 +35,7 @@ const getProductsByStore = async (req,res) => {
 
 const getProductsAndStore = async (req,res) => {
     try {
-        const {search} = req.params
+        const {search, mapRegion} = req.params
         const searchText = search.toLowerCase()
         const storeIds = []
         console.log('Search', searchText)
@@ -47,46 +47,46 @@ const getProductsAndStore = async (req,res) => {
             }
         })
 
-        const dijkstra = (data) => {
-            const tempData = [];
-            const range = [ 3000, 4000, 5000, 6000, 7000, 8000, 9000] // range by kilometers
-            const centerPoint = {
-              latitude: mapRegion.latitude,
-              longitude: mapRegion.longitude
-            }
+        // const dijkstra = (data) => {
+        //     const tempData = [];
+        //     const range = [ 3000, 4000, 5000, 6000, 7000, 8000, 9000] // range by kilometers
+        //     const centerPoint = {
+        //       latitude: mapRegion.latitude,
+        //       longitude: mapRegion.longitude
+        //     }
     
-            try {
-              for (let i = 0; i <= range.length;) {
-                const selectedRange = range[i];
-                data.map((item, key) => {
-                  let loc = JSON.parse(item.location)
-                  let point = {
-                    latitude: loc.latitude,
-                    longitude: loc.longitude
-                  }
-                  let isRange = isPointWithinRadius(point, centerPoint, selectedRange)
-                  if(!tempData.includes(item) && isRange){
-                    tempData.push(item)
-                  }
-                })
+        //     try {
+        //       for (let i = 0; i <= range.length;) {
+        //         const selectedRange = range[i];
+        //         data.map((item, key) => {
+        //           let loc = JSON.parse(item.location)
+        //           let point = {
+        //             latitude: loc.latitude,
+        //             longitude: loc.longitude
+        //           }
+        //           let isRange = isPointWithinRadius(point, centerPoint, selectedRange)
+        //           if(!tempData.includes(item) && isRange){
+        //             tempData.push(item)
+        //           }
+        //         })
     
-                if(tempData.length == 0){ // if no store found on that range
-                  i++;
-                }else{ // if store found, end loop
-                  i += 100; // set increment index to end the loop
-                }
+        //         if(tempData.length == 0){ // if no store found on that range
+        //           i++;
+        //         }else{ // if store found, end loop
+        //           i += 100; // set increment index to end the loop
+        //         }
                 
-              }
-              return tempData;
-            } catch (error) {
-              console.log(error.message)
-            }
+        //       }
+        //       return tempData;
+        //     } catch (error) {
+        //       console.log(error.message)
+        //     }
     
-        }
+        // }
 
         const storeData = Store.find({ _id: {$in: storeIds}})
             .then(data => {
-                let nData = dijkstra(data)
+                //let nData = dijkstra(data)
                 console.log('storeData',nData)
                 res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: nData });
             })
