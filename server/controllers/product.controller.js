@@ -40,6 +40,7 @@ const getProductsAndStore = async (req,res) => {
         const storeIds = []
         console.log('Search', searchText)
         
+        //Full-Text Search Algo MongoDB
         const data = await Product.find({name: new RegExp(searchText, 'i')});
         data.map((v, k) => {
             if(!storeIds.includes(v.store)){

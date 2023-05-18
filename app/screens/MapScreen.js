@@ -79,6 +79,9 @@ export default function MapScreen({navigation, route}) {
         </DashboardContainer>
       </StyledContainer>}
 
+        
+      <ExtraText map={true}>Drag the marker to your store location.</ExtraText>
+
       <StyledButton map={true} onPress={() => {
         if(mlocation !== null){
           const locDet = `Latitude: ${mlocation.coords.latitude}  -  Longitude: ${mlocation.coords.longitude}`

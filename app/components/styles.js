@@ -474,6 +474,22 @@ export const ExtraText = styled.Text`
     color: ${brand};
     font-size: 18px;
   `}
+
+  ${(props) => props.map == true && `
+    position: absolute;
+    text-align: center;
+    bottom: 80px;
+    align-self: center;
+    background-color: transparent;
+    justify-content: center;
+    width: 90%;
+    margin-bottom: 15px;
+    shadow-color: ${brand};
+    elevation: 7;
+    font-weight: 800;
+    color: ${red};
+    font-size: 18px;
+  `}
 `
 
 export const TextLink = styled.TouchableOpacity`

@@ -153,7 +153,7 @@ const Item = ({item, index, data}) => (
 
             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
-                <Text style={{fontSize: 20, fontWeight: '600', color: 'yellow' }}>₱{item.price.$numberDecimal}</Text>
+                <Text style={{fontSize: 20, fontWeight: '600', color: 'yellow' }}>₱{item.price}</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{fontSize: 20, fontWeight: '600', marginLeft: 20, color: green }}>Quantity: </Text>

@@ -258,11 +258,11 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
                             <PageTitle>Update Product</PageTitle>
                             <MsgBox type={messageTypeModal} productModal={true}>{messageModal}</MsgBox>
                             <Formik
-                                initialValues={product || {name: '', description: '', price:  {$numberDecimal: ''}, quantity: {$numberDecimal: ''}}}
+                                initialValues={product || {name: '', description: '', price:  '', quantity: {$numberDecimal: ''}}}
                                 enableReinitialize
                                 onSubmit={(values,{setSubmitting, resetForm}) => {
                                     //console.log(values);
-                                    if(values.name == '' || values.description == '' || values.price.$numberDecimal == '' || values.quantity.$numberDecimal == ''){
+                                    if(values.name == '' || values.description == '' || values.price == '' || values.quantity.$numberDecimal == ''){
                                         handleMessageModal(`Please don't leave a blank!`)
                                         setSubmitting(false)
                                     }else{
@@ -291,7 +291,7 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
                                         storeProfile={true}
                                         label="Price"
                                         onChangeText={handleChange('price')}
-                                        value={values.price.$numberDecimal}
+                                        value={values.price}
                                     />
                                     <MyTextInput
                                         storeProfile={true}
@@ -355,7 +355,7 @@ const Item = ({item, index, data, setVisible, setProduct}) => (
 
             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{fontSize: 16, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
-                <Text style={{fontSize: 16, fontWeight: '600', color: 'yellow' }}>₱{item.price.$numberDecimal}</Text>
+                <Text style={{fontSize: 16, fontWeight: '600', color: 'yellow' }}>₱{item.price}</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{fontSize: 16, fontWeight: '600', marginLeft: 20, color: green }}>Quantity: </Text>
