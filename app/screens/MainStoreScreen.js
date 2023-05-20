@@ -11,6 +11,7 @@ import {
 
 import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+// axios.defaults.baseURL = 'http://192.168.4.148:8080/api/v1';
 
 const { primary, brand, darkLight } = Colors;
 
@@ -114,7 +115,10 @@ const MainStoreScreen = ({navigation, route}) => {
                         mergeOjectData('@store', {storeName: data.register.store_name})
 
                         if(data.store == null){ //store has no details yet
-                            navigation.navigate('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
+                            navigation.dispatch(
+                                StackActions.replace('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
+                              );
+                            // navigation.navigate('AddStoreDetailsScreen', {storeName: data.register.store_name, location: ''})
                         }else{ //store is already had details
                             console.log('Store Menu.')
                             storeOjectData('@storeProfile', data.store)

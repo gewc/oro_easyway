@@ -72,10 +72,10 @@ const getRegisterByDevice = async (req,res) => {
     try {
         const {deviceId} = req.params;
         const isExist = await Register.findOne({ device_id: deviceId });
-        // console.log(deviceId)
+        console.log(isExist)
 
         if(isExist) {
-            const isStoreExist = await Store.findOne({ name: isExist.store_name });
+            const isStoreExist = await Store.findOne({ name: isExist.store_name.toLowerCase() });
             if(isStoreExist){ 
                 res.status(200).json({ message: "Store Exist!", status: 'SUCCESS', data: { register: isExist, store: isStoreExist } });
             }else{
