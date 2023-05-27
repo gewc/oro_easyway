@@ -32,7 +32,7 @@ const RegistrationListScreen = ({navigation, route}) => {
             .then((response) => {
                 const result = response.data;
                 const { message, status, data } = result;
-                console.log("Get Products Result", data)
+                console.log("Get Register Result", data)
 
 
                 if(status !== "SUCCESS"){
@@ -41,7 +41,7 @@ const RegistrationListScreen = ({navigation, route}) => {
                     if(data.length < 1){
                         setProductData(data)
                         setOldProductData(data)
-                        handleMessage("There is no product's yet.")
+                        handleMessage("There is no store yet.")
                     }else{
                         setProductData(data)
                         setOldProductData(data)

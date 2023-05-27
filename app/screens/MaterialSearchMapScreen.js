@@ -105,42 +105,42 @@ export default function MaterialSearchMapScreen({navigation, route}) {
     }
 
     //dijkstra algo = finding nearest path
-    const dijkstra = (data) => {
-        const tempData = [];
-        const range = [ 3000, 4000, 5000, 6000, 7000, 8000, 9000] // range by kilometers
-        const centerPoint = {
-          latitude: mapRegion.latitude,
-          longitude: mapRegion.longitude
-        }
+    // const dijkstra = (data) => {
+    //     const tempData = [];
+    //     const range = [ 3000, 4000, 5000, 6000, 7000, 8000, 9000] // range by kilometers
+    //     const centerPoint = {
+    //       latitude: mapRegion.latitude,
+    //       longitude: mapRegion.longitude
+    //     }
 
-        try {
-          for (let i = 0; i <= range.length;) {
-            const selectedRange = range[i];
-            data.map((item, key) => {
-              let loc = JSON.parse(item.location)
-              let point = {
-                latitude: loc.latitude,
-                longitude: loc.longitude
-              }
-              let isRange = isPointWithinRadius(point, centerPoint, selectedRange)
-              if(!tempData.includes(item) && isRange){
-                tempData.push(item)
-              }
-            })
+    //     try {
+    //       for (let i = 0; i <= range.length;) {
+    //         const selectedRange = range[i];
+    //         data.map((item, key) => {
+    //           let loc = JSON.parse(item.location)
+    //           let point = {
+    //             latitude: loc.latitude,
+    //             longitude: loc.longitude
+    //           }
+    //           let isRange = isPointWithinRadius(point, centerPoint, selectedRange)
+    //           if(!tempData.includes(item) && isRange){
+    //             tempData.push(item)
+    //           }
+    //         })
 
-            if(tempData.length == 0){ // if no store found on that range
-              i++;
-            }else{ // if store found, end loop
-              i += 1; // set increment index to end the loop
-            }
+    //         if(tempData.length == 0){ // if no store found on that range
+    //           i++;
+    //         }else{ // if store found, end loop
+    //           i += 1; // set increment index to end the loop
+    //         }
             
-          }
-          setStoreData(tempData)
-        } catch (error) {
-          console.log(error.message)
-        }
+    //       }
+    //       setStoreData(tempData)
+    //     } catch (error) {
+    //       console.log(error.message)
+    //     }
 
-    }
+    // }
 
     useEffect(() => {
       if(type == 'material'){

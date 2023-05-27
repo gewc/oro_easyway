@@ -10,51 +10,46 @@ import {
 
 import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
-// axios.defaults.baseURL = 'http://192.168.254.148:8080/api/v1';
+// axios.defaults.baseURL = 'http://192.168.70.148:8080/api/v1';
 
 
 const { primary, brand, darkLight, green, red, tertiary } = Colors;
 
-const AdminStoreListScreen = ({navigation, route}) => {
-    const { data } = route.params
+const MaterialSearchStoreListScreen = ({navigation, route}) => {
+    const {searchText, mapRegion, type} = route.params
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
-    const [messageModal, setMessageModal] = useState('');
-    const [messageTypeModal, setMessageTypeModal] = useState();
-    const [visible, setVisible] = useState(false);
     const [oldProductData, setOldProductData] = useState([]);
     const [productData, setProductData] = useState([]);
-    const [ind, setInd] = useState(0)
+    const [ind, setInd] = useState(0) 
 
-    const getStores = async () => {
-        handleMessage("Loading...", "Default")
-        await axios.get(`/stores`)
-            .then((response) => {
-                const result = response.data;
-                const { message, status, data } = result;
-                console.log("Get Products Result", data)
-
-
-                if(status !== "SUCCESS"){
-                    handleMessage(message, status)
-                } else {
-                    if(data.length < 1){
-                        setProductData(data)
-                        setOldProductData(data)
-                        handleMessage("There is no store yet.")
-                    }else{
-                        setProductData(data)
-                        setOldProductData(data)
-                        handleMessage("")
-                    }
-                    
+    const getHardwareStoreByMaterial = async () => {
+        await axios.get('/products/materialsearch/'+searchText+'/'+mapRegion)
+          .then((response) => {
+              const result = response.data;
+              const { message, status, data } = result;
+              console.log('Material Search Data',result)
+  
+              if(status !== "SUCCESS"){ // IF ERROR FROM SERVER
+                  handleMessage(message, status)
+                  console.log(status, message)
+              } else {
+                if(data.length < 1){
+                    setProductData(data)
+                    setOldProductData(data)
+                    handleMessage("There is no store yet.")
+                }else{
+                    setProductData(data)
+                    setOldProductData(data)
+                    handleMessage("")
                 }
-            })
-            .catch( error => {
-                console.log('Get All Register Error: ',error.message)
-                handleMessage("An error occured. Check your network and try again!")
-            });
-    }
+              }
+          })
+          .catch( error => {
+              console.log(error.message)
+              handleMessage("An error occured. Check your network and try again!")
+          });
+      }
 
     const searchProduct = (text) => {
         if(text == ''){
@@ -81,14 +76,10 @@ const AdminStoreListScreen = ({navigation, route}) => {
         setMessageType(type);
     }
 
-    const handleMessageModal = (message, type = 'FAILED') => {
-        setMessageModal(message);
-        setMessageTypeModal(type);
-    }
 
 
     useEffect(() => {
-        getStores();
+        getHardwareStoreByMaterial();
     }, [])
 
 
@@ -213,4 +204,4 @@ const MyTextInputSearch = ({ label, icon, navigation, data,  ...props}) =>{
 
 
 
-export default AdminStoreListScreen
+export default MaterialSearchStoreListScreen

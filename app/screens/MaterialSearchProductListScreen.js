@@ -14,7 +14,7 @@ axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 
 const { primary, brand, darkLight, green, tertiary, red } = Colors;
 
-const StoreProductListScreen = ({navigation, route}) => {
+const MaterialSearchProductListScreen = ({navigation, route}) => {
     const {storeName, data} = route.params
     const {_id} = data
     const [message, setMessage] = useState();
@@ -408,4 +408,4 @@ const MyTextInputSearch = ({ label, icon, setVisible,  ...props}) =>{
 
 
 
-export default StoreProductListScreen
+export default MaterialSearchProductListScreen

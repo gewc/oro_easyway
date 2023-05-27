@@ -28,8 +28,10 @@ const DashboardScreen = ({navigation}) => {
         setMapRegion({
             latitude: mylocation.coords.latitude,
             longitude: mylocation.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            // latitudeDelta: 0.0922,
+            // longitudeDelta: 0.0421,
+            latitudeDelta: 0.1222,
+            longitudeDelta: 0.1221,
         });
 
         setIsLocationChecking(false);

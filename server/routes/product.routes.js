@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.route('/').get(getAllProducts);
 router.route('/store/:id').get(getProductsByStore);
-router.route('/materialsearch/:search').get(getProductsAndStore);
+router.route('/materialsearch/:search/:mapRegion').get(getProductsAndStore);
 router.route('/').get(getAllProducts);
 router.route('/').post(createProduct);
 router.route('/:id').get(getProductByID);
