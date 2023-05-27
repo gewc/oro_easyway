@@ -89,14 +89,21 @@ const getProductsAndStore = async (req,res) => {
 
         const storeData = Store.find({ _id: {$in: storeIds}})
             .then(data => {
-                let nData = dijkstra(data, location)
-                console.log('storeData',nData)
-                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: nData });
+
+                let nData = prodData.map(v => ({ ...v, data}))
+
+                //let nData = dijkstra(data, location)
+
+               console.log('storeData',nData)
+
+                //res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: nData });
             })
             .catch(error => {
                 console.log(error.message);
                 res.status(200).json({ message: error.message, status: 'Failed', data: {} });
             })
+
+        
 
         
     } catch (error) {
