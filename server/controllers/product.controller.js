@@ -75,7 +75,7 @@ const getProductsAndStore = async (req,res) => {
                 if(tempData.length == 0){ // if no store found on that range
                   i++;
                 }else{ // if store found, end loop
-                  i += 100; // set increment index to end the loop
+                  i += 1; // set increment index to end the loop
                 }
                 
               }
@@ -90,7 +90,7 @@ const getProductsAndStore = async (req,res) => {
             .then(data => {
                 let nData = dijkstra(data, mapRegion)
                 console.log('storeData',nData)
-                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: data });
+                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: {storeData: nData, prodData} });
             })
             .catch(error => {
                 console.log(error.message);

@@ -6,7 +6,7 @@ import { Formik } from 'formik'
 import { Octicons, Entypo, MaterialIcons } from '@expo/vector-icons'
 
 import { 
-    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  ProductContainer, StyledTextInput, StyledButton, ButtonText, OuterdModalView, InnerModalView, StyledInputLabel } from '../components/styles'
+    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  ProductContainer, StyledTextInput, StyledButton, ButtonText, ExtraView, ExtraText } from '../components/styles'
 
 import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
@@ -24,6 +24,7 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
     const [ind, setInd] = useState(0) 
 
     const getHardwareStoreByMaterial = async () => {
+        handleMessage("Loading...", "Default")
         await axios.get('/products/materialsearch/'+searchText+'/'+mapRegion)
           .then((response) => {
               const result = response.data;
@@ -90,15 +91,11 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
         {/* <Avatar resizeMode="contain" source={require('./../assets/logo.png')}/> */}
         <InnerContainer>
             <ProductContainer>
-                <PageTitle >Hardware Store's</PageTitle>
+                <PageTitle> Material Search </PageTitle>
                 <StyledFormArea>
-                    <MyTextInputSearch 
-                        product={true}
-                        icon="search"
-                        navigation={navigation}
-                        onChangeText={text => searchProduct(text)}
-                        data={data}
-                    />
+                    <ExtraView>
+                        <ExtraText search={true}>Search Key: {searchText}</ExtraText>
+                    </ExtraView>
                     <MsgBox type={messageType} product={true}>{message}</MsgBox>
 
                 </StyledFormArea>
@@ -138,12 +135,13 @@ const Item = ({item, index, data, navigation}) => (
             borderWidth: 3,
             borderColor: darkLight,
             alignSelf: 'center',
-            marginTop: 15,
+            marginTop: 10,
             marginBottom: index == data.length - 1 ? 30 : 0,
             alignItems: 'center',
             flexDirection: 'row',
             paddingTop: 10,
             paddingBottom: 10,
+            gap: 2
         }}
     >
         
@@ -158,9 +156,9 @@ const Item = ({item, index, data, navigation}) => (
             <Text style={{fontSize: 14,marginLeft: 10, color:primary }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.address.substring(0, 50)}</Text>
             <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>{item.email.substring(0, 50)}</Text>
         </View>
-        <View style={{ width: '20%'}}>
-            <StyledButton view={true} onPress={() => {navigation.navigate('AdminStoreProfileScreen', {storeData: item})}}>
-                <ButtonText> <Entypo name='eye' size={20}  color={primary} /> </ButtonText>
+        <View style={{ width: '20%' }}>
+            <StyledButton viewLoc={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText, mapRegion, type: 'material'})}}>
+                <ButtonText> <Entypo name='location' size={20}  color={primary} /> </ButtonText>
             </StyledButton>
         </View>
 
@@ -168,40 +166,5 @@ const Item = ({item, index, data, navigation}) => (
 
     </ImageBackground>    
 );
-
-const MyTextInput = ({ label, ...props}) =>{
-    return(
-        <View>
-            <StyledInputLabel {...props} >{label}</StyledInputLabel>
-            <StyledTextInput {...props} />
-        </View>
-    )
-}
-
-const MyTextInputSearch = ({ label, icon, navigation, data,  ...props}) =>{
-    return(
-        <View style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-        }}>
-            <View style={{
-                width: '85%',
-                height: 50,
-                flexDirection: 'row',
-            }}>
-                <LeftIcon product={true} >
-                    <Octicons name={icon} size={30}  color={brand}  />
-                </LeftIcon>
-                <StyledTextInput {...props} />
-            </View>
-            <StyledButton product={true} onPress={() => {navigation.navigate('AdminAddStoreDetailsScreen',{data,locDetails: null, location: null})}}>
-                <ButtonText><Octicons name="plus" size={22}  color={primary} /></ButtonText>
-            </StyledButton>
-        </View>
-    )
-}
-
-
 
 export default MaterialSearchStoreListScreen

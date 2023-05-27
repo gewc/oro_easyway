@@ -384,6 +384,20 @@ export const StyledButton = styled.TouchableOpacity`
     margin-bottom: 5px;
   `}
 
+  ${(props) => props.viewLoc && `
+    background-color: #0E86D4;
+    flex-direction: row;
+    margin-top: 0px;
+    border-radius: 60px;
+    padding: 2px;
+    height: 35px;
+    width: 55px;
+    border: 2px solid #003060;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+  `}
+
 `
 
 export const ButtonText = styled.Text`
@@ -454,12 +468,14 @@ export const ExtraText = styled.Text`
   align-content: center;
   color: ${tertiary};
   font-size: 16px;
+
   ${(props) => props.storeName == true && `
     font-size: 25px;
     font-weight: 800;
     color: ${brand};
     text-decoration: underline;
   `}
+
   ${(props) => props.storeAddress == true && `
     font-size: 16px;
     font-weight: 500;
@@ -490,6 +506,13 @@ export const ExtraText = styled.Text`
     color: ${red};
     font-size: 18px;
   `}
+
+  ${(props) => props.search == true && `
+    font-size: 18px;
+    font-weight: 800;
+    color: ${brand};
+  `}
+
 `
 
 export const TextLink = styled.TouchableOpacity`
