@@ -96,7 +96,7 @@ const getProductsAndStore = async (req,res) => {
 
                console.log('storeData',nData)
 
-                //res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: nData });
+                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: nData });
             })
             .catch(error => {
                 console.log(error.message);
