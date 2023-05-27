@@ -37,9 +37,10 @@ const getProductsAndStore = async (req,res) => {
     try {
         const {search, mapRegion} = req.params
         const searchText = search.toLowerCase()
+        const location = JSON.parse(mapRegion)
         const storeIds = []
         console.log('Search', searchText)
-        console.log('mapRegion', mapRegion)
+        console.log('mapRegion', location)
         
         //Full-Text Search Algo MongoDB
         const prodData = await Product.find({name: new RegExp(searchText, 'i')});
@@ -88,9 +89,9 @@ const getProductsAndStore = async (req,res) => {
 
         const storeData = Store.find({ _id: {$in: storeIds}})
             .then(data => {
-                let nData = dijkstra(data, mapRegion)
+                let nData = dijkstra(data, location)
                 console.log('storeData',nData)
-                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: {storeData: nData, prodData} });
+                res.status(200).json({ message: "Search Materials", status: 'SUCCESS', data: nData });
             })
             .catch(error => {
                 console.log(error.message);

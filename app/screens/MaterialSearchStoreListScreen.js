@@ -25,7 +25,8 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
 
     const getHardwareStoreByMaterial = async () => {
         handleMessage("Loading...", "Default")
-        await axios.get('/products/materialsearch/'+searchText+'/'+mapRegion)
+        let location = JSON.stringify(mapRegion)
+        await axios.get('/products/materialsearch/'+searchText+'/'+location)
           .then((response) => {
               const result = response.data;
               const { message, status, data } = result;
