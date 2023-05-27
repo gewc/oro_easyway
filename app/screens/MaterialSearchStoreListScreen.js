@@ -30,19 +30,19 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
           .then((response) => {
               const result = response.data;
               const { message, status, data } = result;
-              console.log('Material Search Data',result)
+              console.log('Material Search Data',data)
   
               if(status !== "SUCCESS"){ // IF ERROR FROM SERVER
                   handleMessage(message, status)
                   console.log(status, message)
               } else {
                 if(data.length < 1){
-                    setProductData(data)
-                    setOldProductData(data)
+                    //setProductData(data)
+                    //setOldProductData(data)
                     handleMessage("There is no store yet.")
                 }else{
-                    setProductData(data)
-                    setOldProductData(data)
+                    //setProductData(data)
+                    //setOldProductData(data)
                     handleMessage("")
                 }
               }

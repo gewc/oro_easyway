@@ -90,7 +90,12 @@ const getProductsAndStore = async (req,res) => {
         const storeData = Store.find({ _id: {$in: storeIds}})
             .then(data => {
 
-                let nData = prodData.map(v => ({ ...v, data}))
+                let nData = prodData.map(v => {
+                    v.store_name = data.name;
+                    v.address = data.address;
+                    v.email = data.email;
+                    v.location = data.location;
+                })
 
                 //let nData = dijkstra(data, location)
 

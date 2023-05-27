@@ -24,7 +24,8 @@ const DashboardScreen = ({navigation}) => {
         if(status !== 'granted'){
             setErrorMsg('Permission to access location was denied.');
         }
-        let mylocation = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+        let mylocation = await Location.getCurrentPositionAsync({});
+
         setMapRegion({
             latitude: mylocation.coords.latitude,
             longitude: mylocation.coords.longitude,
