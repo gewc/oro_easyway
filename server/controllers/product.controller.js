@@ -94,7 +94,9 @@ const getProductsAndStore = async (req,res) => {
                     v.store_name = data.name;
                     v.address = data.address;
                     v.email = data.email;
+                    v.contact = data.contact;
                     v.location = data.location;
+                    return v
                 })
 
                 //let nData = dijkstra(data, location)
