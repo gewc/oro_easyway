@@ -41,7 +41,7 @@ const StoreSearch = ({navigation, route}) => {
                             onChangeText={text => setSearchText(text)}
 
                         />
-                        <StyledButton btnSearch={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText, mapRegion, type: 'store'})}}>
+                        <StyledButton btnSearch={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText, mapRegion, type: 'store', sData: {}})}}>
                             <ButtonText>Search</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

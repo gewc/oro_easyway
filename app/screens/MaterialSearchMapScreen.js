@@ -20,7 +20,7 @@ axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 const { primary, brand, darkLight, red } = Colors;
 
 export default function MaterialSearchMapScreen({navigation, route}) {
-    const {searchText, mapRegion, type} = route.params
+    const {searchText, mapRegion, type, sData} = route.params
     
     const [isLocationChecking, setIsLocationChecking] = useState(true);
     const [storeData, setStoreData] = useState(null);
@@ -104,49 +104,13 @@ export default function MaterialSearchMapScreen({navigation, route}) {
       setStoreDetails({...value, distance, duration})
     }
 
-    //dijkstra algo = finding nearest path
-    // const dijkstra = (data) => {
-    //     const tempData = [];
-    //     const range = [ 3000, 4000, 5000, 6000, 7000, 8000, 9000] // range by kilometers
-    //     const centerPoint = {
-    //       latitude: mapRegion.latitude,
-    //       longitude: mapRegion.longitude
-    //     }
-
-    //     try {
-    //       for (let i = 0; i <= range.length;) {
-    //         const selectedRange = range[i];
-    //         data.map((item, key) => {
-    //           let loc = JSON.parse(item.location)
-    //           let point = {
-    //             latitude: loc.latitude,
-    //             longitude: loc.longitude
-    //           }
-    //           let isRange = isPointWithinRadius(point, centerPoint, selectedRange)
-    //           if(!tempData.includes(item) && isRange){
-    //             tempData.push(item)
-    //           }
-    //         })
-
-    //         if(tempData.length == 0){ // if no store found on that range
-    //           i++;
-    //         }else{ // if store found, end loop
-    //           i += 1; // set increment index to end the loop
-    //         }
-            
-    //       }
-    //       setStoreData(tempData)
-    //     } catch (error) {
-    //       console.log(error.message)
-    //     }
-
-    // }
-
+  
     useEffect(() => {
-      if(type == 'material'){
-        getHardwareStoreByMaterial();
-      }else{
+      if(type == 'store'){
         getHardwareStore();
+      }else{
+        handleStorePress(sData, mapRegion)
+        setIsLocationChecking(false);
       }
         
     }, [])
@@ -161,7 +125,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
       > 
        
 
-        {storeData !== null && storeData.map((v, k) =>{
+        {storeData !== null && type == 'store' && storeData.map((v, k) =>{
           return (
             <Marker 
             coordinate={JSON.parse(v.location)}
@@ -174,6 +138,17 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             </Marker>
           )
         })
+        }
+
+        {type == 'material' && 
+            <Marker 
+            coordinate={JSON.parse(sData.location)}
+            key='0'
+            title={sData.name.toUpperCase()}
+
+            >
+              <MyMarker />
+            </Marker>
         }
 
         <Marker 
@@ -217,7 +192,7 @@ const MyMarker = ({ name, ...props}) =>{
   return(
       <View >
           {/* <Entypo  tisto name='shop' size={25}  color={red} elevation={1} /> */}
-          <Image source={require('./../assets/storeLoc.png')} style={{height: 35, width:35}} />
+          <Image source={require('./../assets/storeLoc.png')} style={{height: 25, width:25}} />
       </View>
   )
 }

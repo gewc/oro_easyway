@@ -10,7 +10,7 @@ import {
 
 import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
-// axios.defaults.baseURL = 'http://192.168.70.148:8080/api/v1';
+//axios.defaults.baseURL = 'http://192.168.70.148:8080/api/v1';
 
 
 const { primary, brand, darkLight, green, red, tertiary } = Colors;
@@ -37,12 +37,12 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
                   console.log(status, message)
               } else {
                 if(data.length < 1){
-                    //setProductData(data)
-                    //setOldProductData(data)
+                    setProductData(data)
+                    setOldProductData(data)
                     handleMessage("There is no store yet.")
                 }else{
-                    //setProductData(data)
-                    //setOldProductData(data)
+                    setProductData(data)
+                    setOldProductData(data)
                     handleMessage("")
                 }
               }
@@ -110,6 +110,7 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
                             item={item} 
                             index={index} 
                             data={productData} 
+                            mapRegion={mapRegion}
                             convertDateToString={convertDateToString}
                             navigation={navigation}
                         />}
@@ -125,7 +126,7 @@ const MaterialSearchStoreListScreen = ({navigation, route}) => {
   )
 }
 
-const Item = ({item, index, data, navigation}) => (
+const Item = ({item, index, data, mapRegion, navigation}) => (
     <ImageBackground
         source={require('./../assets/bg.png')} 
         resizeMode="cover"
@@ -154,11 +155,22 @@ const Item = ({item, index, data, navigation}) => (
             }} />
         <View style={{ width: '60%'}}>
             <Text style={{fontSize: 18,fontWeight: '800', marginLeft: 10, color:primary  }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.name.toUpperCase()}</Text>
-            <Text style={{fontSize: 14,marginLeft: 10, color:primary }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.address.substring(0, 50)}</Text>
-            <Text style={{fontSize: 14,marginLeft: 10, color:primary }}>{item.email.substring(0, 50)}</Text>
+            
+            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{fontSize: 16, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
+                <Text style={{fontSize: 16, fontWeight: '600', color: 'yellow' }}>₱{item.price}</Text>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{fontSize: 16, fontWeight: '600', marginLeft: 20, color: item.quantity.$numberDecimal > 20 ? green : red  }}>Quantity: </Text>
+                    <Text style={{fontSize: 16, fontWeight: '600', color: item.quantity.$numberDecimal > 20 ? green : red }}>{item.quantity.$numberDecimal}</Text>
+                </View>
+            </View>
+
+            <Text style={{fontSize: 14, fontWeight: '600', marginLeft: 10, marginTop: 7, color:darkLight }}>{item.storeData[0]?.name.toUpperCase()}</Text>
+            <Text style={{fontSize: 9, marginLeft: 10, color:primary }}>{item.storeData[0]?.address}</Text>
         </View>
         <View style={{ width: '20%' }}>
-            <StyledButton viewLoc={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText, mapRegion, type: 'material'})}}>
+            <StyledButton viewLoc={true} onPress={() => {navigation.navigate('MaterialSearchMapScreen', {searchText: '', mapRegion, type: 'material', sData: item.storeData[0]})}}>
                 <ButtonText> <Entypo name='location' size={20}  color={primary} /> </ButtonText>
             </StyledButton>
         </View>
