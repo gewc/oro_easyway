@@ -7,6 +7,7 @@ import userRouter from './routes/user.routes.js';
 import storeRouter from './routes/store.routes.js';
 import productRouter from './routes/product.routes.js';
 import registerRouter from './routes/register.routes.js';
+import viewRouter from './routes/view.routes.js';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/stores', storeRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/registers', registerRouter);
+app.use('/api/v1/views', viewRouter);
 
 const startServer = async () => {
     try {

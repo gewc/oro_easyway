@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { StyleSheet, View, ActivityIndicator, Image } from 'react-native';
-import { isPointWithinRadius } from 'geolib';
+import * as Device from 'expo-device';
 import Hyperlink from 'react-native-hyperlink';
+import * as Location from 'expo-location';
 
 
 import Constants from "expo-constants";
@@ -14,13 +15,14 @@ import { Colors, ButtonText, ExtraText, StyledContainer, DashboardContainer, Lef
 import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons' 
 
 import axios from 'axios'
-axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
+// axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 // axios.defaults.baseURL = 'http://192.168.254.147:8080/api/v1';
 
 const { primary, brand, darkLight, red } = Colors;
 
 export default function MaterialSearchMapScreen({navigation, route}) {
     const {searchText, mapRegion, type, sData} = route.params
+    
     
     const [isLocationChecking, setIsLocationChecking] = useState(true);
     const [storeData, setStoreData] = useState(null);
@@ -65,8 +67,9 @@ export default function MaterialSearchMapScreen({navigation, route}) {
                 console.log(status, message)
             } else {
                 // handleMessage(message, status)
+                handleStorePress(data[0], mapRegion)
                 setStoreData(data)
-                console.log('storeData', storeData)
+                // console.log('storeData', storeData)
             }
             setIsLocationChecking(false);
         })
@@ -75,6 +78,29 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             setIsLocationChecking(false);
             // handleMessage("An error occured. Check your network and try again!")
         });
+    }
+
+    const handleViewPress = async (storeId, name, mapRegion) => {
+      const deviceId = Device.osInternalBuildId
+      const {longitude, latitude} = mapRegion
+      let address = await Location.reverseGeocodeAsync({
+        longitude,
+        latitude,
+      });
+
+      await axios.post('http://192.168.157.147:8080/api/v1/views/',{storeId, deviceId, address})
+        .then((response) => {
+            const result = response.data;
+            const { message, status, data } = result;
+            console.log('View Store Data',result)
+            
+        })
+        .catch( error => {
+            console.log('View Store Data',error.message)
+        });
+
+      navigation.navigate('StoreViewerScreen', {_id: storeId, storeName: name})
+
     }
 
     const handleStorePress = async (value, mapRegion) => {
@@ -131,7 +157,7 @@ export default function MaterialSearchMapScreen({navigation, route}) {
             coordinate={JSON.parse(v.location)}
             key={k}
             title={v.name.toUpperCase()}
-            onPress={() => handleStorePress(v, mapRegion)}
+            // onPress={() => handleStorePress(v, mapRegion)}
 
             >
               <MyMarker />
@@ -182,6 +208,8 @@ export default function MaterialSearchMapScreen({navigation, route}) {
           distance={storeDetails?.distance?.text}
           duration={storeDetails?.duration?.text}
           navigation={navigation}
+          handleViewPress={handleViewPress}
+          mapRegion={mapRegion}
         /> }
 
     </View>
@@ -197,7 +225,7 @@ const MyMarker = ({ name, ...props}) =>{
   )
 }
 
-const MyStoreDetails = ({ id, name, address, contact, website, distance, duration, navigation, ...props}) =>{
+const MyStoreDetails = ({ id, name, address, contact, website, distance, duration, navigation, handleViewPress, mapRegion, ...props}) =>{
   return(
       <View style={styles.storeDetails}>
           <View style={{width: '75%'}}>
@@ -253,7 +281,7 @@ const MyStoreDetails = ({ id, name, address, contact, website, distance, duratio
             </View>
           </View>
           <View>
-            <StyledButton viewStore={true} onPress={() => {navigation.navigate('StoreViewerScreen', {_id: id, storeName: name})}}>
+            <StyledButton viewStore={true} onPress={() => {handleViewPress(id, name, mapRegion)}}>
               <ButtonText>View</ButtonText>
             </StyledButton>
           </View>

@@ -134,7 +134,7 @@ const updateProduct = async (req,res) => {
 
 const deactivateProduct = async (req,res) => {};
 
-//DIJKSTRA ALGORUTHM
+//DIJKSTRA ALGORITHM
 const dijkstra = (data, mapRegion) => {
     const distances = {};
     const paths = {};
