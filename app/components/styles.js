@@ -226,6 +226,11 @@ export const LeftIcon = styled.View`
     left: 0px;
   `}
 
+  ${(props) => props.pickImg && `
+    top: 10px;
+    left: 10px;
+  `}
+
 `
 
 export const RightIcon = styled.TouchableOpacity`
@@ -314,7 +319,13 @@ export const StyledButton = styled.TouchableOpacity`
     flex-direction: row;
     height: 50px;
     margin-top: 0px;
-    border-radius: 10px;
+  `}
+
+  ${(props) => props.addproduct && `
+    flex-direction: row;
+    height: 45px;
+    width: 80%;
+    margin: auto;
   `}
 
   ${(props) => props.viewStore && `
@@ -398,6 +409,15 @@ export const StyledButton = styled.TouchableOpacity`
     margin-left: 15px;
   `}
 
+  ${(props) => props.pickImg && `
+    flex-direction: row;
+    background-color: ${brand};
+    margin-top: 0px;
+    height: 35px;
+    padding: 10px;
+    border-radius: 10px;
+  `}
+
 `
 
 export const ButtonText = styled.Text`
@@ -432,6 +452,17 @@ export const ButtonText = styled.Text`
 
   ${(props) => props.mapLoading == true && `
     color: ${tertiary};
+  `}
+
+  ${(props) => props.pickImg && `
+    font-size: 12px;
+    font-weight: 700;
+    padding-left: 18px;
+  `}
+
+  ${(props) => props.addproduct && `
+    font-size: 14px;
+    font-weight: 700;
   `}
 
 `
@@ -513,6 +544,13 @@ export const ExtraText = styled.Text`
     color: ${brand};
   `}
 
+  ${(props) => props.mview == true && `
+    font-size: 28px;
+    font-weight: 800;
+    color: ${tertiary};
+  `}
+
+
 `
 
 export const TextLink = styled.TouchableOpacity`
@@ -537,7 +575,7 @@ export const OuterdModalView = styled.View`
 
 export const InnerModalView = styled.View`
   width: 90%;
-  height: 495px;
+
   border-radius: 10px;
   background: ${primary};
   padding: 15px;

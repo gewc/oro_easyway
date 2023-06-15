@@ -13,7 +13,7 @@ const dateNow = `${yyyy}-${mm}-${dd}  ${hh}:${minutes}:${ss}`;
 
 const getAllRegisters = async (req,res) => {
     try {
-        const data = await Register.find({}).sort({created_at: -1}).limit(req.query._end);
+        const data = await Register.find({}).sort({_id: -1}).limit(req.query._end);
         res.status(200).json({ message: "", status: 'SUCCESS', data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });

@@ -91,6 +91,9 @@ const StoreMenuScreen = ({navigation, route}) => {
                         <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProductListScreen',  {ustoreName, data: uData})}}>
                             <ButtonText findMaterial={true}>Product's List</ButtonText>
                         </StyledButton>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProducViewScreen',  {ustoreName, data: uData})}}>
+                            <ButtonText findMaterial={true}>Product View's</ButtonText>
+                        </StyledButton>
                     </StyledFormArea>
                 </DashboardContainer>
             </InnerContainer>

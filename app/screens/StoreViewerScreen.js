@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Text, ImageBackground  } from "react-native"
+import { View, FlatList, Text, Image, ImageBackground  } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 
 import { Octicons, Entypo } from '@expo/vector-icons'
@@ -26,7 +26,7 @@ const StoreViewerScreen = ({navigation, route}) => {
     const [ind, setInd] = useState(0)
 
     const getStoreProducts = async () => {
-        console.log(_id)
+        // console.log(_id)
         handleMessage("Loading...", "Default")
         await axios.get(`/products/store/${_id}`)
             .then((response) => {
@@ -141,12 +141,26 @@ const Item = ({item, index, data}) => (
         }}
     >
         
-        <Entypo name='tools' size={40}  color={primary}  
+        {item.image == null  && (
+        <Entypo
+            name="tools"
+            size={40}
+            color={primary}
             style={{
-                width: 45,
-                height: 45,
-                marginLeft:10
-            }} />
+            width: 45,
+            height: 45,
+            marginLeft: 10,
+            }}
+        />
+        )}
+
+        {item.image != null && (
+        <Image
+            source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+            style={{ width: 45, height: 55, marginLeft: 10 }}
+        />
+        )}
+
         <View style={{ width: '80%'}}>
             <Text style={{fontSize: 25,fontWeight: '800', marginLeft: 10, color:primary  }}>{item.name.toUpperCase()}</Text>
             <Text style={{fontSize: 16, marginLeft: 10, color:primary }}>{item.description.substring(0, 50)}</Text>

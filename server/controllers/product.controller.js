@@ -26,7 +26,7 @@ const getProductsByStore = async (req,res) => {
         
         const {id} = req.params
         console.log(id)
-        const data = await Product.find({store: id}).sort({created_at: -1});
+        const data = await Product.find({store: id}).sort({_id: -1});
         res.status(200).json({ message: "", status: 'SUCCESS', data: data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -81,7 +81,7 @@ const getProductsAndStore = async (req,res) => {
 
 const createProduct = async (req,res) => {
     try {
-        const { name, description, price, quantity, _id } = req.body;
+        const { name, description, image, price, quantity, _id } = req.body;
         const nname = name.toLowerCase()
 
         const data = await Store.findOne({_id});
@@ -94,6 +94,7 @@ const createProduct = async (req,res) => {
         const newData = await Product.create({
             name: nname, 
             description, 
+            image,
             price, 
             quantity, 
             created_at: dateNow,
@@ -115,12 +116,13 @@ const getProductByID = async (req,res) => {};
 const updateProduct = async (req,res) => {
     try {
         const {id} = req.params;
-        const { name, description, price, quantity } = req.body;
+        const { name, description, image, price, quantity } = req.body;
 
         // Update Store details
         await Product.findByIdAndUpdate({ _id: id}, {
             name, 
             description, 
+            image,
             price, 
             quantity,
             updated_at: dateNow

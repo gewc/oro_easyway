@@ -16,7 +16,7 @@ const getAllViews = async (req,res) => {};
 const getAllViewbyStore = async (req,res) => {
     try {
         const { storeId } = req.params;
-        const data = await View.find({store_id: storeId, status: 'New'}).sort({created_at: -1}).limit(req.query._end);
+        const data = await View.find({store_id: storeId, status: 'New'}).sort({_id: -1}).limit(req.query._end);
         res.status(200).json({ message: "", status: 'SUCCESS', data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -25,12 +25,13 @@ const getAllViewbyStore = async (req,res) => {
 
 const createView = async (req,res) => {
     try {
-        const { storeId, address, deviceId } = req.body;
+        const { storeId, prodId, address, deviceId } = req.body;
         // const data = await View.findOne({store_name: storeName});
         // if(data) throw new Error("Sorry the store name is already exist!");
 
         const newData = await View.create({
             store_id: storeId, 
+            product_id: prodId, 
             address: address[0].city, 
             device_id: deviceId,
             status: 'New', 

@@ -22,11 +22,19 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.rnoroeasyway.oroeasyway",
+      "package": "com.rnoroeasyway.oroeasyway"
       
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you upload the image of the materials."
+        }
+      ]
+    ]
   }
 }

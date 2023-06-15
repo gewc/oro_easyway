@@ -133,7 +133,7 @@ const MainStoreScreen = ({navigation, route}) => {
                     }
                 } else {
                     
-                    handleMessage(message)
+                    //handleMessage(message)
                 }
 
                 setIsCheckingDevice(false)

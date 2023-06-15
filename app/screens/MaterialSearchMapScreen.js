@@ -21,7 +21,7 @@ import axios from 'axios'
 const { primary, brand, darkLight, red } = Colors;
 
 export default function MaterialSearchMapScreen({navigation, route}) {
-    const {searchText, mapRegion, type, sData} = route.params
+    const {searchText, mapRegion, type, sData, prodData} = route.params
     
     
     const [isLocationChecking, setIsLocationChecking] = useState(true);
@@ -31,29 +31,29 @@ export default function MaterialSearchMapScreen({navigation, route}) {
     const [polylineVisible, setPolylineVisible] = useState(false);
     
 
-    const getHardwareStoreByMaterial = async () => {
-      await axios.get('/products/materialsearch/'+searchText)
-        .then((response) => {
-            const result = response.data;
-            const { message, status, data } = result;
-            console.log('Material Search Data',result)
+    // const getHardwareStoreByMaterial = async () => {
+    //   await axios.get('/products/materialsearch/'+searchText)
+    //     .then((response) => {
+    //         const result = response.data;
+    //         const { message, status, data } = result;
+    //         console.log('Material Search Data',result)
 
-            if(status !== "SUCCESS"){ // IF ERROR FROM SERVER
-                // handleMessage(message, status)
-                console.log(status, message)
-            } else {
-                // handleMessage(message, status)
-                setStoreData(data)
-                console.log('storeData', storeData)
-            }
-            setIsLocationChecking(false);
-        })
-        .catch( error => {
-            console.log(error.message)
-            setIsLocationChecking(false);
-            // handleMessage("An error occured. Check your network and try again!")
-        });
-    }
+    //         if(status !== "SUCCESS"){ // IF ERROR FROM SERVER
+    //             // handleMessage(message, status)
+    //             console.log(status, message)
+    //         } else {
+    //             // handleMessage(message, status)
+    //             setStoreData(data)
+    //             console.log('storeData', storeData)
+    //         }
+    //         setIsLocationChecking(false);
+    //     })
+    //     .catch( error => {
+    //         console.log(error.message)
+    //         setIsLocationChecking(false);
+    //         // handleMessage("An error occured. Check your network and try again!")
+    //     });
+    // }
 
     const getHardwareStore = async () => {
       await axios.get('/stores/search/'+searchText)
@@ -80,28 +80,6 @@ export default function MaterialSearchMapScreen({navigation, route}) {
         });
     }
 
-    const handleViewPress = async (storeId, name, mapRegion) => {
-      const deviceId = Device.osInternalBuildId
-      const {longitude, latitude} = mapRegion
-      let address = await Location.reverseGeocodeAsync({
-        longitude,
-        latitude,
-      });
-
-      await axios.post('http://192.168.157.147:8080/api/v1/views/',{storeId, deviceId, address})
-        .then((response) => {
-            const result = response.data;
-            const { message, status, data } = result;
-            console.log('View Store Data',result)
-            
-        })
-        .catch( error => {
-            console.log('View Store Data',error.message)
-        });
-
-      navigation.navigate('StoreViewerScreen', {_id: storeId, storeName: name})
-
-    }
 
     const handleStorePress = async (value, mapRegion) => {
       let startLoc = `${mapRegion.latitude},${mapRegion.longitude}`
@@ -208,8 +186,9 @@ export default function MaterialSearchMapScreen({navigation, route}) {
           distance={storeDetails?.distance?.text}
           duration={storeDetails?.duration?.text}
           navigation={navigation}
-          handleViewPress={handleViewPress}
           mapRegion={mapRegion}
+          type={type}
+          prodData={prodData}
         /> }
 
     </View>
@@ -225,7 +204,7 @@ const MyMarker = ({ name, ...props}) =>{
   )
 }
 
-const MyStoreDetails = ({ id, name, address, contact, website, distance, duration, navigation, handleViewPress, mapRegion, ...props}) =>{
+const MyStoreDetails = ({ id, name, address, contact, website, distance, duration, navigation, mapRegion, type, prodData, ...props}) =>{
   return(
       <View style={styles.storeDetails}>
           <View style={{width: '75%'}}>
@@ -281,7 +260,14 @@ const MyStoreDetails = ({ id, name, address, contact, website, distance, duratio
             </View>
           </View>
           <View>
-            <StyledButton viewStore={true} onPress={() => {handleViewPress(id, name, mapRegion)}}>
+            <StyledButton viewStore={true} onPress={() => { 
+              if(type == "material"){
+                navigation.navigate('MaterialViewerScreen', {_id: id, storeName: name, prodData}) 
+              }else{
+                navigation.navigate('StoreViewerScreen', {_id: id, storeName: name}) 
+              }
+              
+            }}>
               <ButtonText>View</ButtonText>
             </StyledButton>
           </View>

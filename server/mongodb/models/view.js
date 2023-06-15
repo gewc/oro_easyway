@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const ViewSchema = new mongoose.Schema({
     store_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Store'},
+    product_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
     address: { type: String, required: true},
     device_id: { type: String, required: true},
     status: { type: String, required: true},
