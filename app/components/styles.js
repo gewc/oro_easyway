@@ -594,14 +594,15 @@ export const NotifiText = styled.Text`
   width: 20px;
   height: 20px;
   border-radius: 20px;
-  top: 0px;
-  right: 0px;
+  top: 2px;
+  right: 2px;
   background-color: ${red};
   color: ${primary};
   font-size: 12px;
   font-weight: 700;
   padding: 3px;
-  padding-left: 6px;
+  flex-direction: row;
+  text-align: center;
 
 `
 

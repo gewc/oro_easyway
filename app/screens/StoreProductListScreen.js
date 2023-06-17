@@ -56,7 +56,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
   const getStoreProducts = async () => {
     handleMessage("Loading...", "Default");
     await axios
-      .get(`http://192.168.157.147:8080/api/v1/products/store/${data._id}`)
+      .get(`/products/store/${data._id}`)
       .then((response) => {
         const result = response.data;
         const { message, status, data } = result;

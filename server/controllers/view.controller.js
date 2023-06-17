@@ -1,5 +1,5 @@
 import View from '../mongodb/models/view.js'
-import Store from '../mongodb/models/store.js'
+import Product from '../mongodb/models/product.js'
 
 let d = new Date();
 let yyyy = d.getFullYear();
@@ -17,6 +17,16 @@ const getAllViewbyStore = async (req,res) => {
     try {
         const { storeId } = req.params;
         const data = await View.find({store_id: storeId, status: 'New'}).sort({_id: -1}).limit(req.query._end);
+        res.status(200).json({ message: "", status: 'SUCCESS', data });
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+};
+
+const getAllViewbyProduct = async (req,res) => {
+    try {
+        const { id } = req.params;
+        const data = await View.find({product_id: id, status: 'New'}).sort({_id: -1}).limit(req.query._end);
         res.status(200).json({ message: "", status: 'SUCCESS', data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -50,21 +60,27 @@ const getViewByID = async (req,res) => {};
 
 const getViewByStoreName = async (req,res) => {
     try {
-        const {store_name} = req.params;
-        const isExist = await View.findOne({ store_name });
-        console.log(store_name)
+        const {storeId} = req.params;
+        const pId = [];
+        let countD = {};
 
-        if(isExist) {
-            const isStoreExist = await Store.findOne({ name: store_name });
-            if(isStoreExist){ 
-                res.status(200).json({ message: "Store Exist!", status: 'SUCCESS', data: { View: isExist, store: isStoreExist } });
-            }else{
-                res.status(200).json({ message: "Store Exist!", status: 'SUCCESS', data: { View: isExist, store: null } });
-            }
-            
-        }else{
-            res.status(200).json({ message: "Store not found!", status: 'FAILED', data: {} });
-        }
+        const sdata = await View.find({store_id: storeId, status: 'New'}).sort({_id: -1}).limit(req.query._end);
+        
+        sdata.map((item) => {
+            let prod = String(item.product_id);
+           if(!pId.includes(prod)){
+                pId.push(prod);
+                countD[prod] = 1;
+           }else{
+            countD[prod] = countD[prod] +1
+           }
+        });
+
+        const pdata = await Product.find({_id: { $in: pId }}).limit(req.query._end);
+        const data = {pdata , countD}
+
+        res.status(200).json({message: 'View added!', status: 'SUCCESS', data });
+
 
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -77,12 +93,15 @@ const getViewByDevice = async (req,res) => {};
 const updateViewByStore = async (req,res) => {
     try {
         
-        const { storeid } = req.params;
+        const { storeId, pId } = req.params;
         // Update View store name
-        const data = await View.find({ store_id: storeid, status: 'New', created_at: { $lt: new ISODate(dateNow) } }).update({
-            status: "Seen", 
-            updated_at: dateNow
-        })
+        const data = await View.updateMany (
+            { store_id: storeId, product_id: pId, status: 'New' },
+            {
+                status: "Seen", 
+                updated_at: dateNow
+            }
+        )
 
         res.status(200).json({ message: "View updated successfully", status: 'SUCCESS', data });
 
@@ -93,4 +112,4 @@ const updateViewByStore = async (req,res) => {
 
 const deactivateView = async (req,res) => {};
 
-export { getAllViews, getAllViewbyStore, createView, getViewByID, getViewByStoreName, getViewByDevice, updateViewByStore, deactivateView };
+export { getAllViews, getAllViewbyStore, createView, getViewByID, getAllViewbyProduct, getViewByStoreName, getViewByDevice, updateViewByStore, deactivateView };

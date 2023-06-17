@@ -6,18 +6,37 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Octicons } from '@expo/vector-icons'
 
 import { 
-    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, DashboardContainer,  PageLogo, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
+    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea, NotifiText, LeftIcon, DashboardContainer,  PageLogo, StyledTextInput, StyledButton, ButtonText } from '../components/styles'
 import { useIsFocused } from '@react-navigation/native';
 
+import axios from 'axios'
+axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
 
 
 const { primary, brand, darkLight } = Colors;
 
 const StoreMenuScreen = ({navigation, route}) => {
     const { storeName, data } = route.params;
+    const {_id} = data;
     const [storeProfile, setStoreProfile] = useState(null);
     const [ustoreName, setUstoreName] = useState(storeName);
     const [uData, setUData] = useState(data);
+    const [viewerCount, setViewerCount] = useState(0)
+
+    const getViewerData = async () => {
+        
+        await axios.get(`/views/${_id}`)
+            .then((response) => {
+                const result = response.data;
+                const { message, status, data } = result;
+                // console.log("Get Products Result", data)
+                setViewerCount(data.length)
+            })
+            .catch( error => {
+                console.log(error.message)
+                handleMessage("An error occured. Check your network and try again!")
+            });
+    }
 
     const getObjectData = async (key, setData) => {
         try {
@@ -35,7 +54,7 @@ const StoreMenuScreen = ({navigation, route}) => {
             console.log('Store Menu Screen',storeProfile);
             storeProfile !== null && setUstoreName(storeProfile.name)
             storeProfile !== null && setUData(storeProfile)
-            console.log('uData', uData)
+            getViewerData()
         }
 
         const backAction = () => {
@@ -91,8 +110,9 @@ const StoreMenuScreen = ({navigation, route}) => {
                         <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProductListScreen',  {ustoreName, data: uData})}}>
                             <ButtonText findMaterial={true}>Product's List</ButtonText>
                         </StyledButton>
-                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreProducViewScreen',  {ustoreName, data: uData})}}>
+                        <StyledButton findMaterial={true} onPress={() => {navigation.navigate('StoreViewerScreen',  {ustoreName, data: uData})}}>
                             <ButtonText findMaterial={true}>Product View's</ButtonText>
+                            {viewerCount > 0 && <NotifiText>{viewerCount}</NotifiText>}
                         </StyledButton>
                     </StyledFormArea>
                 </DashboardContainer>
