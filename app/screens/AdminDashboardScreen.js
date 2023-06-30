@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ImageBackground, ActivityIndicator, BackHandler, Alert } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import {MaterialIcons, Entypo, Ionicons  } from '@expo/vector-icons'
+import { StackActions } from '@react-navigation/native';
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  StyledButton, ButtonText, PageLogo, DashboardContainer, NotifiText, UserText, Avatar, LeftIcon } from '../components/styles'
@@ -61,7 +62,12 @@ const AdminDashboardScreen = ({navigation, route}) => {
                     },
                     {
                         text: "Yes",
-                        onPress: () => BackHandler.exitApp(),
+                        onPress: () => {
+                            navigation.dispatch(
+                                StackActions.replace('Login')
+                              );
+                            BackHandler.exitApp()
+                        },
                     },
                 ])
                 return true;
@@ -117,9 +123,29 @@ const AdminDashboardScreen = ({navigation, route}) => {
                             <MaterialIcons name="person" size={25}  color={primary} /> 
                             <ButtonText adminDash={true}>My Profile</ButtonText>
                         </StyledButton>
-                        <StyledButton adminDash={true} onPress={() => {navigation.navigate('Register', {userData: data})}}>
+                        {/* <StyledButton adminDash={true} onPress={() => {navigation.navigate('Register', {userData: data})}}>
                             <MaterialIcons name="person-add" size={25}  color={primary} /> 
                             <ButtonText adminDash={true}>Add New User</ButtonText>
+                        </StyledButton> */}
+                        <StyledButton adminDash={true} onPress={() => {
+                                Alert.alert("Log out!", "Are you sure want to exit the app?", [
+                                    {
+                                        text: "Cancel",
+                                        onPress: () => null,
+                                        style: "cancel"
+                                    },
+                                    {
+                                        text: "Yes",
+                                        onPress: () => {
+                                            navigation.dispatch(
+                                                StackActions.replace('Login')
+                                              );
+                                        },
+                                    },
+                                ])
+                            }}>
+                            <MaterialIcons name="logout" size={25}  color={primary} /> 
+                            <ButtonText adminDash={true}>Logout</ButtonText>
                         </StyledButton>
                     </StyledFormArea>
                 </DashboardContainer>

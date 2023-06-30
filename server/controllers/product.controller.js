@@ -118,7 +118,7 @@ const updateProduct = async (req,res) => {
         const {id} = req.params;
         const { name, description, image, price, quantity } = req.body;
 
-        // Update Store details
+        // Update Product
         await Product.findByIdAndUpdate({ _id: id}, {
             name, 
             description, 
@@ -134,7 +134,21 @@ const updateProduct = async (req,res) => {
     }
 };
 
-const deactivateProduct = async (req,res) => {};
+const deactivateProduct = async (req,res) => {
+    try {
+        const {id} = req.params;
+
+        // Delete Product
+        await Product.findByIdAndUpdate({ _id: id}, {
+            deleted_at: dateNow
+        })
+        res.status(200).json({ message: "Product deleted successfully", status: 'SUCCESS', data: {} });
+
+    } catch (error) {
+        res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
+    }
+
+};
 
 //DIJKSTRA ALGORITHM
 const dijkstra = (data, mapRegion) => {

@@ -36,6 +36,10 @@ const DashboardScreen = ({navigation}) => {
         });
 
         setIsLocationChecking(false);
+        // navigation.navigate('MaterialSearch', {mapRegion})
+        navigation.dispatch(
+            StackActions.replace('MaterialSearch', {mapRegion})
+          );
     }
 
     useEffect(() => {

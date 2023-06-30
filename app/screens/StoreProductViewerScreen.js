@@ -171,7 +171,7 @@ const Item = ({item, index, data}) => (
 
         <View style={{ width: '90%'}}>
             <Text style={{fontSize: 20,fontWeight: '800', marginLeft: 10, color:primary  }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.address.toUpperCase()}</Text>
-            <Text style={{fontSize: 16, marginLeft: 10, color:primary }}>Device: {item.device_id.substring(0, 4)}...</Text>
+            {/* <Text style={{fontSize: 16, marginLeft: 10, color:primary }}>Device: {item.device_id.substring(0, 4)}...</Text> */}
             <Text style={{fontSize: 16, marginLeft: 10, color:primary }}>Date: {item.created_at.substring(0, 50)}</Text>
             
 

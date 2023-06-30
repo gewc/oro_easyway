@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, View } from "react-native"
+import { ImageBackground, View, Alert, BackHandler } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 
 import { Octicons } from '@expo/vector-icons'
@@ -13,6 +13,33 @@ const { primary, brand, darkLight } = Colors;
 const MaterialSearch = ({navigation, route}) => {
     const { mapRegion } = route.params
     const [searchText, setSearchText] = useState('')
+
+    useEffect(() => {
+        userLocation();
+        const backAction = () => {
+            
+            if(navigation.isFocused()){
+                Alert.alert("Log out!", "Are you sure want to exit the app?", [
+                    {
+                        text: "Cancel",
+                        onPress: () => null,
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => BackHandler.exitApp(),
+                    },
+                ])
+                return true;
+            }
+        }
+        const backButton = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        )
+
+        return () => backButton.remove()
+    }, [])
 
   return (
     <StyledContainer dashbaord={true}>

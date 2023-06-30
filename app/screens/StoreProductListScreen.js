@@ -52,6 +52,8 @@ const StoreProductListScreen = ({ navigation, route }) => {
   const [product, setProduct] = useState(null);
   const [ind, setInd] = useState(0);
   const [image, setImage] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
 
   const getStoreProducts = async () => {
     handleMessage("Loading...", "Default");
@@ -150,6 +152,33 @@ const StoreProductListScreen = ({ navigation, route }) => {
           "An error occured. Check your network and try again!"
         );
         setSubmitting(false);
+      });
+  };
+
+  const handleDeleteProduct = async (data, setIsDeleting) => {
+    setIsDeleting(true)
+    await axios
+      .delete(`/products/${data._id}`)
+      .then((response) => {
+        const result = response.data;
+        const { message, status, data } = result;
+        console.log("Delete Products Result", result);
+
+        if (status !== "SUCCESS") {
+          handleMessageModal(message);
+        } else {
+          // setVisibleUpdate(!visibleUpdate)
+          handleMessageModal(message, status);
+          getStoreProducts();
+        }
+        setIsDeleting(false);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        handleMessageModal(
+          "An error occured. Check your network and try again!"
+        );
+        setIsDeleting(false);
       });
   };
 
@@ -253,6 +282,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
                 setVisible={setVisibleUpdate}
                 setProduct={setProduct}
                 setImage={setImage}
+                handleDeleteProduct={handleDeleteProduct}
               />
             )}
             keyExtractor={(item) => item._id}
@@ -547,7 +577,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
   );
 };
 
-const Item = ({ item, index, data, setVisible, setProduct, setImage }) => (
+const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDeleteProduct }) => (
   <ImageBackground
     source={require("./../assets/list_background.jpg")}
     resizeMode="cover"
@@ -649,7 +679,7 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage }) => (
       </View>
     </View>
 
-    <View style={{ width: "20%" }}>
+    <View style={{ width: '20%',flexDirection: 'column', justifyContent:'space-evenly'}}>
       <StyledButton
         edit={true}
         onPress={() => {
@@ -660,8 +690,12 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage }) => (
       >
         <ButtonText>
           {" "}
-          <Entypo name="pencil" size={20} color={tertiary} />{" "}
+          <Entypo name="pencil" size={18} color={tertiary} />{" "}
         </ButtonText>
+      </StyledButton>
+
+      <StyledButton reject={true} onPress={() => {handleDeleteProduct(item)}}>
+          <ButtonText> <Entypo name='cross' size={18}  color={primary} /> </ButtonText>
       </StyledButton>
     </View>
   </ImageBackground>
