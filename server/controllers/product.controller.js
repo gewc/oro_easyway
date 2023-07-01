@@ -14,7 +14,7 @@ const dateNow = `${yyyy}-${mm}-${dd}  ${hh}:${minutes}:${ss}`;
 
 const getAllProducts = async (req,res) => {
     try {
-        const data = await Product.find({}).limit(req.query._end);
+        const data = await Product.find({deleted_at: { $eq: null }}).limit(req.query._end);
         res.status(200).json({ message: "", status: 'SUCCESS', data: data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -26,7 +26,7 @@ const getProductsByStore = async (req,res) => {
         
         const {id} = req.params
         console.log(id)
-        const data = await Product.find({store: id}).sort({_id: -1});
+        const data = await Product.find({store: id, deleted_at: { $eq: null }}).sort({_id: -1});
         res.status(200).json({ message: "", status: 'SUCCESS', data: data });
     } catch (error) {
         res.status(200).json({ message: error.message, status: 'FAILED', data: {} });
@@ -48,7 +48,8 @@ const getProductsAndStore = async (req,res) => {
         let sData = await Product.aggregate([
             { $match: 
                 {
-                    name: new RegExp(searchText, 'i')
+                    name: new RegExp(searchText, 'i'),
+                    deleted_at: { $eq: null }
                 }
             },
             { $lookup:

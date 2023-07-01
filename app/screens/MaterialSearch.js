@@ -15,7 +15,6 @@ const MaterialSearch = ({navigation, route}) => {
     const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        userLocation();
         const backAction = () => {
             
             if(navigation.isFocused()){

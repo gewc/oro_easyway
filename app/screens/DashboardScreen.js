@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ImageBackground, ActivityIndicator, Alert, BackHandler } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import * as Location from 'expo-location';
+import { StackActions } from '@react-navigation/native';
 
 import { 
     Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  StyledButton, ButtonText, PageLogo, DashboardContainer, Avatar } from '../components/styles'

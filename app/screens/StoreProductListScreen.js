@@ -283,6 +283,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
                 setProduct={setProduct}
                 setImage={setImage}
                 handleDeleteProduct={handleDeleteProduct}
+                setIsDeleting={setIsDeleting}
               />
             )}
             keyExtractor={(item) => item._id}
@@ -577,7 +578,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
   );
 };
 
-const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDeleteProduct }) => (
+const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDeleteProduct, setIsDeleting }) => (
   <ImageBackground
     source={require("./../assets/list_background.jpg")}
     resizeMode="cover"
@@ -592,8 +593,8 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
       marginBottom: index == data.length - 1 ? 30 : 0,
       alignItems: "center",
       flexDirection: "row",
-      paddingTop: 5,
-      paddingBottom: 5,
+      paddingTop: 2,
+      paddingBottom: 2,
     }}
   >
 
@@ -630,7 +631,7 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
       </Text>
       <Text
         style={{
-          fontSize: 16,
+          fontSize: 14,
           marginLeft: 10,
           marginBottom: 5,
           marginTop: 5,
@@ -643,7 +644,7 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 12,
             fontWeight: "600",
             marginLeft: 10,
             color: "yellow",
@@ -651,16 +652,16 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
         >
           Price:{" "}
         </Text>
-        <Text style={{ fontSize: 16, fontWeight: "600", color: "yellow" }}>
+        <Text style={{ fontSize: 14, fontWeight: "600", color: "yellow" }}>
           ₱{item.price}
         </Text>
 
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 12,
               fontWeight: "600",
-              marginLeft: 20,
+              marginLeft: 10,
               color: item.quantity.$numberDecimal > 20 ? green : red,
             }}
           >
@@ -668,7 +669,7 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
           </Text>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: "600",
               color: item.quantity.$numberDecimal > 20 ? green : red,
             }}
@@ -694,7 +695,7 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
         </ButtonText>
       </StyledButton>
 
-      <StyledButton reject={true} onPress={() => {handleDeleteProduct(item)}}>
+      <StyledButton reject={true} onPress={() => {handleDeleteProduct(item, setIsDeleting)}}>
           <ButtonText> <Entypo name='cross' size={18}  color={primary} /> </ButtonText>
       </StyledButton>
     </View>

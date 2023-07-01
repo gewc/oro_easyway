@@ -54,7 +54,7 @@ const RootStack = () =>{
             >
 
                 {/* For ADMIN App */}
-                <Stack.Screen name="Login" component={LoginScreen} />
+                {/* <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Register" component={RegisterScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="AdminDashboardScreen" component={AdminDashboardScreen} options={{ headerTintColor: tertiary}}/>
                 <Stack.Screen name="RegistrationListScreen" component={RegistrationListScreen} options={{ headerTintColor: tertiary}}/>
@@ -63,18 +63,18 @@ const RootStack = () =>{
                 <Stack.Screen name="AdminMapScreen" component={AdminMapScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="AdminStoreProfileScreen" component={AdminStoreProfileScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="AdminStoreProductListScreen" component={AdminStoreProductListScreen} options={{ headerTintColor: tertiary}} />
-                <Stack.Screen name="AdminProfileScreen" component={AdminProfileScreen} options={{ headerTintColor: tertiary}} />
+                <Stack.Screen name="AdminProfileScreen" component={AdminProfileScreen} options={{ headerTintColor: tertiary}} /> */}
                 
                 
                 {/* For Store App */}
-                {/* <Stack.Screen name="MainStoreScreen" component={MainStoreScreen} />
+                <Stack.Screen name="MainStoreScreen" component={MainStoreScreen} />
                 <Stack.Screen name="AddStoreDetailsScreen" component={AddStoreDetailsScreen} />
                 <Stack.Screen name="MapScreen" component={MapScreen} options={{ headerTintColor: primary}} />
                 <Stack.Screen name="StoreMenuScreen" component={StoreMenuScreen} options={{headerBackVisible: false}}/>
                 <Stack.Screen name="StoreProfileScreen" component={StoreProfileScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="StoreProductListScreen" component={StoreProductListScreen} options={{ headerTintColor: tertiary}} />
                 <Stack.Screen name="StoreViewerScreen" component={StoreViewerScreen} options={{ headerTintColor: tertiary}} />
-                <Stack.Screen name="StoreProductViewerScreen" component={StoreProductViewerScreen} options={{ headerTintColor: tertiary}} /> */}
+                <Stack.Screen name="StoreProductViewerScreen" component={StoreProductViewerScreen} options={{ headerTintColor: tertiary}} />
                 
                 {/* For Customer App */}
                 {/* <Stack.Screen name="Dashboard" component={DashboardScreen} />
