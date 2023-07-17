@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   Text,
   Image,
-  ImageBackground,
+  ImageBackground
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
@@ -30,6 +30,8 @@ import {
   OuterdModalView,
   InnerModalView,
   StyledInputLabel,
+  DashboardContainer,
+  ExtraText,
 } from "../components/styles";
 
 import axios from "axios";
@@ -77,10 +79,12 @@ const StoreProductListScreen = ({ navigation, route }) => {
             handleMessage("");
           }
         }
+        setIsDeleting(false);
       })
       .catch((error) => {
         console.log(error.message);
         handleMessage("An error occured. Check your network and try again!");
+        setIsDeleting(false);
       });
   };
 
@@ -171,7 +175,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
           handleMessageModal(message, status);
           getStoreProducts();
         }
-        setIsDeleting(false);
+        
       })
       .catch((error) => {
         console.log(error.message);
@@ -270,7 +274,9 @@ const StoreProductListScreen = ({ navigation, route }) => {
             </MsgBox>
           </StyledFormArea>
 
-          <FlatList
+          {isDeleting && <ExtraText><ActivityIndicator size="large" color={tertiary} /></ExtraText>}
+
+          {!isDeleting && <FlatList
             data={productData}
             showsVerticalScrollIndicator={false}
             initialScrollIndex={ind}
@@ -289,7 +295,7 @@ const StoreProductListScreen = ({ navigation, route }) => {
             keyExtractor={(item) => item._id}
             contentContainerStyle={{ paddingBottom: 50 }}
             style={{ width: "85%" }}
-          />
+          />}
 
           {/* Add New Product */}
           <Modal
@@ -696,7 +702,7 @@ const Item = ({ item, index, data, setVisible, setProduct, setImage, handleDelet
       </StyledButton>
 
       <StyledButton reject={true} onPress={() => {handleDeleteProduct(item, setIsDeleting)}}>
-          <ButtonText> <Entypo name='cross' size={18}  color={primary} /> </ButtonText>
+          <ButtonText> <Entypo name='trash' size={16}  color={primary} /> </ButtonText>
       </StyledButton>
     </View>
   </ImageBackground>

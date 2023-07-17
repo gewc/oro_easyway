@@ -195,7 +195,7 @@ const MyTextInputSearch = ({ label, icon, navigation, data,  ...props}) =>{
             justifyContent: 'space-between'
         }}>
             <View style={{
-                width: '85%',
+                width: '90%',
                 height: 50,
                 flexDirection: 'row',
             }}>
@@ -204,9 +204,9 @@ const MyTextInputSearch = ({ label, icon, navigation, data,  ...props}) =>{
                 </LeftIcon>
                 <StyledTextInput {...props} />
             </View>
-            <StyledButton product={true} onPress={() => {navigation.navigate('AdminAddStoreDetailsScreen',{data,locDetails: null, location: null})}}>
+            {/* <StyledButton product={true} onPress={() => {navigation.navigate('AdminAddStoreDetailsScreen',{data,locDetails: null, location: null})}}>
                 <ButtonText><Octicons name="plus" size={22}  color={primary} /></ButtonText>
-            </StyledButton>
+            </StyledButton> */}
         </View>
     )
 }

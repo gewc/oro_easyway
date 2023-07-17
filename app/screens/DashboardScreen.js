@@ -26,6 +26,14 @@ const DashboardScreen = ({navigation}) => {
             setErrorMsg('Permission to access location was denied.');
         }
         let mylocation = await Location.getCurrentPositionAsync({});
+        let mapR = {
+            latitude: mylocation.coords.latitude,
+            longitude: mylocation.coords.longitude,
+            // latitudeDelta: 0.0922,
+            // longitudeDelta: 0.0421,
+            latitudeDelta: 0.1222,
+            longitudeDelta: 0.1221,
+        }
 
         setMapRegion({
             latitude: mylocation.coords.latitude,
@@ -39,7 +47,7 @@ const DashboardScreen = ({navigation}) => {
         setIsLocationChecking(false);
         // navigation.navigate('MaterialSearch', {mapRegion})
         navigation.dispatch(
-            StackActions.replace('MaterialSearch', {mapRegion})
+            StackActions.replace('MaterialSearch', {mapRegion: mapR})
           );
     }
 

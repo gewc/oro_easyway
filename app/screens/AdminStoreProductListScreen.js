@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Modal, ActivityIndicator, Text, ImageBackground } from "react-native"
+import { View, FlatList, Modal, ActivityIndicator, Text, Image, ImageBackground } from "react-native"
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik'
 
 import { Octicons, Entypo } from '@expo/vector-icons'
 
 import { 
-    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox,  ProductContainer, StyledTextInput, StyledButton, ButtonText, OuterdModalView, InnerModalView, StyledInputLabel } from '../components/styles'
+    Colors, StyledContainer, InnerContainer, PageTitle, StyledFormArea,  LeftIcon, MsgBox, ExtraText, ProductContainer, StyledTextInput, StyledButton, ButtonText, OuterdModalView, InnerModalView, StyledInputLabel } from '../components/styles'
 
 import axios from 'axios'
 axios.defaults.baseURL = 'https://oro-easyway.onrender.com/api/v1';
@@ -27,6 +27,8 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
     const [productData, setProductData] = useState([]);
     const [product, setProduct] = useState(null);
     const [ind, setInd] = useState(0)
+    const [isDeleting, setIsDeleting] = useState(false);
+
 
     const getStoreProducts = async () => {
         handleMessage("Loading...", "Default")
@@ -51,10 +53,12 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
                     }
                     
                 }
+                setIsDeleting(false);
             })
             .catch( error => {
                 console.log(error.message)
                 handleMessage("An error occured. Check your network and try again!")
+                setIsDeleting(false);
             });
     }
 
@@ -105,6 +109,33 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
             });
     }
 
+    const handleDeleteProduct = async (data, setIsDeleting) => {
+        setIsDeleting(true)
+        await axios
+          .delete(`/products/${data._id}`)
+          .then((response) => {
+            const result = response.data;
+            const { message, status, data } = result;
+            console.log("Delete Products Result", result);
+    
+            if (status !== "SUCCESS") {
+              handleMessageModal(message);
+            } else {
+              // setVisibleUpdate(!visibleUpdate)
+              handleMessageModal(message, status);
+              getStoreProducts();
+            }
+            
+          })
+          .catch((error) => {
+            console.log(error.message);
+            handleMessageModal(
+              "An error occured. Check your network and try again!"
+            );
+            setIsDeleting(false);
+          });
+      };
+
     const searchProduct = (text) => {
         if(text == ''){
             setProductData(oldProductData);
@@ -152,9 +183,9 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
 
                 </StyledFormArea>
 
-                
+                {isDeleting && <ExtraText><ActivityIndicator size="large" color={tertiary} /></ExtraText>}
 
-                <FlatList 
+                {!isDeleting && <FlatList 
                     data={productData}
                     showsVerticalScrollIndicator={false}
                     initialScrollIndex={ind}
@@ -165,10 +196,12 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
                             data={data}
                             setVisible = {setVisibleUpdate}
                             setProduct = {setProduct}
+                            handleDeleteProduct={handleDeleteProduct}
+                            setIsDeleting={setIsDeleting}
                         />}
                     keyExtractor={item => item._id}
                     contentContainerStyle={{ paddingBottom: 50 }}
-                />
+                />}
 
                 {/* Add New Product */}
                 <Modal
@@ -323,7 +356,7 @@ const AdminStoreProductListScreen = ({navigation, route}) => {
   )
 }
 
-const Item = ({item, index, data, setVisible, setProduct}) => (
+const Item = ({item, index, data, setVisible, setProduct, handleDeleteProduct, setIsDeleting }) => (
     <ImageBackground
         source={require('./../assets/list_background.jpg')} 
         resizeMode="cover"
@@ -343,23 +376,37 @@ const Item = ({item, index, data, setVisible, setProduct}) => (
         }}
     >
         
-        <Entypo name='tools' size={40}  color={primary}  
+        {item.image == null  && (
+        <Entypo
+            name="tools"
+            size={40}
+            color={primary}
             style={{
-                width: 45,
-                height: 45,
-                marginLeft:10
-            }} />
+            width: 45,
+            height: 45,
+            marginLeft: 10,
+            }}
+        />
+        )}
+
+        {item.image != null && (
+        <Image
+            source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+            style={{ width: 45, height: 55, marginLeft: 10 }}
+        />
+        )}
+
         <View style={{ width: '60%'}}>
             <Text style={{fontSize: 20,fontWeight: '700', marginLeft: 10, color:primary  }} adjustsFontSizeToFit={true} numberOfLines={1}>{item.name.toUpperCase()}</Text>
-            <Text style={{fontSize: 16, marginLeft: 10, color:primary }}>{item.description.substring(0, 50)}</Text>
+            <Text style={{fontSize: 14, marginLeft: 10, color:primary }}>{item.description.substring(0, 50)}</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{fontSize: 16, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
-                <Text style={{fontSize: 16, fontWeight: '600', color: 'yellow' }}>₱{item.price}</Text>
+                <Text style={{fontSize: 12, fontWeight: '600', marginLeft: 10, color: 'yellow' }}>Price: </Text>
+                <Text style={{fontSize: 14, fontWeight: '600', color: 'yellow' }}>₱{item.price}</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{fontSize: 16, fontWeight: '600', marginLeft: 20, color: green }}>Quantity: </Text>
-                    <Text style={{fontSize: 16, fontWeight: '600', color: green }}>{item.quantity.$numberDecimal}</Text>
+                    <Text style={{fontSize: 12, fontWeight: '600', marginLeft: 20, color: green }}>Quantity: </Text>
+                    <Text style={{fontSize: 14, fontWeight: '600', color: green }}>{item.quantity.$numberDecimal}</Text>
                 </View>
             </View>
 
@@ -370,7 +417,11 @@ const Item = ({item, index, data, setVisible, setProduct}) => (
                 setVisible(true)
                 setProduct(item)
             }}>
-                <ButtonText> <Entypo name='pencil' size={20}  color={tertiary} /> </ButtonText>
+                <ButtonText> <Entypo name='pencil' size={18}  color={tertiary} /> </ButtonText>
+            </StyledButton>
+
+            <StyledButton reject={true} onPress={() => {handleDeleteProduct(item, setIsDeleting)}}>
+                <ButtonText> <Entypo name='trash' size={16}  color={primary} /> </ButtonText>
             </StyledButton>
         </View>
 
