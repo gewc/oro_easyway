@@ -61,7 +61,7 @@ const AdminStoreListScreen = ({navigation, route}) => {
             setProductData(oldProductData);
         }else{
             let tempList = productData.filter((item) => {
-                return item.store_name.toLowerCase().indexOf(text.toLowerCase()) > -1
+                return item.name.toLowerCase().indexOf(text.toLowerCase()) > -1
             })
     
             setProductData(tempList);
@@ -195,7 +195,7 @@ const MyTextInputSearch = ({ label, icon, navigation, data,  ...props}) =>{
             justifyContent: 'space-between'
         }}>
             <View style={{
-                width: '90%',
+                width: '100%',
                 height: 50,
                 flexDirection: 'row',
             }}>

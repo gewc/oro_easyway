@@ -63,7 +63,7 @@ const getProductsAndStore = async (req,res) => {
             
         ]) .then(data => {
 
-            let nData = dijkstra(data, location)
+            let nData = dijkstra(data, location) // call function of djkstra with paramete of 'data' - from mongodb and 'location' - from customer app
 
            console.log('storeData',nData)
 
@@ -156,6 +156,15 @@ const dijkstra = (data, mapRegion) => {
     const distances = {};
     const paths = {};
 
+    // data = [
+    //     {id: 'asdasd', name: 'nail', storeDate: [{ name: 'Bulua Hardware'}]},
+    //     {id: 'asdasd', name: 'nail', storeDate: [{ name: 'Bulua Hardware'}]},
+    //     {id: 'asdasd', name: 'nail', storeDate: [{ name: 'Bulua Hardware'}]},
+    //     {id: 'asdasd', name: 'nail', storeDate: [{ name: 'Bulua Hardware'}]},
+    //     {id: 'asdasd', name: 'nail', storeDate: [{ name: 'Bulua Hardware'}]},
+    //     {id: 'asdasd', name: 'nail', storeDate: [{ name: 'Bulua Hardware'}]},
+    // ]
+
     // Define the location of the person as a latitude and longitude coordinate
     const personLocation  = {
       latitude: mapRegion.latitude,
@@ -169,54 +178,60 @@ const dijkstra = (data, mapRegion) => {
             paths[store] = [];
         }
 
-        // The person is the starting node
+        //distances = {0: Infinity, 1: Infinity}
+        //paths = {0: []}
+
+        // Add the person as the starting node
         distances['person'] = 0;
         paths['person'] = ['person'];
+
+        //distances = {0: Infinity, 'person': 0}
+        //paths = {0: [], 'person': ['person']}
 
         // Initialize the priority queue with the person as the starting node
         const priorityQueue = [{ node: 'person', distance: 0 }];
 
         while (priorityQueue.length) {
-        // Get the node with the smallest distance from the priority queue
-        const { node, distance } = priorityQueue.shift();
+            // Get the node with the smallest distance from the priority queue
+            const { node, distance } = priorityQueue.shift();
 
-        // Go through each neighbor of the node
-        for (let store in data) {
-            const storeLocation = JSON.parse(data[store].storeData[0]?.location);
-            const distanceToStore = distanceBetweenPoints(personLocation.latitude, personLocation.longitude, storeLocation.latitude, storeLocation.longitude);
-            
-            if (store !== node && distance + distanceToStore < distances[store]) {
-            // If the distance to the store through the current node is less than the stored distance, update the distances and paths
-            distances[store] = distance + distanceToStore;
-            paths[store] = [...paths[node], store];
-            // Add the store to the priority queue with its new distance
-            priorityQueue.push({ node: store, distance: distances[store] });
+            // Go through each store of the node
+            for (let store in data) {
+                const storeLocation = JSON.parse(data[store].storeData[0]?.location);
+                const distanceToStore = distanceBetweenPoints(personLocation.latitude, personLocation.longitude, storeLocation.latitude, storeLocation.longitude); // call function
+                
+                if (store !== node && distance + distanceToStore < distances[store]) {
+                    // If the distance to the store through the current node is less than the stored distance, update the distances and paths
+                    distances[store] = distance + distanceToStore;
+                    paths[store] = [...paths[node], store];
+                    // Add the store to the priority queue with its new distance
+                    priorityQueue.push({ node: store, distance: distances[store] });
+                }
             }
-        }
 
-        // Sort the priority queue based on the smallest distance
-        priorityQueue.sort((a, b) => a.distance - b.distance);
+            // Sort the priority queue based on the smallest distance
+            priorityQueue.sort((a, b) => a.distance - b.distance);
         }
 
         // Find the closest store to the person
-        let closestStore = null;
-        let shortestPath = null;
-        let shortestDistance = Infinity;
-        for (let store in data) {
-            if (distances[store] < shortestDistance) {
-                shortestDistance = distances[store];
-                closestStore = store;
-                shortestPath = paths[store];
-            }
-        }
+        // let closestStore = null;
+        // let shortestPath = null;
+        // let shortestDistance = Infinity;
+        // for (let store in data) {
+        //     if (distances[store] < shortestDistance) {
+        //         shortestDistance = distances[store];
+        //         closestStore = store;
+        //         shortestPath = paths[store];
+        //     }
+        // }
         
         //Sort data index according to distance
         var sorted = Object.keys(distances).sort(function(a,b){return distances[a]-distances[b]})
-        sorted = sorted.slice(1)
+        sorted = sorted.slice(1) // slice to remove the 'person' data in variable distances
         
         var sortedData = [];
-        sorted.map( v => {
-            sortedData.push(data[parseInt(v)])
+        sorted.map( index => {
+            sortedData.push(data[parseInt(index)])
         })
 
         return sortedData;
@@ -230,8 +245,10 @@ const toRadians = (degrees) => {
     return degrees * Math.PI / 180;
   }
 
+
+// Compute the distances and paths from the person to each store using the Haversine formula
 const distanceBetweenPoints = (lat1, lon1, lat2, lon2) => {
-    const earthRadius = 6371; // in kilometers
+    const earthRadius = 6371; // in kilometers 
     const latDiff = toRadians(lat2 - lat1);
     const lonDiff = toRadians(lon2 - lon1);
     const a =
